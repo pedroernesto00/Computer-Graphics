@@ -23,8 +23,6 @@ public:
 		c3 = Vec3(0, 0, 1);
 	}
 
-	
-
 	Mat3(float x1, float x2, float x3,
 			float y1, float y2, float y3,
 			float z1, float z2, float z3) {
@@ -296,6 +294,66 @@ public:
 		return Mat3 (transp[0][0], transp[0][1], transp[0][2], 
 					transp[1][0], transp[1][1], transp[1][2], 
 					transp[2][0], transp[2][1], transp[2][2]);
+	}
+
+	
+	// Escalona a matriz ao longo do vetor
+	const Mat3 scale(const Vec3& vector) const {
+		float vectorLength = Vec3::length(vector);
+
+		c1[0] += vector[0] * vectorLength;
+		c1[1] += vector[1] * vectorLength;
+		c1[2] += vector[2] * vectorLength;
+
+		c2[0] += vector[0] * vectorLength;
+		c2[1] += vector[1] * vectorLength;
+		c2[2] += vector[2] * vectorLength;
+
+		c3[0] += vector[0] * vectorLength;
+		c3[1] += vector[1] * vectorLength;
+		c3[2] += vector[2] * vectorLength;
+	}
+
+	// Rotaciona a matriz ao longo do vetor
+	const Mat3 rotate(const Vec3& vector, float angle) const {
+		Vec3 v2 = Vec3::cross(vector, vector);
+
+		float angle_cos = cos(angle);
+		float angle_sin = sin(angle);
+
+		float R[3][3] = {
+			{
+				angle_cos + v2[0] * (1 - angle_cos),
+				vector[0] * vector[1] * (1 - angle_cos) - vector[2] * angle_sin,
+				vector[0] * vector[2] * (1 - angle_cos) + vector[1] * angle_sin
+			}, {
+				vector[0] * vector[1] * (1 - angle_cos) + vector[2] * angle_sin,
+				angle_cos + v2[1] * (1 - angle_cos),
+				vector[1] * vector[2] * (1 - angle_cos) - vector[0] * angle_sin
+			}, {
+				vector[2] * vector[0] * (1 - angle_cos) - vector[1] * angle_sin,
+				vector[2] * vector[1] * (1 - angle_cos) + vector[0] * angle_sin,
+				angle_cos + v2[2] * (1 - angle_cos)
+			}
+		};
+
+		Mat3 R_Mat(R[0][0], R[0][1], R[0][2],
+				   R[1][0], R[1][1], R[1][2],
+				   R[2][0], R[2][1], R[2][2]);
+
+		c1 = R_Mat * c1;
+		c2 = R_Mat * c2;
+		c3 = R_Mat * c3;
+	}
+
+	// Reflete a matriz tomando como eixo de simetria o eixo decrito pelo vetor
+	const Mat3 reflect(const Vec3& vector) const {
+		// P' = P - n 2 (P n)
+		// Vec3 n1 = Vec3::cross(, vector);
+
+		// Mat3 R(
+		// 	1 - (2 * n1)
+		// );
 	}
 };
 

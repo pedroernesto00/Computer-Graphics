@@ -301,17 +301,27 @@ public:
 	const Mat3 scale(const Vec3& vector) const {
 		float vectorLength = Vec3::length(vector);
 
-		c1[0] += vector[0] * vectorLength;
-		c1[1] += vector[1] * vectorLength;
-		c1[2] += vector[2] * vectorLength;
+		Vec3 c1_2(
+			c1[0] + (vector[0] * vectorLength),
+			c1[1] + (vector[1] * vectorLength),
+			c1[2] + (vector[2] * vectorLength)
+		);
 
-		c2[0] += vector[0] * vectorLength;
-		c2[1] += vector[1] * vectorLength;
-		c2[2] += vector[2] * vectorLength;
+		Vec3 c2_2(
+			c2[0] + (vector[0] * vectorLength),
+			c2[1] + (vector[1] * vectorLength),
+			c2[2] + (vector[2] * vectorLength)
+		);
 
-		c3[0] += vector[0] * vectorLength;
-		c3[1] += vector[1] * vectorLength;
-		c3[2] += vector[2] * vectorLength;
+		Vec3 c3_2(
+			c3[0] + (vector[0] * vectorLength),
+			c3[1] + (vector[1] * vectorLength),
+			c3[2] + (vector[2] * vectorLength)
+		);
+
+		Mat3 mat_copy(c1_2, c2_2, c3_2);
+
+		return mat_copy;
 	}
 
 	// Rotaciona a matriz ao longo do vetor
@@ -341,9 +351,15 @@ public:
 				   R[1][0], R[1][1], R[1][2],
 				   R[2][0], R[2][1], R[2][2]);
 
-		c1 = R_Mat * c1;
-		c2 = R_Mat * c2;
-		c3 = R_Mat * c3;
+		Vec3 c1_2, c2_2, c3_2;
+
+		c1_2 = R_Mat * c1;
+		c2_2 = R_Mat * c2;
+		c3_2 = R_Mat * c3;
+
+		Mat3 mat_copy(c1_2, c2_2, c3_2);
+
+		return mat_copy;
 	}
 
 	// Reflete a matriz tomando como eixo de simetria o eixo decrito pelo vetor

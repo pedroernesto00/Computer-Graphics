@@ -1,19 +1,24 @@
 //#include "Vec3.h"
 #include "Mat3.h"
 
+# define M_PI 3.14159265358979323846
 
-int main(int argc, char const *argv[])
-{
+int main(int argc, char const *argv[]) {
+
+	// Teste intanciação
 	Vec3 teste1(3.0, 4.0, 5.0);
 	Vec3 teste2(4.0, 10.0, 2.01);
 	Vec3 teste3(2.0, 5.0, 6.0);
+
 	Mat3 mat1();
 	Mat3 mat2(teste3, teste2, teste1);
 	Mat3 mat3(teste1, teste2, teste3);
+
 	Mat3 mat4(1, 2, 3, 4, 5, 6, 7, 8, 9);
 	Mat3 mat5(mat2);
 	Mat3 mat6(1, -1, 0, 2, 5, -3, 0, 5, 4);
 
+	// Teste output
 	cout << "Matriz 4: " << mat6 << endl;
 	
 	/*
@@ -88,7 +93,10 @@ int main(int argc, char const *argv[])
 
 	*/
 
+	Vec3 rotateVec(1, 0, 0);
+	Mat3 mat_rotated = mat2.rotate(rotateVec, M_PI/2);
 
+	cout << mat_rotated;
 
 	return 0;
 }

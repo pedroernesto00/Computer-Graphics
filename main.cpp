@@ -9,6 +9,8 @@ int main(int argc, char const *argv[]) {
 	Vec3 teste1(3.0, 4.0, 5.0);
 	Vec3 teste2(4.0, 10.0, 2.01);
 	Vec3 teste3(2.0, 5.0, 6.0);
+	Vec3 teste4(2);
+	Vec3 teste5(teste3);
 
 	Mat3 mat1();
 	Mat3 mat2(teste3, teste2, teste1);
@@ -19,6 +21,9 @@ int main(int argc, char const *argv[]) {
 	Mat3 mat6(1, -1, 0, 2, 5, -3, 0, 5, 4);
 
 	// Teste output
+	cout << "Vector 4: " << teste4 << endl;
+	cout << "Vector 5: " << teste5 << endl;
+
 	cout << "Matriz 4: " << mat4 << endl;
 	cout << "Matriz 5: " << mat5 << endl;
 

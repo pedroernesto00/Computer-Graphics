@@ -23,12 +23,26 @@ public:
 		z = 0.0f;
 	}
 
+	Vec3(int a)
+	{
+		x = a;
+		y = a;
+		z = a;
+	}
+
 
 	Vec3(float a, float b, float c)
 	{
 		x = a;
 		y = b;
 		z = c;
+	}
+
+	Vec3(const Vec3& vec)
+	{
+		x = vec.x;
+		y = vec.y;
+		z = vec.z;
 	}
 
 	

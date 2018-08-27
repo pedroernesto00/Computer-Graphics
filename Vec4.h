@@ -26,12 +26,28 @@ public:
 	}
 
 
+	Vec4(int a)
+	{
+		x = a;
+		y = a;
+		z = a;
+		w = a;
+	}
+
 	Vec4(float a, float b, float c, float d)
 	{
 		x = a;
 		y = b;
 		z = c;
 		w = d;
+	}
+
+	Vec4(const Vec4& vec)
+	{
+		x = vec.x;
+		y = vec.y;
+		z = vec.z;
+		w = vec.w;
 	}
 
 	

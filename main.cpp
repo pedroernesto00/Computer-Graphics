@@ -1,5 +1,6 @@
 //#include "Vec3.h"
 #include "Mat3.h"
+#include "Vec4.h"
 
 # define M_PI 3.14159265358979323846
 
@@ -12,6 +13,11 @@ int main(int argc, char const *argv[]) {
 	Vec3 teste4(2);
 	Vec3 teste5(teste3);
 
+	Vec4 test1();
+	Vec4 test2(1);
+	Vec4 test3(1, 2, 4, 6);
+	Vec4 test4(test3);
+
 	Mat3 mat1();
 	Mat3 mat2(teste3, teste2, teste1);
 	Mat3 mat3(teste1, teste2, teste3);
@@ -21,6 +27,11 @@ int main(int argc, char const *argv[]) {
 	Mat3 mat6(1, -1, 0, 2, 5, -3, 0, 5, 4);
 
 	// Teste output
+	cout << "Vector4 1: " << test1 << endl;
+	cout << "Vector4 2: " << test2 << endl;
+	cout << "Vector4 3: " << test3 << endl;
+	cout << "Vector4 4: " << test4 << endl;
+
 	cout << "Vector 4: " << teste4 << endl;
 	cout << "Vector 5: " << teste5 << endl;
 

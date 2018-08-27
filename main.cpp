@@ -19,7 +19,12 @@ int main(int argc, char const *argv[]) {
 	Mat3 mat6(1, -1, 0, 2, 5, -3, 0, 5, 4);
 
 	// Teste output
-	cout << "Matriz 4: " << mat6 << endl;
+	cout << "Matriz 4: " << mat4 << endl;
+	cout << "Matriz 5: " << mat5 << endl;
+
+	mat4 /= 5;
+	cout << "Atribuição " << mat4 << endl;
+	//cout << "Soma com atribuição " <<   << endl;
 	
 	/*
 	cout << "Matriz 1: " << mat1 << endl;
@@ -41,12 +46,11 @@ int main(int argc, char const *argv[]) {
 	cout << "Multiplicação por vetor: " << multMatrixVector << endl;
 	cout << "Multiplicação por matriz: " << multMatrixMatrix << endl;
 	cout << "Divisão por escalar: " << divMatrixScalar << endl;
-	*/
 	
 	cout << Mat3::transpose(mat4) << endl;
 	
 
-/*
+
 	cout << "Matriz 1: " << mat2 << endl;
 	Vec3 resultado = teste + teste2;
 	Vec3 resultadoSub = teste - teste2;
@@ -91,12 +95,12 @@ int main(int argc, char const *argv[]) {
 
 	cout << teste << endl;
 
-	*/
 
 	Vec3 rotateVec(1, 0, 0);
 	Mat3 mat_rotated = mat2.rotate(rotateVec, M_PI/2);
 
 	cout << mat_rotated;
+	*/
 
 	return 0;
 }

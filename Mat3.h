@@ -190,13 +190,64 @@ public:
 		return newMatrix;
 	}
 
+
 	// Multiplicação da matriz por um escalar
 	const Mat3 operator / (float k) const {
 		Mat3 newMatrix(this->c1 / k, this->c2 / k, this->c3 / k);
 		return newMatrix;
 	}
 
+	// Atribuição de matriz
+	const Mat3& operator=(const Mat3& mat) {
+		
+		this->c1 = mat.c1;
+		this->c2 = mat.c2;
+		this->c3 = mat.c3;
+		
+		return *this;
+	}
 
+	// Soma de matriz com atribuição
+	const Mat3& operator+=(const Mat3& mat) {
+		
+		*this = *this + mat;
+		
+		return *this;
+	}
+
+	// Subtração de matriz com atribuição
+	const Mat3& operator-=(const Mat3& mat) {
+		
+		*this = *this - mat;
+		
+		return *this;
+	}
+
+	// Multiplicação de matriz por escalar com atribuição
+	const Mat3& operator*=(float k) {
+		
+		*this = *this * k;
+		
+		return *this;
+	}
+
+	// Multiplicação de matriz com atribuição
+	const Mat3& operator*=(const Mat3& mat) {
+		
+		*this = *this * mat;
+		
+		return *this;
+	}
+
+	// Divisão de matriz por escalar com atribuição
+	const Mat3& operator/=(float k) {
+		
+		*this = *this / k;
+		
+		return *this;
+	}
+
+	// Retorna a matriz inversa
 	static const Mat3 inv(const Mat3& mat) {
 		int n, i, j, k;
 	    float matrizA[3][3], ident[3][3], inversa[3][3], pivo = 0, m = 0;

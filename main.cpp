@@ -1,6 +1,7 @@
 //#include "Vec3.h"
 #include "Mat3.h"
 #include "Vec4.h"
+#include "Mat4.h"
 
 # define M_PI 3.14159265358979323846
 
@@ -10,11 +11,11 @@ int main(int argc, char const *argv[]) {
 	Vec3 teste1(3.0, 4.0, 5.0);
 	Vec3 teste2(4.0, 10.0, 2.01);
 	Vec3 teste3(2.0, 5.0, 6.0);
-	Vec3 teste4(2);
-	Vec3 teste5(teste3);
+	// Vec3 teste4(2);
+	// Vec3 teste5(teste3);
 
-	Vec4 test1();
-	Vec4 test2(1);
+	// Vec4 test1();
+	// Vec4 test2(1);
 	Vec4 test3(1, 2, 4, 6);
 	Vec4 test4(test3);
 
@@ -23,23 +24,30 @@ int main(int argc, char const *argv[]) {
 	Mat3 mat3(teste1, teste2, teste3);
 
 	Mat3 mat4(1, 2, 3, 4, 5, 6, 7, 8, 9);
-	Mat3 mat5(mat2);
+	// Mat3 mat5(mat2);
 	Mat3 mat6(1, -1, 0, 2, 5, -3, 0, 5, 4);
 
+	Mat4 mat7(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16);
 	// Teste output
-	cout << "Vector4 1: " << test1 << endl;
-	cout << "Vector4 2: " << test2 << endl;
-	cout << "Vector4 3: " << test3 << endl;
-	cout << "Vector4 4: " << test4 << endl;
+	// cout << "Vector4 1: " << test1 << endl;
+	// cout << "Vector4 2: " << test2 << endl;
+	// cout << "Vector4 3: " << test3 << endl;
+	// cout << "Vector4 4: " << test4 << endl;
 
-	cout << "Vector 4: " << teste4 << endl;
-	cout << "Vector 5: " << teste5 << endl;
+	// cout << "Vector 4: " << teste4 << endl;
+	// cout << "Vector 5: " << teste5 << endl;
 
-	cout << "Matriz 4: " << mat4 << endl;
-	cout << "Matriz 5: " << mat5 << endl;
+	// cout << "Matriz 4: " << mat4 << endl;
+	// cout << "Matriz 5: " << mat5 << endl;
 
-	mat4 /= 5;
-	cout << "Atribuição " << mat4 << endl;
+	// mat4 /= 5;
+	// cout << "Atribuição " << mat4 << endl;
+
+	/*
+	Test output Mat4
+	*/
+	cout << "Matriz 4x4: " << mat7 << endl;
+	cout << "Multiplicação de matriz por ela mesma: " << mat7 / mat7 << endl;
 	//cout << "Soma com atribuição " <<   << endl;
 	
 	/*

@@ -1,0 +1,42 @@
+v = [1;2;3;1];
+
+I = [
+[1,0,0,0],
+[0,1,0,0],
+[0,0,1,0],
+[0,0,0,1]];
+
+S = [
+[2,0,0,0],
+[0,4,0,0],
+[0,0,8,0],
+[0,0,0,1]];
+
+T = [
+[1,0,0,-1],
+[0,1,0,-2],
+[0,0,1,-3],
+[0,0,0,1]];
+
+theta = pi/2;
+c = cos(theta);
+s = sin(theta);
+
+Rz = [
+[c,-s,0,0],
+[s, c,0,0],
+[0, 0,1,0],
+[0, 0,0,1]];
+
+I*v
+S*v
+T*v
+Rz*v
+
+S*T*Rz*v
+Rz*T*S*v
+Rz*S*T*v
+
+Roda esse código aqui para ver os resultados e comparar depois
+
+http://www.compileonline.com/execute_matlab_online.php

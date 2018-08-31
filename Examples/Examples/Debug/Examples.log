@@ -1,0 +1,3 @@
+﻿  square.cpp
+d:\projetos\cgi\computer-graphics\examples\examples\square.cpp(47): warning C4305: 'argumento': truncamento de 'double' para 'GLfloat'
+  Examples.vcxproj -> D:\projetos\CGI\Computer-Graphics\Examples\Debug\Examples.exe

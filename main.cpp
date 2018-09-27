@@ -26,6 +26,10 @@ int main(int argc, char const *argv[]) {
 	Mat3 mat5(mat2);
 	Mat3 mat6(1, -1, 0, 2, 5, -3, 0, 5, 4);
 
+	Mat3 matCof(3, 2, 4, 7, 3, 1, 5, 2, 2);
+
+	cout << "Matriz de cofatores" << Mat3::cof(matCof) << endl;
+
 	// Teste output
 	cout << "Vector4 1: " << test1 << endl;
 	cout << "Vector4 2: " << test2 << endl;

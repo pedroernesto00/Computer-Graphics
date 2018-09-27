@@ -1,3 +1,23 @@
+/*
+
+DONE:
+1) Scale
+2) transpose
+3) det
+4) cof
+5) rotate
+
+DOING:
+1) inv
+
+TO-DO:
+1) shear
+2) reflect
+3) lookAt
+4)
+
+*/
+
 #ifndef MAT3_H
 #define MAT3_H
 

@@ -247,6 +247,30 @@ public:
 		return *this;
 	}
 
+	// Retorna a matriz de cofatores
+	static const Mat3 cof(const Mat3& mat) {
+		float cof[9];
+
+		// Vec 1
+		cof[0] = det(mat(1, 1), mat(1, 2), mat(2, 1), mat(2, 2));
+		cof[3] = det(mat(0, 1), mat(0, 2), mat(2, 1), mat(2, 2)) * (-1);
+		cof[6] = det(mat(0, 1), mat(0, 2), mat(1, 1), mat(1, 2));
+		
+		// Vec 2
+		cof[1] = det(mat(1, 0), mat(1, 2), mat(2, 0), mat(2, 2)) * (-1);
+		cof[4] = det(mat(0, 0), mat(0, 2), mat(2, 0), mat(2, 2));
+		cof[7] = det(mat(0, 0), mat(0, 2), mat(1, 0), mat(1, 2)) * (-1);
+
+		// Vec 3
+		cof[2] = det(mat(1, 0), mat(1, 1), mat(2, 0), mat(2, 1));
+		cof[5] = det(mat(0, 0), mat(0, 1), mat(2, 0), mat(2, 1)) * (-1);
+		cof[8] = det(mat(0, 0), mat(0, 1), mat(1, 0), mat(1, 1));
+
+		return Mat3(cof[0], cof[1], cof[2],
+					cof[3], cof[4], cof[5],
+					cof[6], cof[7], cof[8]);
+	}
+
 	// Retorna a matriz inversa
 	static const Mat3 inv(const Mat3& mat) {
 		int n, i, j, k;
@@ -324,7 +348,11 @@ public:
 
 		cout << "Determinante: " << det << endl;
 		 		  
-		}
+	}
+
+	static const float det(float a, float b, float c, float d) {
+		return (a * d) - (b * c);
+	}
 
 	// Retorna a matriz transposta
 	static const Mat3 transpose(const Mat3& mat) {

@@ -1,41 +1,10 @@
-/*
-
-DONE:
-1) Matriz inversa
-2) Determinante
-
-
-DOING:
-
-1) lookAt [REVISÃO]
-2) Matriz de projeção ortogonal [REVISÃO]
-3) Projeção perspectiva [REVISÃO]
-4) Translação -- (Não aparece na especificação, mas aparece como uma das pendências.) [REVISÃO]
-
-TO-DO:
-
-1) Ortogonal simplificada [Dúvida: o que é o argumento SCALE?]
-2) Perspectiva infinita
-3) Cisalhamento [Dúvida: como fazer cisalhamento dando vetor como argumento?]
-4) Matriz de cofatores
-
-
-
-
-
-*/
-
-
-
-
-
-#ifndef MAT4_H
-#define MAT4_H
-
 #include <iostream>
 #include <cmath>
 
 #include "Vec4.h"
+#include "Vec3.h"
+
+#define PI 3.14159265
 
 using namespace std;
 
@@ -57,9 +26,8 @@ public:
 
 	Mat4(float x1, float x2, float x3, float x4,
 			float y1, float y2, float y3, float y4,
-			float z1, float z2, float z3, float z4
+			float z1, float z2, float z3, float z4,
 			float w1, float w2, float w3, float w4) {
- {
 
 		c1 = Vec4(x1, y1, z1, w1);
 		c2 = Vec4(x2, y2, z2, w2);
@@ -199,22 +167,10 @@ public:
 		float l = 0;
 		float m = 0;
 
-		for (int i = 0; i < 4; i++){
-			j = j + (this->c1[i] * vec[i]);
-		}
-		
-		for (int i = 0; i < 4; i++){
-			k = k + (this->c2[i] * vec[i]);
-		}
-
-		for (int i = 0; i < 4; i++){
-			l = l + (this->c3[i] * vec[i]);
-		}
-
-		for (int i = 0; i < 4; i++){
-			m = m + (this->c4[i] * vec[i]);
-		}
-
+		j += vec[0] * this->c1[0] + vec[1] * this->c2[0] + vec[2] * this->c3[0] + vec[3] * this->c4[0];
+		k += vec[0] * this->c1[1] + vec[1] * this->c2[1] + vec[2] * this->c3[1] + vec[3] * this->c4[1];
+		l += vec[0] * this->c1[2] + vec[1] * this->c2[2] + vec[2] * this->c3[2] + vec[3] * this->c4[2];
+		m += vec[0] * this->c1[3] + vec[1] * this->c2[3] + vec[2] * this->c3[3] + vec[3] * this->c4[3];
 
 		Vec4 newVector(j, k, l, m);
 		return newVector;
@@ -465,8 +421,7 @@ public:
 
 
 
-	static const Mat4 translate(const Vec3& t) const 
-	{
+	static const Mat4 translate(const Vec3& t) {
 		return Mat4(
 			Vec4( 1,     0,    0,    0),
 			Vec4( 0,     1,    0,    0),
@@ -536,102 +491,102 @@ public:
 	-------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 
-	static const Mat4 lookAt(const Vec3& eye, const Vec3& center, const Vec3& up)
-	{
+	// static const Mat4 lookAt(const Vec3& eye, const Vec3& center, const Vec3& up)
+	// {
 		
 
-		//Referência: https://www.3dgep.com/understanding-the-view-matrix/
+	// 	//Referência: https://www.3dgep.com/understanding-the-view-matrix/
 
 
-		//Primeiro, criamos o vetor aViewUp, que vai de Eye para Up
+	// 	//Primeiro, criamos o vetor aViewUp, que vai de Eye para Up
 
-		Vec3 v3ViewUp = up - eye;
+	// 	Vec3 v3ViewUp = up - eye;
 
-		// Agora criamos o vetor que vai de Center para Eye, e o normalizamos
+	// 	// Agora criamos o vetor que vai de Center para Eye, e o normalizamos
 
-		Vec3 v3EixoZ = Vec3::normalize(eye - center);
+	// 	Vec3 v3EixoZ = Vec3::normalize(eye - center);
 
-		// Fazemos o produto vetorial entre vViewUp e vEixoZ para criar o eixo x
+	// 	// Fazemos o produto vetorial entre vViewUp e vEixoZ para criar o eixo x
 
-		Vec3 v3EixoX = Vec3::normalize(Vec3::cross(vViewUp, vEixoZ));
+	// 	Vec3 v3EixoX = Vec3::normalize(Vec3::cross(vViewUp, vEixoZ));
 
-		// Fazemos o produto vetorial entre vEixoZ e vEixoX para criar o eixo Y
+	// 	// Fazemos o produto vetorial entre vEixoZ e vEixoX para criar o eixo Y
 
-		Vec3 v3EixoY = Vec3::normalize(Vec3::cross(vEixoz, vEixoX));
+	// 	Vec3 v3EixoY = Vec3::normalize(Vec3::cross(vEixoz, vEixoX));
 
-		//Construímos os 4 vec4:
+	// 	//Construímos os 4 vec4:
 
-		Vec4 v4EixoZ = Vec4(v3EixoZ[0], 
-							v3EixoZ[1], 
-							v3EixoZ[2], 
-							0);
+	// 	Vec4 v4EixoZ = Vec4(v3EixoZ[0], 
+	// 						v3EixoZ[1], 
+	// 						v3EixoZ[2], 
+	// 						0);
 		
-		Vec4 v4EixoX = Vec4(v3EixoX[0], 
-							v3EixoX[1],
-							v3EixoX[2], 
-							0);
+	// 	Vec4 v4EixoX = Vec4(v3EixoX[0], 
+	// 						v3EixoX[1],
+	// 						v3EixoX[2], 
+	// 						0);
 
-		Vec4 v4EixoY = Vec4(v3EixoY[0], 
-							v3EixoY[0], 
-							v3EixoY[0], 
-							0);
+	// 	Vec4 v4EixoY = Vec4(v3EixoY[0], 
+	// 						v3EixoY[0], 
+	// 						v3EixoY[0], 
+	// 						0);
 		
-		Vec4 v4Eye = Vec4(eye[0], 
-						eye[1], 
-						eye[2], 
-						1)
+	// 	Vec4 v4Eye = Vec4(eye[0], 
+	// 					eye[1], 
+	// 					eye[2], 
+	// 					1)
 
-		// Pro fim, construímos a matriz e a retornamos:
+	// 	// Pro fim, construímos a matriz e a retornamos:
 
-		return Mat4(
+	// 	return Mat4(
 
-					Vec4(   v4EixoX[0],                      v4EixoY[0],              v4EixoZ[0],         0),
-					Vec4(   v4EixoX[1],                      v4EixoY[1],              v4EixoZ[0],         0),
-					Vec4(   v4EixoX[2],                      v4EixoY[2],              v4EixoZ[2],         0),
-					Vec4(- Vec3::dot(v3EixoX, eye), - Vec3::dot(v3EixoY, eye), - Vec3::dot(v3EixoZ, eye), 1)
+	// 				Vec4(   v4EixoX[0],                      v4EixoY[0],              v4EixoZ[0],         0),
+	// 				Vec4(   v4EixoX[1],                      v4EixoY[1],              v4EixoZ[0],         0),
+	// 				Vec4(   v4EixoX[2],                      v4EixoY[2],              v4EixoZ[2],         0),
+	// 				Vec4(- Vec3::dot(v3EixoX, eye), - Vec3::dot(v3EixoY, eye), - Vec3::dot(v3EixoZ, eye), 1)
 
-					);
-
-
-	}
+	// 				);
 
 
+	// }
 
-	static const Mat4 ortho(float left, float right, float bot, float top, float near, float far)
-	{
+
+
+	// static const Mat4 ortho(float left, float right, float bot, float top, float near, float far)
+	// {
 		
 
-		//Referência: http://www.songho.ca/opengl/gl_projectionmatrix.html
+	// 	//Referência: http://www.songho.ca/opengl/gl_projectionmatrix.html
 
-		return Mat4(
-					Vec4(               2/(right-left),                     0,                                   0,           0),
-					Vec4(                0,                               2/(top-bot),                           0,           0),
-					Vec4(                0,                                0,                             -2/(far-near),      0),
-					Vec4(-( (right+left)/ (right-left) ), - ( (top + bot) / (top - bot) ), - ( (far+near) / (far-near) ),     1 )
+	// 	return Mat4(
+	// 				Vec4(               2/(right-left),                     0,                                   0,           0),
+	// 				Vec4(                0,                               2/(top-bot),                           0,           0),
+	// 				Vec4(                0,                                0,                             -2/(far-near),      0),
+	// 				Vec4(-( (right+left)/ (right-left) ), - ( (top + bot) / (top - bot) ), - ( (far+near) / (far-near) ),     1 )
 
-			);
-	}
+	// 		);
+	// }
 
 
 
-	static const Mat4 proj(float aspect, float fov, float near, float far)
-	{
+	// static const Mat4 proj(float aspect, float fov, float near, float far)
+	// {
 		
-		//Referência: http://www.songho.ca/opengl/gl_projectionmatrix.html
+	// 	//Referência: http://www.songho.ca/opengl/gl_projectionmatrix.html
 
-		float top = near * atan(fov * PI / 360);
-		float bot = -1 * top;
-		float right = aspect * top;
-		float left = -1 * right;
+	// 	float top = near * atan(fov * PI / 360);
+	// 	float bot = -1 * top;
+	// 	float right = aspect * top;
+	// 	float left = -1 * right;
 
-		return Mat4(
-					Vec4(        2*near / (right - left),         0,                          0,            0),
-					Vec4(              0,                  2*near / (top - bot),              0,            0),
-					Vec4( (right+left)/(right-left), (top + bot) / (top - bot), -(far + near)/(fear-near), -1),
-					Vec4(             0,                         0,                     -2*n/(far-near),    0)
+	// 	return Mat4(
+	// 				Vec4(        2*near / (right - left),         0,                          0,            0),
+	// 				Vec4(              0,                  2*near / (top - bot),              0,            0),
+	// 				Vec4( (right+left)/(right-left), (top + bot) / (top - bot), -(far + near)/(fear-near), -1),
+	// 				Vec4(             0,                         0,                     -2*n/(far-near),    0)
 
-			);
-	}
+	// 		);
+	// }
 
 
 
@@ -639,5 +594,3 @@ public:
 
 
 };
-
-#endif

@@ -118,6 +118,11 @@ public:
 		return novoVetor;
 	}
 
+	const Vec3 operator * (Vec3& v) const {
+		Vec3 novoVetor(this->x * v[0], this->y * v[1], this->z * v[2]);
+		return novoVetor;
+	}
+
 	const Vec3 operator / (float a) const 
 	{
 		Vec3 novoVetor(this->x / a, this->y / a, this->z / a);
@@ -173,11 +178,14 @@ public:
 
 
 
-
 	static float dot(const Vec3& vetorA, const Vec3& vetorB)
-
 	{
 		return (vetorA[0] * vetorB[0] + vetorA[1] * vetorB[1] + vetorA[2] * vetorB[2]);
+	}
+	
+	static Vec3 at(const Vec3 &vetorA, const Vec3 &vetorB)
+	{
+		return Vec3(vetorA[0] * vetorB[0], vetorA[1] * vetorB[1], vetorA[2] * vetorB[2]);
 	}
 
 	static float length(const Vec3& vetor)
@@ -232,9 +240,6 @@ public:
 
 			);
 	}
-
-
-	//const Vec3
 
 
 

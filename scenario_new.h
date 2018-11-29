@@ -206,6 +206,8 @@ public:
     Point vertex3;
     Material material;
 
+    Triangle() {}
+
     Triangle(Point v1, Point v2, Point v3, Material m) {
         vertex1 = v1;
         vertex2 = v2;

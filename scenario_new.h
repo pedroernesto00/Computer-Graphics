@@ -302,3 +302,16 @@ public:
 
     }
 };
+
+
+// class Model {
+//   public:
+//     Model::Model(const int n_faces, Triangle **faces_list) {
+//         num_faces = n_faces;
+//         faces = faces_list;
+//     }
+
+//   private:
+//     const int num_faces;
+//     Triangle* faces[num_faces];
+// }

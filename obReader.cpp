@@ -12,6 +12,7 @@ using namespace std;
 
 /*
 	ATENÇÃO: Compilar usando -std=c++11
+	Ao exportar OBJ, marque apenas as alternativas: write normals e triangulate faces
 */
 
 /* TO-DO 
@@ -45,7 +46,7 @@ vector<string> pontos;
 vector<string> normais;
 vector<string> faces;
 
-void lerObj(string path)
+void lerObj(string path, string objName)
 {
 	ifstream obj;
 	obj.open(path);
@@ -137,7 +138,7 @@ void lerObj(string path)
 
 
 			//objFace << "Face( " << pontos[coord[0] - 1] << ", " << pontos[coord[3] - 1] << ", " << pontos[coord[6] - 1] << ", " << normais[coord[2] - 1] << " )";
-			objFace << "Triangle( " << pontos[coord[0] - 1] << ", " << pontos[coord[2] - 1] << ", " << pontos[coord[4] - 1] << ", " << "triangle_material" << " )";
+			objFace << "Triangle( " << pontos[coord[0] - 1] << ", " << pontos[coord[2] - 1] << ", " << pontos[coord[4] - 1] << ", " << "triangle_material_" << objName << " )";
 
 			faces.push_back(objFace.str());
 
@@ -184,7 +185,7 @@ void writeObject(string path, string objName)
 	outObj << "Vec3 triangle_env_material_" << objName << "(0.9, 0.9, 0.9); // Material's enviroment component factors" << endl;
 	outObj << "Vec3 triangle_dif_material_" << objName << "(0.9, 0.9, 0.9);   // Material's difuse component factors" << endl;
 	outObj << "Vec3 triangle_spe_material_" << objName <<  "(0.9, 0.9, 0.9);   // Material's specular component factors " << endl;
-	outObj << "Material triangle_material(triangle_env_material_" << objName << ", triangle_dif_material_" << objName << ", triangle_spe_material_" << objName << ");" << endl;
+	outObj << "Material triangle_material_" << objName << "(triangle_env_material_" << objName << ", triangle_dif_material_" << objName << ", triangle_spe_material_" << objName << ");" << endl;
 
 	outObj << "vector<Triangle> faces_" << objName << " = { ";
 	
@@ -212,7 +213,7 @@ int main(int argc, char const *argv[])
 		string objName = argv[1];
 		string pathRead = "source/" + objName + ".obj";
 		string pathWrite = "product/" + objName + "Model.h";  
-		lerObj(pathRead);
+		lerObj(pathRead, objName);
 		writeObject(pathWrite, objName);
 
 	}

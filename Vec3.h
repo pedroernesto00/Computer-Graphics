@@ -60,10 +60,24 @@ public:
 	}
 
 
-	float operator [] (int index) const
-	{
-		switch(index % 3) 
-		{
+	float operator [] (int index) const {
+		switch(index % 3) {
+			case 0:
+				return x;
+				break;
+			case 1:
+				return y;
+				break;
+			case 2:
+				return z;
+				break;
+			default:
+				break;
+		}
+	}
+
+	float& operator [] (int index) {
+		switch(index % 3) {
 			case 0:
 				return x;
 				break;
@@ -79,41 +93,19 @@ public:
 		}
 	}
 
-	float& operator [] (int index)
-	{
-		switch(index % 3)
-		{
-			case 0:
-				return x;
-				break;
-			case 1:
-				return y;
-				break;
-			case 2:
-				return z;
-				break;
-			default:
-				break;
 
-		}
-	}
-
-
-	const Vec3 operator +(const Vec3& a) const 
-	{
+	const Vec3 operator +(const Vec3& a) const {
 		Vec3 novoVetor(this->x + a.x, this->y + a.y, this->z + a.z);
 		return novoVetor;
 	}
 
 	
-	const Vec3 operator - (const Vec3& a) const 
-	{
+	const Vec3 operator - (const Vec3& a) const {
 		Vec3 novoVetor(this->x - a.x, this->y - a.y, this->z - a.z);
 		return novoVetor;
 	}
 
-	const Vec3 operator * (float a) const 
-	{
+	const Vec3 operator * (float a) const {
 		Vec3 novoVetor(this->x * a, this->y * a, this->z * a);
 		return novoVetor;
 	}
@@ -123,14 +115,12 @@ public:
 		return novoVetor;
 	}
 
-	const Vec3 operator / (float a) const 
-	{
+	const Vec3 operator / (float a) const {
 		Vec3 novoVetor(this->x / a, this->y / a, this->z / a);
 		return novoVetor;
 	}
 
-	const Vec3& operator=(const Vec3& a) 
-	{
+	const Vec3& operator=(const Vec3& a) {
 		
 		this->x = a[0];
 		this->y = a[1];
@@ -139,29 +129,25 @@ public:
 		return *this;
 	}
 
-	const Vec3& operator+=(const Vec3& a)
-	{
+	const Vec3& operator+=(const Vec3& a){
 		*this = *this + a;
 
 		return *this;
 	}
 
-	const Vec3& operator-=(const Vec3& a)
-	{
+	const Vec3& operator-=(const Vec3& a) {
 		*this = *this - a;
 
 		return *this;
 	}
 
-	const Vec3& operator*=(float a) 
-	{
+	const Vec3& operator*=(float a) {
 		*this = *this * a;
 
 		return *this;
 	}
 
-	const Vec3& operator/=(float a)
-	{
+	const Vec3& operator/=(float a) {
 		*this = *this / a;
 
 		return *this;

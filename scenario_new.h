@@ -4,11 +4,9 @@
 
 using namespace std;
 
-typedef struct resultado 
-{
+typedef struct resultado {
     float intersecao;
     bool interceptou;
-
 } resultado;
 
 class Point {

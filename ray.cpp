@@ -18,8 +18,8 @@
 
 using namespace std;
 
-int canvasH = 500;
-int canvasW = 500;
+const int canvasH = 500;
+const int canvasW = 500;
 
 float camera_rot = 0;
 
@@ -67,6 +67,7 @@ Material triangle_material(triangle_env_material, triangle_dif_material, triangl
 const int num_faces = 92;
 const int num_vertices = 48;
 Triangle* faces[num_faces] = {};
+
 
 int faces_vertices[num_faces][3] = {
     3, 16, 4,
@@ -230,96 +231,117 @@ Point worldToCamera(Point Po) {
     );
 }
 
+float pixels[canvasH * canvasW * 3];
+
+void loadPixels() {
+    // Setting the enviroment light;
+    Vec3 Ienv(0.5764705, 0.6470588, 0.756862);
+
+    float defaultColor[] = {Ienv[0], Ienv[1], Ienv[2]};
+    Point Pix(0, 0, 0);
+    float t_norm;
+    int selectedTriangle;
+    float intersection;
+
+    Point P(0, 0, 0);
+
+    for (int i = 0; i < canvasH; i++) {
+        for (int j = 0; j < canvasW; j++) {
+            // Pixel point in window
+            Pix.x = j * dx + dx / 2 - windowW / 2;
+            Pix.y = i * dy + dy / 2 - windowH / 2;
+            Pix.z = d;
+
+            // Vector from camera to Pixel
+            Vec3 V(Pix.x - O.x, Pix.y - O.y, Pix.z - O.z);
+
+            defaultColor[0] = Ienv[0];
+            defaultColor[1] = Ienv[1];
+            defaultColor[2] = Ienv[2];
+
+            t_norm = 1e10;
+            
+            selectedTriangle = -1;
+            intersection = -1;
+
+            for (int k = 0; k < num_faces; k++) {
+                if (faces[k] != NULL) {
+                    // Draw Triangle
+                    resultado result = faces[k]->intersectionTriangle(V, O);
+                    if (result.interceptou && result.intersecao < t_norm) {
+                        selectedTriangle = k;
+                        t_norm = result.intersecao;
+                    }
+                }
+            }
+
+            if (selectedTriangle >= 0) {
+                int k = selectedTriangle;
+                V *= intersection;
+
+                // Find the intercepted point
+                P.x = V[0];
+                P.y = V[1];
+                P.z = V[2];
+
+                Vec3 N = faces[k]->findNormal();
+                Vec3 n = Vec3::normalize(N);
+
+                Vec3 L(light.center.x - P.x, light.center.y - P.y, light.center.z - P.z);
+                Vec3 l = Vec3::normalize(L); // Nomalized vector from point to light
+
+                // Components factors to enviroment light
+                Vec3 Kenv(faces[k]->material.env_material[0],
+                            faces[k]->material.env_material[1],
+                            faces[k]->material.env_material[2]);
+
+                // Generating the final color for current pixel
+                Vec3 Color(Ienv[0], Ienv[1], Ienv[2]);
+                Color = Vec3::at(Color, Kenv);
+
+                Vec3 Kdif(faces[k]->material.dif_material[0],
+                            faces[k]->material.dif_material[1],
+                            faces[k]->material.dif_material[2]); // Components factors to difuse light
+
+                Vec3 Kspe(faces[k]->material.spe_material[0],
+                            faces[k]->material.spe_material[1],
+                            faces[k]->material.spe_material[2]); // Components factors to specular light
+
+                Vec3 If(light.color[0],
+                        light.color[1],
+                        light.color[2]); // Light rate
+
+                // Calculating the difusing rate
+                Vec3 Idif(If[0] * Kdif[0], If[1] * Kdif[1], If[2] * Kdif[2]);
+                Idif *= Vec3::dot(l, n);
+
+                // Calculating the specular rate
+                Vec3 Ispe(If[0] * Kspe[0], If[1] * Kspe[1], If[2] * Kspe[2]);
+                Vec3 r = (n * (2 * Vec3::dot(l, n))) - l;
+                Vec3 PO(O.x - P.x, O.y - P.y, O.z - P.z);
+                Vec3 v = Vec3::normalize(PO);
+                Ispe *= pow(Vec3::dot(r, v), 3);
+
+                Color = Vec3::at(Color, Kenv);
+                Color += Idif;
+                Color += Ispe;
+
+                defaultColor[0] = Color[0];
+                defaultColor[1] = Color[1];
+                defaultColor[2] = Color[2];
+            }
+
+            pixels[i * canvasW  * 3 + j * 3] = defaultColor[0];
+            pixels[i * canvasW  * 3 + j * 3 + 1] = defaultColor[1];
+            pixels[i * canvasW  * 3 + j * 3 + 2] = defaultColor[2];
+        }
+    }
+}
+
 // Drawing routine.
 void drawScene(void){
     glClear(GL_COLOR_BUFFER_BIT);
-
-    glEnable(GL_PROGRAM_POINT_SIZE_EXT);
-    glPointSize(1);
-    glBegin(GL_POINTS);
-        // Setting the enviroment light;
-        Vec3 Ienv(0.5764705, 0.6470588, 0.756862);
-
-        for (int i = 0; i < canvasH; i += 1) {
-            for (int j = 0; j < canvasW; j += 1) {
-                Point Pix(j * dx + dx / 2 - windowW / 2, i * dy + dy / 2 - windowH / 2, d); // Pixel point in window
-
-                // Vector from camera to Pixel
-                Vec3 V(Pix.x - O.x, Pix.y - O.y, Pix.z - O.z); 
-                
-                float t_norm = 1e10;
-
-                glColor3f(Ienv[0], Ienv[1], Ienv[2]);
-
-                int selectedTriangle = -1;
-                float intersection = -1;
-                for (int k = 0; k < num_faces; k++) {
-                    if (faces[k] != NULL) {
-                        // Draw Triangle
-                        resultado result = faces[k]->intersectionTriangle(V, O);
-                        if (result.interceptou && result.intersecao < t_norm) {
-                            selectedTriangle = k;
-                            t_norm = result.intersecao;
-                        }
-                    }
-                }
-
-                if (selectedTriangle >= 0) {
-                    int k = selectedTriangle;
-                    V *= intersection;
-
-                    // Find the intercepted point
-                    Point P(V[0], V[1], V[2]);
-
-                    Vec3 N = faces[k]->findNormal();
-                    Vec3 n = Vec3::normalize(N);
-
-                    Vec3 L(light.center.x - P.x, light.center.y - P.y, light.center.z - P.z);
-                    Vec3 l = Vec3::normalize(L); // Nomalized vector from point to light
-
-                    // Components factors to enviroment light
-                    Vec3 Kenv(faces[k]->material.env_material[0],
-                              faces[k]->material.env_material[1],
-                              faces[k]->material.env_material[2]);
-
-                    // Generating the final color for current pixel
-                    Vec3 Color(Ienv[0], Ienv[1], Ienv[2]);
-                    Color = Vec3::at(Color, Kenv);
-
-                    Vec3 Kdif(faces[k]->material.dif_material[0],
-                              faces[k]->material.dif_material[1],
-                              faces[k]->material.dif_material[2]); // Components factors to difuse light
-
-                    Vec3 Kspe(faces[k]->material.spe_material[0],
-                              faces[k]->material.spe_material[1],
-                              faces[k]->material.spe_material[2]); // Components factors to specular light
-
-                    Vec3 If(light.color[0],
-                            light.color[1],
-                            light.color[2]); // Light rate
-
-                    // Calculating the difusing rate
-                    Vec3 Idif(If[0] * Kdif[0], If[1] * Kdif[1], If[2] * Kdif[2]);
-                    Idif *= Vec3::dot(l, n);
-
-                    // Calculating the specular rate
-                    Vec3 Ispe(If[0] * Kspe[0], If[1] * Kspe[1], If[2] * Kspe[2]);
-                    Vec3 r = (n * (2 * Vec3::dot(l, n))) - l;
-                    Vec3 PO(O.x - P.x, O.y - P.y, O.z - P.z);
-                    Vec3 v = Vec3::normalize(PO);
-                    Ispe *= pow(Vec3::dot(r, v), 3);
-
-                    Color = Vec3::at(Color, Kenv);
-                    Color += Idif;
-                    Color += Ispe;
-
-                    glColor3f(Color[0], Color[1], Color[2]);
-                }
-
-                glVertex2i(j, i);
-            }
-        }
-    glEnd();
+    glDrawPixels(canvasW, canvasH, GL_RGB, GL_FLOAT, pixels);
     glFlush();
 }
 
@@ -337,14 +359,12 @@ void resize(int w, int h) {
 int main(int argc, char **argv){
     glutInit(&argc, argv);
 
-    for (int i = 0; i < num_faces; i++) {
-        Point p1(coords[faces_vertices[i][0] - 1][0], coords[faces_vertices[i][0] - 1][1], coords[faces_vertices[i][0] - 1][2]);
-        Point p2(coords[faces_vertices[i][1] - 1][0], coords[faces_vertices[i][1] - 1][1], coords[faces_vertices[i][1] - 1][2]);
-        Point p3(coords[faces_vertices[i][2] - 1][0], coords[faces_vertices[i][2] - 1][1], coords[faces_vertices[i][2] - 1][2]);
-        faces[i] = new Triangle(p1, p2, p3, triangle_material);
-    }
-
     for (int k = 0; k < num_faces; k++) {
+        Point p1(coords[faces_vertices[k][0] - 1][0], coords[faces_vertices[k][0] - 1][1], coords[faces_vertices[k][0] - 1][2]);
+        Point p2(coords[faces_vertices[k][1] - 1][0], coords[faces_vertices[k][1] - 1][1], coords[faces_vertices[k][1] - 1][2]);
+        Point p3(coords[faces_vertices[k][2] - 1][0], coords[faces_vertices[k][2] - 1][1], coords[faces_vertices[k][2] - 1][2]);
+        faces[k] = new Triangle(p1, p2, p3, triangle_material);
+
         if (faces[k] != NULL) {
             faces[k]->vertex1 = worldToCamera(faces[k]->vertex1);
             faces[k]->vertex2 = worldToCamera(faces[k]->vertex2);
@@ -352,9 +372,10 @@ int main(int argc, char **argv){
         } 
     }
 
-
     //light.center = worldToCamera(light.center);
     O = worldToCamera(O);
+
+    loadPixels();
 
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
     glutInitWindowSize(canvasW, canvasH);

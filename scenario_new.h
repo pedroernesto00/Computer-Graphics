@@ -10,7 +10,7 @@ typedef struct resultado {
 } resultado;
 
 class Point {
-public:
+  public:
     float x;
     float y;
     float z;
@@ -25,8 +25,7 @@ public:
         z = 0.0;
     }
 
-    const Point& operator = (const Point& p)
-    {
+    const Point& operator = (const Point& p) {
         x = p[0];
         y = p[1];
         z = p[2];
@@ -34,8 +33,7 @@ public:
         return *this;
     }
 
-    const Vec3 operator - (const Point& p) const
-    {
+    const Vec3 operator - (const Point& p) const {
         Vec3 v;
         float x = this->x - p[0];
         float y = this->y - p[1];
@@ -45,10 +43,8 @@ public:
         return v;
     }
 
-    float operator [] (short unsigned int index) const
-    {
-        switch(index % 3)
-        {
+    float operator [] (short unsigned int index) const {
+        switch(index % 3) {
             case 0:
                 return x;
                 break;
@@ -60,10 +56,8 @@ public:
                 break;
             default:
                 break;
-
         }
     }
-
 };
 
 Point::Point (const Point& p) {
@@ -107,8 +101,7 @@ public:
         spe_material = Vec3();
     }
 
-    const Material& operator = (const Material& m)
-    {
+    const Material& operator = (const Material& m) {
         this->env_material = m.env_material;
         this->dif_material = m.dif_material;
         this->spe_material = m.spe_material;
@@ -159,12 +152,18 @@ public:
     Point center;
     float radius;
     Material material;
+    Sphere(Point, float);
     Sphere(Point, float, const Material&);
     float checkInterception(bool&, Vec3, Point, const bool&);
 };
 
 Sphere::Sphere(Point pcenter, float sradius, const Material& smaterial) 
 : center(pcenter), material(smaterial.env_material, smaterial.dif_material, smaterial.spe_material) {
+    radius = sradius;
+};
+
+Sphere::Sphere(Point pcenter, float sradius) 
+: center(pcenter), material() {
     radius = sradius;
 };
 
@@ -198,7 +197,7 @@ float Sphere::checkInterception(bool& intercept, Vec3 V, Point O, const bool& is
 }
 
 class Triangle {
-public:
+  public:
     Point vertex1;
     Point vertex2;
     Point vertex3;
@@ -206,7 +205,14 @@ public:
 
     Triangle() {}
 
-    Triangle(Point v1, Point v2, Point v3, Material m) {
+    Triangle(Point& v1, Point& v2, Point& v3) {
+        vertex1 = v1;
+        vertex2 = v2;
+        vertex3 = v3;
+        material = Material();
+    }
+
+    Triangle(Point& v1, Point& v2, Point& v3, Material m) {
         vertex1 = v1;
         vertex2 = v2;
         vertex3 = v3;
@@ -219,8 +225,7 @@ public:
        if (index == 3) return this->vertex3;
     }
 
-    void setVertex(unsigned short int t, Point& p)
-    {
+    void setVertex(unsigned short int t, Point& p) {
         if(t == 1) {
             this->vertex1 = p;
         }
@@ -255,9 +260,7 @@ public:
             r.interceptou = false;
             r.intersecao = 0;
             return r;
-        
         } else {
-
             Vec3 sourceVertex = this->vertex1 - O; //Vetor da origem da câmera para um dos vértices do triângulo (neste caso, o primeiro)
             float tIntersection = Vec3::dot(sourceVertex, normalTriangleUni) / productNormalRadius; 
 
@@ -288,8 +291,8 @@ public:
             float dot2 = Vec3::dot(edgeVertex2, normalTriangleUni);
             float dot3 = Vec3::dot(edgeVertex3, normalTriangleUni);
 
-            if (dot1 > 0  && dot2 > 0 && dot3 > 0 ) // Então ponto interceptado está dentro do triângulo e está na face frontal.
-            {
+            // Então ponto interceptado está dentro do triângulo e está na face frontal.
+            if (dot1 > 0  && dot2 > 0 && dot3 > 0) {
                 r.interceptou = true;
                 r.intersecao = tIntersection;
             } else {
@@ -299,19 +302,57 @@ public:
         }
     
         return r;
-
     }
 };
 
 
-// class Model {
-//   public:
-//     Model::Model(const int n_faces, Triangle **faces_list) {
-//         num_faces = n_faces;
-//         faces = faces_list;
-//     }
+class Model {
+  private:
 
-//   private:
-//     const int num_faces;
-//     Triangle* faces[num_faces];
-// }
+    void setCluster() {
+        Point middle_point(0, 0, 0);
+
+        for (int i = 0; i < num_vertices; ++i) {
+            middle_point.x += vertices[i].x;
+            middle_point.y += vertices[i].y;
+            middle_point.z += vertices[i].z;
+        }
+
+        middle_point.x /= num_vertices;
+        middle_point.y /= num_vertices;
+        middle_point.z /= num_vertices;
+
+        float max_distance = 0;
+        for (int i = 0; i < num_vertices; ++i) {
+            Vec3 radius(
+                middle_point.x - vertices[i].x,
+                middle_point.y - vertices[i].y,
+                middle_point.z - vertices[i].z
+            );
+            float length = Vec3::length(radius);
+            if (length > max_distance) {
+                max_distance = length;
+            }
+        }
+
+        cluster = new Sphere(middle_point, max_distance);
+    };
+
+  public:
+    int num_faces;
+    int num_vertices;
+    Sphere *cluster;
+    Point *vertices;
+    Triangle *faces;
+    Material material;
+
+    Model(const int n_faces, const int n_vertices, Point *vertices_list, Triangle *faces_list, Material mat) {
+        num_faces = n_faces;
+        num_vertices = n_vertices;
+        faces = faces_list;
+        vertices = vertices_list;
+        material = mat;
+
+        setCluster();
+    };
+};

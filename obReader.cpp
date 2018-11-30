@@ -154,7 +154,7 @@ void lerObj(string path)
 }
 
 
-void writeObject(string path)
+void writeObject(string path, string objName)
 {
 	ofstream outObj;
 
@@ -181,9 +181,12 @@ void writeObject(string path)
 
 	*/
 
-	outObj << "Vec3 triangle_env_material(0.9, 0.9, 0.9); // Material's enviroment component factors\nVec3 triangle_dif_material(0.9, 0.9, 0.9);   // Material's difuse component factors\nVec3 triangle_spe_material(0.9, 0.9, 0.9);   // Material's specular component factors\nMaterial triangle_material(triangle_env_material, triangle_dif_material, triangle_spe_material);\n";
+	outObj << "Vec3 triangle_env_material_" << objName << "(0.9, 0.9, 0.9); // Material's enviroment component factors" << endl;
+	outObj << "Vec3 triangle_dif_material_" << objName << "(0.9, 0.9, 0.9);   // Material's difuse component factors" << endl;
+	outObj << "Vec3 triangle_spe_material_" << objName <<  "(0.9, 0.9, 0.9);   // Material's specular component factors " << endl;
+	outObj << "Material triangle_material(triangle_env_material_" << objName << ", triangle_dif_material_" << objName << ", triangle_spe_material_" << objName << ");" << endl;
 
-	outObj << "vector<Triangle> faces= { ";
+	outObj << "vector<Triangle> faces_" << objName << " = { ";
 	
 	for (auto f : faces)
 	{
@@ -210,8 +213,7 @@ int main(int argc, char const *argv[])
 		string pathRead = "source/" + objName + ".obj";
 		string pathWrite = "product/" + objName + "Model.h";  
 		lerObj(pathRead);
-		cout << "saiu" << endl;
-		writeObject(pathWrite);
+		writeObject(pathWrite, objName);
 
 	}
 

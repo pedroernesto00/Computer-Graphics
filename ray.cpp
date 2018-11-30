@@ -167,54 +167,54 @@ int faces_vertices[num_faces][3] = {
 };
 
 float coords[num_vertices][3] = {
-    1.619769 * 60 + 125, 100 + 2.043673 * 60, 600 + 4.789231 * 60,
-    1.716691 * 60 + 125, 100 + 2.772106 * 60, 600 + 4.850597 * 60,
-    2.256417 * 60 + 125, 100 + 2.043673 * 60, 600 + 3.783701 * 60,
-    2.353339 * 60 + 125, 100 + 2.772106 * 60, 600 + 3.845067 * 60,
-    1.867751 * 60 + 125, 100 + 2.227356 * 60, 600 + 4.571919 * 60,
-    1.913161 * 60 + 125, 100 + 2.568648 * 60, 600 + 4.600671 * 60,
-    2.166039 * 60 + 125, 100 + 2.227356 * 60, 600 + 4.100800 * 60,
-    2.211450 * 60 + 125, 100 + 2.568648 * 60, 600 + 4.129551 * 60,
-    2.297218 * 60 + 125, 100 + 1.988607 * 60, 600 + 3.703049 * 60,
-    1.564314 * 60 + 125, 100 + 1.988607 * 60, 600 + 4.860606 * 60,
-    1.675890 * 60 + 125, 100 + 2.827172 * 60, 600 + 4.931250 * 60,
-    2.408793 * 60 + 125, 100 + 2.827172 * 60, 600 + 3.773693 * 60,
-    2.262100 * 60 + 125, 100 + 2.042614 * 60, 600 + 3.787300 * 60,
-    1.625452 * 60 + 125, 100 + 2.042614 * 60, 600 + 4.792830 * 60,
-    1.722374 * 60 + 125, 100 + 2.771046 * 60, 600 + 4.854196 * 60,
-    2.359022 * 60 + 125, 100 + 2.771046 * 60, 600 + 3.848666 * 60,
-    2.461840 * 60 + 125, 100 + 2.817284 * 60, 600 + 3.807279 * 60,
-    2.350264 * 60 + 125, 100 + 1.978719 * 60, 600 + 3.736635 * 60,
-    1.617361 * 60 + 125, 100 + 1.978719 * 60, 600 + 4.894192 * 60,
-    1.728936 * 60 + 125, 100 + 2.817284 * 60, 600 + 4.964836 * 60,
-    2.204301 * 60 + 125, 100 + 2.493329 * 60, 600 + 4.249826 * 60,
-    2.176064 * 60 + 125, 100 + 2.281111 * 60, 600 + 4.231948 * 60,
-    1.990587 * 60 + 125, 100 + 2.281111 * 60, 600 + 4.524893 * 60,
-    2.018824 * 60 + 125, 100 + 2.493329 * 60, 600 + 4.542771 * 60,
-    2.269294 * 60 + 125, 100 + 2.557866 * 60, 600 + 4.166175 * 60,
-    2.223883 * 60 + 125, 100 + 2.216574 * 60, 600 + 4.137424 * 60,
-    1.925595 * 60 + 125, 100 + 2.216574 * 60, 600 + 4.608543 * 60,
-    1.971006 * 60 + 125, 100 + 2.557866 * 60, 600 + 4.637295 * 60,
-    2.276824 * 60 + 125, 100 + 2.479811 * 60, 600 + 4.295743 * 60,
-    2.248587 * 60 + 125, 100 + 2.267594 * 60, 600 + 4.277865 * 60,
-    2.063110 * 60 + 125, 100 + 2.267594 * 60, 600 + 4.570810 * 60,
-    2.091346 * 60 + 125, 100 + 2.479811 * 60, 600 + 4.588688 * 60,
-    1.998333 * 60 + 125, 100 + 1.771431 * 60, 600 + 4.529797 * 60,
-    2.183810 * 60 + 125, 100 + 1.771431 * 60, 600 + 4.236852 * 60,
-    2.070855 * 60 + 125, 100 + 1.771431 * 60, 600 + 4.575714 * 60,
-    2.256332 * 60 + 125, 100 + 1.769326 * 60, 600 + 4.282769 * 60,
-    1.997958 * 60 + 125, 100 + 1.740192 * 60, 600 + 4.529672 * 60,
-    2.183436 * 60 + 125, 100 + 1.740192 * 60, 600 + 4.236727 * 60,
-    2.070481 * 60 + 125, 100 + 1.740192 * 60, 600 + 4.575589 * 60,
-    2.255958 * 60 + 125, 100 + 1.738087 * 60, 600 + 4.282644 * 60,
-    1.767334 * 60 + 125, 100 + 1.767158 * 60, 600 + 4.654865 * 60,
-    2.214229 * 60 + 125, 100 + 1.767158 * 60, 600 + 3.949034 * 60,
-    2.061558 * 60 + 125, 100 + 1.767158 * 60, 600 + 4.841152 * 60,
-    2.508453 * 60 + 125, 100 + 1.765588 * 60, 600 + 4.135321 * 60,
-    1.765899 * 60 + 125, 100 + 1.743854 * 60, 600 + 4.654227 * 60,
-    2.212794 * 60 + 125, 100 + 1.743854 * 60, 600 + 3.948396 * 60,
-    2.060123 * 60 + 125, 100 + 1.743854 * 60, 600 + 4.840513 * 60,
-    2.507018 * 60 + 125, 100 + 1.742284 * 60, 600 + 4.134683 * 60
+    1.619769 * 60 + 125, 100 + 2.043673 * 60, 900 + 4.789231 * 60,
+    1.716691 * 60 + 125, 100 + 2.772106 * 60, 900 + 4.850597 * 60,
+    2.256417 * 60 + 125, 100 + 2.043673 * 60, 900 + 3.783701 * 60,
+    2.353339 * 60 + 125, 100 + 2.772106 * 60, 900 + 3.845067 * 60,
+    1.867751 * 60 + 125, 100 + 2.227356 * 60, 900 + 4.571919 * 60,
+    1.913161 * 60 + 125, 100 + 2.568648 * 60, 900 + 4.600671 * 60,
+    2.166039 * 60 + 125, 100 + 2.227356 * 60, 900 + 4.100800 * 60,
+    2.211450 * 60 + 125, 100 + 2.568648 * 60, 900 + 4.129551 * 60,
+    2.297218 * 60 + 125, 100 + 1.988607 * 60, 900 + 3.703049 * 60,
+    1.564314 * 60 + 125, 100 + 1.988607 * 60, 900 + 4.860606 * 60,
+    1.675890 * 60 + 125, 100 + 2.827172 * 60, 900 + 4.931250 * 60,
+    2.408793 * 60 + 125, 100 + 2.827172 * 60, 900 + 3.773693 * 60,
+    2.262100 * 60 + 125, 100 + 2.042614 * 60, 900 + 3.787300 * 60,
+    1.625452 * 60 + 125, 100 + 2.042614 * 60, 900 + 4.792830 * 60,
+    1.722374 * 60 + 125, 100 + 2.771046 * 60, 900 + 4.854196 * 60,
+    2.359022 * 60 + 125, 100 + 2.771046 * 60, 900 + 3.848666 * 60,
+    2.461840 * 60 + 125, 100 + 2.817284 * 60, 900 + 3.807279 * 60,
+    2.350264 * 60 + 125, 100 + 1.978719 * 60, 900 + 3.736635 * 60,
+    1.617361 * 60 + 125, 100 + 1.978719 * 60, 900 + 4.894192 * 60,
+    1.728936 * 60 + 125, 100 + 2.817284 * 60, 900 + 4.964836 * 60,
+    2.204301 * 60 + 125, 100 + 2.493329 * 60, 900 + 4.249826 * 60,
+    2.176064 * 60 + 125, 100 + 2.281111 * 60, 900 + 4.231948 * 60,
+    1.990587 * 60 + 125, 100 + 2.281111 * 60, 900 + 4.524893 * 60,
+    2.018824 * 60 + 125, 100 + 2.493329 * 60, 900 + 4.542771 * 60,
+    2.269294 * 60 + 125, 100 + 2.557866 * 60, 900 + 4.166175 * 60,
+    2.223883 * 60 + 125, 100 + 2.216574 * 60, 900 + 4.137424 * 60,
+    1.925595 * 60 + 125, 100 + 2.216574 * 60, 900 + 4.608543 * 60,
+    1.971006 * 60 + 125, 100 + 2.557866 * 60, 900 + 4.637295 * 60,
+    2.276824 * 60 + 125, 100 + 2.479811 * 60, 900 + 4.295743 * 60,
+    2.248587 * 60 + 125, 100 + 2.267594 * 60, 900 + 4.277865 * 60,
+    2.063110 * 60 + 125, 100 + 2.267594 * 60, 900 + 4.570810 * 60,
+    2.091346 * 60 + 125, 100 + 2.479811 * 60, 900 + 4.588688 * 60,
+    1.998333 * 60 + 125, 100 + 1.771431 * 60, 900 + 4.529797 * 60,
+    2.183810 * 60 + 125, 100 + 1.771431 * 60, 900 + 4.236852 * 60,
+    2.070855 * 60 + 125, 100 + 1.771431 * 60, 900 + 4.575714 * 60,
+    2.256332 * 60 + 125, 100 + 1.769326 * 60, 900 + 4.282769 * 60,
+    1.997958 * 60 + 125, 100 + 1.740192 * 60, 900 + 4.529672 * 60,
+    2.183436 * 60 + 125, 100 + 1.740192 * 60, 900 + 4.236727 * 60,
+    2.070481 * 60 + 125, 100 + 1.740192 * 60, 900 + 4.575589 * 60,
+    2.255958 * 60 + 125, 100 + 1.738087 * 60, 900 + 4.282644 * 60,
+    1.767334 * 60 + 125, 100 + 1.767158 * 60, 900 + 4.654865 * 60,
+    2.214229 * 60 + 125, 100 + 1.767158 * 60, 900 + 3.949034 * 60,
+    2.061558 * 60 + 125, 100 + 1.767158 * 60, 900 + 4.841152 * 60,
+    2.508453 * 60 + 125, 100 + 1.765588 * 60, 900 + 4.135321 * 60,
+    1.765899 * 60 + 125, 100 + 1.743854 * 60, 900 + 4.654227 * 60,
+    2.212794 * 60 + 125, 100 + 1.743854 * 60, 900 + 3.948396 * 60,
+    2.060123 * 60 + 125, 100 + 1.743854 * 60, 900 + 4.840513 * 60,
+    2.507018 * 60 + 125, 100 + 1.742284 * 60, 900 + 4.134683 * 60
 };
 
 Point middle_point(0, 0, 0);
@@ -268,85 +268,86 @@ void loadPixels() {
             t_norm = 1e10;
             t_cluster_norm = 1e10;
             
-            selectedTriangle = -1;
-            intersection = -1;
 
             bool intercepted = false;
             float t_cluster_int = object_cluster.checkInterception(intercepted, V, O);
 
             if (intercepted && t_cluster_int < t_cluster_norm) {
-                // for (int k = 0; k < num_faces; k++) {
-                //     if (faces[k] != NULL) {
-                //         // Draw Triangle
-                //         resultado result = faces[k]->intersectionTriangle(V, O);
-                //         if (result.interceptou && result.intersecao < t_norm) {
-                //             selectedTriangle = k;
-                //             t_norm = result.intersecao;
-                //         }
-                //     }
-                // }
+                selectedTriangle = -1;
+                intersection = -1;
 
-                defaultColor[0] = 0;
-                defaultColor[1] = 0;
-                defaultColor[2] = 0;
+                for (int k = 0; k < num_faces; k++) {
+                    if (faces[k] != NULL) {
+                        // Draw Triangle
+                        resultado result = faces[k]->intersectionTriangle(V, O);
+                        if (result.interceptou && result.intersecao < t_norm) {
+                            selectedTriangle = k;
+                            t_norm = result.intersecao;
+                        }
+                    }
+                }
+
+                if (selectedTriangle >= 0) {
+                    int k = selectedTriangle;
+                    V *= intersection;
+
+                    // Find the intercepted point
+                    P.x = V[0];
+                    P.y = V[1];
+                    P.z = V[2];
+
+                    Vec3 N = faces[k]->findNormal();
+                    Vec3 n = Vec3::normalize(N);
+
+                    Vec3 L(light.center.x - P.x, light.center.y - P.y, light.center.z - P.z);
+                    Vec3 l = Vec3::normalize(L); // Nomalized vector from point to light
+
+                    // Components factors to enviroment light
+                    Vec3 Kenv(faces[k]->material.env_material[0],
+                                faces[k]->material.env_material[1],
+                                faces[k]->material.env_material[2]);
+
+                    // Generating the final color for current pixel
+                    Vec3 Color(Ienv[0], Ienv[1], Ienv[2]);
+                    Color = Vec3::at(Color, Kenv);
+
+                    Vec3 Kdif(faces[k]->material.dif_material[0],
+                                faces[k]->material.dif_material[1],
+                                faces[k]->material.dif_material[2]); // Components factors to difuse light
+
+                    Vec3 Kspe(faces[k]->material.spe_material[0],
+                                faces[k]->material.spe_material[1],
+                                faces[k]->material.spe_material[2]); // Components factors to specular light
+
+                    Vec3 If(light.color[0],
+                            light.color[1],
+                            light.color[2]); // Light rate
+
+                    // Calculating the difusing rate
+                    Vec3 Idif(If[0] * Kdif[0], If[1] * Kdif[1], If[2] * Kdif[2]);
+                    Idif *= Vec3::dot(l, n);
+
+                    // Calculating the specular rate
+                    Vec3 Ispe(If[0] * Kspe[0], If[1] * Kspe[1], If[2] * Kspe[2]);
+                    Vec3 r = (n * (2 * Vec3::dot(l, n))) - l;
+                    Vec3 PO(O.x - P.x, O.y - P.y, O.z - P.z);
+                    Vec3 v = Vec3::normalize(PO);
+                    Ispe *= pow(Vec3::dot(r, v), 3);
+
+                    Color = Vec3::at(Color, Kenv);
+                    Color += Idif;
+                    Color += Ispe;
+
+                    defaultColor[0] = Color[0];
+                    defaultColor[1] = Color[1];
+                    defaultColor[2] = Color[2];
+                }
+                // defaultColor[0] = 0;
+                // defaultColor[1] = 0;
+                // defaultColor[2] = 0;
                 t_cluster_norm = t_cluster_int;
             }
 
-            // if (selectedTriangle >= 0) {
-            //     int k = selectedTriangle;
-            //     V *= intersection;
-
-            //     // Find the intercepted point
-            //     P.x = V[0];
-            //     P.y = V[1];
-            //     P.z = V[2];
-
-            //     Vec3 N = faces[k]->findNormal();
-            //     Vec3 n = Vec3::normalize(N);
-
-            //     Vec3 L(light.center.x - P.x, light.center.y - P.y, light.center.z - P.z);
-            //     Vec3 l = Vec3::normalize(L); // Nomalized vector from point to light
-
-            //     // Components factors to enviroment light
-            //     Vec3 Kenv(faces[k]->material.env_material[0],
-            //                 faces[k]->material.env_material[1],
-            //                 faces[k]->material.env_material[2]);
-
-            //     // Generating the final color for current pixel
-            //     Vec3 Color(Ienv[0], Ienv[1], Ienv[2]);
-            //     Color = Vec3::at(Color, Kenv);
-
-            //     Vec3 Kdif(faces[k]->material.dif_material[0],
-            //                 faces[k]->material.dif_material[1],
-            //                 faces[k]->material.dif_material[2]); // Components factors to difuse light
-
-            //     Vec3 Kspe(faces[k]->material.spe_material[0],
-            //                 faces[k]->material.spe_material[1],
-            //                 faces[k]->material.spe_material[2]); // Components factors to specular light
-
-            //     Vec3 If(light.color[0],
-            //             light.color[1],
-            //             light.color[2]); // Light rate
-
-            //     // Calculating the difusing rate
-            //     Vec3 Idif(If[0] * Kdif[0], If[1] * Kdif[1], If[2] * Kdif[2]);
-            //     Idif *= Vec3::dot(l, n);
-
-            //     // Calculating the specular rate
-            //     Vec3 Ispe(If[0] * Kspe[0], If[1] * Kspe[1], If[2] * Kspe[2]);
-            //     Vec3 r = (n * (2 * Vec3::dot(l, n))) - l;
-            //     Vec3 PO(O.x - P.x, O.y - P.y, O.z - P.z);
-            //     Vec3 v = Vec3::normalize(PO);
-            //     Ispe *= pow(Vec3::dot(r, v), 3);
-
-            //     Color = Vec3::at(Color, Kenv);
-            //     Color += Idif;
-            //     Color += Ispe;
-
-            //     defaultColor[0] = Color[0];
-            //     defaultColor[1] = Color[1];
-            //     defaultColor[2] = Color[2];
-            // }
 
             pixels[i * canvasW  * 3 + j * 3] = defaultColor[0];
             pixels[i * canvasW  * 3 + j * 3 + 1] = defaultColor[1];
@@ -401,10 +402,11 @@ int main(int argc, char **argv){
 
     float max_distance = 0;
     for (int i = 0; i < num_vertices; ++i) {
+        Point vet(coords[i][0], coords[i][1], coords[i][2]);
         Vec3 radius(
-            middle_point.x - coords[i][0],
-            middle_point.y - coords[i][1],
-            middle_point.z - coords[i][2]
+            middle_point.x - vet.x,
+            middle_point.y - vet.y,
+            middle_point.z - vet.z
         );
         float length = Vec3::length(radius);
         if (length > max_distance) {
@@ -412,11 +414,11 @@ int main(int argc, char **argv){
         }
     }
 
-    // cout << middle_point.x << ", " << middle_point.y << ", " << middle_point.z << endl;
+    middle_point = worldToCamera(middle_point);
+
 
     //light.center = worldToCamera(light.center);
     O = worldToCamera(O);
-    middle_point = worldToCamera(middle_point);
 
     object_cluster.center = middle_point;
     object_cluster.radius = max_distance;

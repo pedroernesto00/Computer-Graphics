@@ -91,6 +91,8 @@ void lerObj(string path)
 
 		}
 
+	
+
 
 		if(tipo.compare("vn") == 0)
 		{
@@ -123,8 +125,10 @@ void lerObj(string path)
 
 			float* coord = new float[9];
 
-			for (int i = 0; i < 9; i++)
+			
+			for (int i = 0; i < 6; i++)
 			{
+				
 				coord[i] = atof(strtok(NULL ," /"));
 			}
 
@@ -133,7 +137,7 @@ void lerObj(string path)
 
 
 			//objFace << "Face( " << pontos[coord[0] - 1] << ", " << pontos[coord[3] - 1] << ", " << pontos[coord[6] - 1] << ", " << normais[coord[2] - 1] << " )";
-			objFace << "Triangle( " << pontos[coord[0] - 1] << ", " << pontos[coord[3] - 1] << ", " << pontos[coord[6] - 1] << ", " << "triangle_material" << " )";
+			objFace << "Triangle( " << pontos[coord[0] - 1] << ", " << pontos[coord[2] - 1] << ", " << pontos[coord[4] - 1] << ", " << "triangle_material" << " )";
 
 			faces.push_back(objFace.str());
 
@@ -206,6 +210,7 @@ int main(int argc, char const *argv[])
 		string pathRead = "source/" + objName + ".obj";
 		string pathWrite = "product/" + objName + "Model.h";  
 		lerObj(pathRead);
+		cout << "saiu" << endl;
 		writeObject(pathWrite);
 
 	}

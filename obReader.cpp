@@ -143,7 +143,7 @@ void lerObj(string path, string objName)
 
 
 			//objFace << "Face( " << pontos[coord[0] - 1] << ", " << pontos[coord[3] - 1] << ", " << pontos[coord[6] - 1] << ", " << normais[coord[2] - 1] << " )";
-			objFace << "Triangle( " << objName << "_vertices" << "[" << coord[0] << "]" << ", " << objName << "_vertices" << "[" << coord[2] << "]" << ", " << objName << "_vertices" << "[" << coord[4] << "]" << ")";
+			objFace << "Triangle( " << objName << "_vertices" << "[" << coord[0] - 1 << "]" << ", " << objName << "_vertices" << "[" << coord[2] - 1 << "]" << ", " << objName << "_vertices" << "[" << coord[4] - 1 << "]" << ")";
 
 			faces.push_back(objFace.str());
 

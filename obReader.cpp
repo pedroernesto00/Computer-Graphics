@@ -17,7 +17,13 @@ using namespace std;
 
 /* TO-DO 
 
-	1) Ler a posição de cada vértice
+
+	OBS.: Escrever cada uma das informações acima num .h
+
+
+	DONE
+	
+	1) Ler a posição de cada vértice 
 	2) Para cada posição lida, gerar um objeto da classe Ponto
 	3) Guardar ponto num vector de Pontos
 
@@ -34,7 +40,6 @@ using namespace std;
 	10) Quando todas as faces forem criadas, gerar o objeto da classe Cubo.
 
 
-	OBS.: Escrever cada uma das informações acima num .h
 
 */
 
@@ -138,11 +143,12 @@ void lerObj(string path, string objName)
 
 
 			//objFace << "Face( " << pontos[coord[0] - 1] << ", " << pontos[coord[3] - 1] << ", " << pontos[coord[6] - 1] << ", " << normais[coord[2] - 1] << " )";
-			objFace << "Triangle( " << pontos[coord[0] - 1] << ", " << pontos[coord[2] - 1] << ", " << pontos[coord[4] - 1] << ", " << "triangle_material_" << objName << " )";
+			objFace << "Triangle( " << objName << "_vertices" << "[" << coord[0] << "]" << ", " << objName << "_vertices" << "[" << coord[2] << "]" << ", " << objName << "_vertices" << "[" << coord[4] << "]" << ")";
 
 			faces.push_back(objFace.str());
 
 			delete[] l;
+			delete[] coord;
 
 			objFace.str("");
 		}
@@ -159,22 +165,34 @@ void writeObject(string path, string objName)
 {
 	ofstream outObj;
 
-	outObj.open(path);
+	outObj.open(path, ios::app);
 
 	
 	if(!outObj.good())
 	{
-		cout << "Erro ao abrir o arquivo!" << endl;
+		cout << "Erro ao criar o header!" << endl;
 		exit(1); 
 	}
 
-	/*
+	outObj << "//Setting " << objName << "'s " << "material" << endl; 
+	outObj << "Vec3 " << objName << "_env_material" << "(0.9, 0.9, 0.9); // Material's enviroment component factors" << endl;
+	outObj << "Vec3 " << objName << "_dif_material" << "(0.9, 0.9, 0.9);   // Material's difuse component factors" << endl;
+	outObj << "Vec3 " << objName << "_spe_material" <<  "(0.9, 0.9, 0.9);   // Material's specular component factors " << endl;
+	outObj << "Material " << objName << "_material" << "(" << objName << "_env_material" << ", " << objName << "_dif_material" << ", " << objName << "_spe_material"<< ");" << endl;
+
+	outObj << "const int " << objName << "_num_faces = " << faces.size() << ";" << endl;
+	outObj << "const int " << objName << "_num_vertices = " << pontos.size() << ";" << endl;
+	
+	outObj << "Point " << objName << "_vertices[]" << " = { " << endl;
 	for (auto p : pontos)
 	{
-		outObj << p << endl;
+		outObj << "\t" <<  p << ", " << endl;
 		
 	}
 
+	outObj << "}; " << endl;
+
+	/*
 	for (auto n : normais)
 	{
 		outObj << n << endl;
@@ -182,19 +200,20 @@ void writeObject(string path, string objName)
 
 	*/
 
-	outObj << "Vec3 triangle_env_material_" << objName << "(0.9, 0.9, 0.9); // Material's enviroment component factors" << endl;
-	outObj << "Vec3 triangle_dif_material_" << objName << "(0.9, 0.9, 0.9);   // Material's difuse component factors" << endl;
-	outObj << "Vec3 triangle_spe_material_" << objName <<  "(0.9, 0.9, 0.9);   // Material's specular component factors " << endl;
-	outObj << "Material triangle_material_" << objName << "(triangle_env_material_" << objName << ", triangle_dif_material_" << objName << ", triangle_spe_material_" << objName << ");" << endl;
+	
+	
 
-	outObj << "vector<Triangle> faces_" << objName << " = { ";
+	outObj << "Triangle " << objName << "_faces[]" << " = { " << endl;;
 	
 	for (auto f : faces)
 	{
-		outObj << f <<  ", " << endl;
+		outObj << "\t" << f <<  ", " << endl;
 	}
 
 	outObj << "}; " << endl;
+
+
+	outObj << "Model " << objName << "(" << objName << "_num_faces, " << objName << "_num_vertices, " << objName << "_vertices, " << objName << "_faces, " << objName << "_material);" << endl; 
 
 
 	outObj.close();
@@ -212,7 +231,7 @@ int main(int argc, char const *argv[])
 	{
 		string objName = argv[1];
 		string pathRead = "source/" + objName + ".obj";
-		string pathWrite = "product/" + objName + "Model.h";  
+		string pathWrite = "product/models.h";  
 		lerObj(pathRead, objName);
 		writeObject(pathWrite, objName);
 

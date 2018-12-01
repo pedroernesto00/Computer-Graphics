@@ -1,8 +1,10 @@
 #include <cmath>
 #include <iostream>
+#include <thread>
 #include <initializer_list>
 #include <algorithm>
 #include "models.h"
+#include "writeBMP.h"
 #include "Mat4.h"
 
 #ifdef __APPLE__
@@ -10,7 +12,6 @@
 #include <GL/freeglut.h>
 #include <OpenGL/glext.h>
 #else
-// #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <GL/glext.h>
 #pragma comment(lib, "glew32.lib")
@@ -20,14 +21,14 @@
 
 using namespace std;
 
-const int canvasH = 500;
-const int canvasW = 500;
+const int canvasH = 720;
+const int canvasW = 1360;
 
 float camera_rot = 0;
 
 float d = -700;                     // Position of window
-int windowW = 500;                  // Width of window
-int windowH = 500;                  // Height of window
+int windowW = 1360;                  // Width of window
+int windowH = 720;                  // Height of window
 int dy = windowH/canvasH;           // Size of y delta
 int dx = windowW/canvasW;           // Size of x delta
 
@@ -57,8 +58,8 @@ Point light2_center(100, 1500, 600);
 Vec3 light2_color(0.1, 0.1, 0.1);
 Light light2(light2_center, light2_color);
 
-int num_lights = 2;
-Light lights[] = {light1, light2};
+int num_lights = 1;
+Light lights[] = {light1};
 
 // Setting snow material
 Vec3 snow_env_material(0.8, 0.8, 0.8);   // Material's enviroment component factors
@@ -83,6 +84,21 @@ Point worldToCamera(Point Po) {
 }
 
 float pixels[canvasH * canvasW * 3];
+
+void backfaceElimination() {
+    for (int m = 0; m < objects_len; m++) {
+        for (int k = 0; k < objects[m].num_faces; k++) {
+            Vec3 face_normal = Vec3::normalize(objects[m].faces[k].findNormal());
+            float cos_angle = Vec3::dot(face_normal, k_camera);
+
+            if (cos_angle > 0) {
+                objects[m].faces[k].visible = false;
+            } else {
+                objects[m].faces[k].visible = true;
+            }
+        }
+    }
+}
 
 void calculatePixelColor(int i, int j) {
     // Setting the enviroment light;
@@ -120,12 +136,18 @@ void calculatePixelColor(int i, int j) {
             selectedTriangle = -1;
             intersection = -1;
 
-            for (int k = 0; k < num_faces; k++) {
-                // Draw Triangle
-                resultado result = objects[m].faces[k].intersectionTriangle(V, O);
-                if (result.interceptou && result.intersecao < t_norm) {
-                    selectedTriangle = k;
-                    t_norm = result.intersecao;
+            // defaultColor[0] = 0;
+            // defaultColor[1] = 0;
+            // defaultColor[2] = 0;
+
+            for (int k = 0; k < objects[m].num_faces; k++) {
+                if (objects[m].faces[k].visible == true) {
+                    // Draw Triangle
+                    resultado result = objects[m].faces[k].intersectionTriangle(V, O);
+                    if (result.interceptou && result.intersecao < t_norm) {
+                        selectedTriangle = k;
+                        t_norm = result.intersecao;
+                    }
                 }
             }
 
@@ -206,6 +228,8 @@ void calculatePixelColor(int i, int j) {
 }
 
 void loadPixels() {
+    backfaceElimination();
+
     for (int i = 0; i < canvasH; i++) {
         for (int j = 0; j < canvasW; j++) {
             calculatePixelColor(i, j);
@@ -230,6 +254,13 @@ void resize(int w, int h) {
     glLoadIdentity();
 }
 
+// OpenGL window reshape routine.
+void mouseCallback(int button, int state, int x, int y) {
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+        cout << x << ", " << y << endl;
+    }
+}
+
 // Main routine.
 int main(int argc, char **argv){
     glutInit(&argc, argv);
@@ -252,20 +283,22 @@ int main(int argc, char **argv){
     //     cout << "Trianglue(vertices2[" << faces2[i][0] - 1 << "], " << "vertices2[" << faces2[i][1] - 1 << "], " << "vertices2[" << faces2[i][2]- 1 << "]), " << endl;
     // }
 
-    // light2.center = worldToCamera(light2.center);
+    light2.center = worldToCamera(light2.center);
     O = worldToCamera(O);
 
     loadPixels();
+
+    writeBMP(pixels, canvasW, canvasH);
 
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA);
     glutInitWindowSize(canvasW, canvasH);
     glutInitWindowPosition(100, 100);
     glutCreateWindow("Ray Casting");
-    
-    glutDisplayFunc(drawScene);
 
+    glutDisplayFunc(drawScene);
+    glutMouseFunc(mouseCallback);
     glutReshapeFunc(resize);
-    
+
     setup();
 
     glutMainLoop();

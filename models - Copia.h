@@ -596,4 +596,4 @@ Model monitor2(num_faces, num_vertices, vertices2, faces2, monitor_material);
 Model monitor3(num_faces, num_vertices, vertices3, faces3, monitor_material);
 Model monitor4(num_faces, num_vertices, vertices4, faces4, monitor_material);
 
-Model objects[objects_len] = { monitor, monitor2, monitor3, monitor4 };
+Model objects[objects_len] = {monitor, monitor2, monitor3, monitor4};

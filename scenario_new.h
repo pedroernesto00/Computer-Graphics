@@ -201,6 +201,7 @@ class Triangle {
     Point vertex1;
     Point vertex2;
     Point vertex3;
+    bool visible;
     Material material;
 
     Triangle() {}
@@ -209,6 +210,7 @@ class Triangle {
         vertex1 = v1;
         vertex2 = v2;
         vertex3 = v3;
+        visible = true;
         material = Material();
     }
 
@@ -217,6 +219,7 @@ class Triangle {
         vertex2 = v2;
         vertex3 = v3;
         material = m;
+        visible = true;
     }
 
     Point operator [] (short unsigned int index) const {

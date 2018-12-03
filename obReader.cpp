@@ -4,47 +4,19 @@
 #include <cstring>
 #include <sstream>
 #include <vector>
+#include <experimental/filesystem>
 
 
 
 using namespace std;
+namespace fs = experimental::filesystem;
 
 
 /*
-	ATENÇÃO: Compilar usando -std=c++11
+	ATENÇÃO: Compilar usando -lstdc++fs -std=c++17
 	Ao exportar OBJ, marque apenas as alternativas: write normals e triangulate faces
 */
 
-/* TO-DO 
-
-
-	OBS.: Escrever cada uma das informações acima num .h
-
-
-	DONE
-	
-	1) Ler a posição de cada vértice 
-	2) Para cada posição lida, gerar um objeto da classe Ponto
-	3) Guardar ponto num vector de Pontos
-
-
-	4) Ler informação de cada vetor normal
-	5) Para cada informação lida, gerar um objeto da classe Vetor
-	6) Guarda vetor num vector de Vetor
-
-	7) Ler as informações de cada face
-	8) Para cada face ler: índice dos vértices no vector de vértices, índice da normal no vector de Vetor
-	9) Gerar um objeto da classe face com as informações acima.
-
-
-	10) Quando todas as faces forem criadas, gerar o objeto da classe Cubo.
-
-
-
-*/
-
-
-// Declarar os containers que serão utilizados para o processamento do arquivo. 
 
 
 vector<string> pontos;
@@ -91,6 +63,7 @@ void lerObj(string path, string objName)
 			//cout << objPonto.str() << endl;
 
 			delete[] l;
+			delete[] vertices;
 
 			objPonto.str("");
 
@@ -119,6 +92,7 @@ void lerObj(string path, string objName)
 			normais.push_back(objNormal.str());
 
 			delete[] l;
+			delete[] coord;
 
 			objNormal.str("");
 		}
@@ -222,11 +196,60 @@ void writeObject(string path, string objName)
 }
 
 
+void prepararArquivo()
+{
+	/*
+		#include <cmath>
+		#include <iostream>
+		#include "scenario_new.h"
+
+
+
+	 */
+
+	ofstream arq;
+	arq.open("./product/models.h");
+
+	if (!arq.good())
+	{
+		cout << "Não foi possivel criar arquivo models.h!" << endl;
+		exit(1);
+	}
+
+	arq << "#include <cmath>" << endl << "#include <iostream>" << endl << "#include \"scenario_new.h\"" << endl;
+
+	arq.close();
+
+
+}
+
+
 
 
 int main(int argc, char const *argv[])
 {
 	
+	
+
+	prepararArquivo();
+
+	string pathRead = "./source";
+
+	for (auto p : fs::directory_iterator(pathRead))
+	{
+		if(p.path().extension() == ".obj") 
+		{
+			lerObj(p.path(), p.path().stem());
+			writeObject("product/models.h", p.path().stem());
+			pontos.clear();
+			normais.clear();
+			faces.clear();
+		} 
+	}
+
+	
+
+	/*
 	if(argc > 1)
 	{
 		string objName = argv[1];
@@ -235,7 +258,7 @@ int main(int argc, char const *argv[])
 		lerObj(pathRead, objName);
 		writeObject(pathWrite, objName);
 
-	}
+	} */
 
 	return 0;
 }

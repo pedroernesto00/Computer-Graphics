@@ -225,7 +225,8 @@ void prepararArquivo(Render typeRender)
 	 */
 
 	ofstream arq;
-	arq.open("./product/models.h");
+	string pathOpen = (typeRender == OPENGL ? "product/modelsGL.h" : "product/models.h"); 
+	arq.open(pathOpen);
 
 	if (!arq.good())
 	{
@@ -260,12 +261,14 @@ int main(int argc, char const *argv[])
 
 	string pathRead = "./source";
 
+	string pathWrite = (typeRender == OPENGL ? "product/modelsGL.h" : "product/models.h");
+
 	for (auto p : fs::directory_iterator(pathRead))
 	{
 		if(p.path().extension() == ".obj") 
 		{
 			lerObj(p.path(), p.path().stem(), typeRender);
-			writeObject("product/models.h", p.path().stem(), typeRender);
+			writeObject(pathWrite, p.path().stem(), typeRender);
 			pontos.clear();
 			normais.clear();
 			faces.clear();

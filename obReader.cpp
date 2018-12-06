@@ -206,6 +206,8 @@ void writeObject(string path, string objName, Render typeRender)
 
 	//Escrita em caso de OpenGL
 
+	
+
 
 	outObj.close();
 

@@ -5,7 +5,6 @@
 #include <algorithm>
 #include "models.h"
 #include "writeBMP.h"
-#include "Mat4.h"
 
 #ifdef __APPLE__
 // #include <GL/glew.h>
@@ -229,7 +228,8 @@ void calculatePixelColor(int i, int j) {
 
 void loadPixels() {
     // backfaceElimination();
-    Vec3 Ienv(0.5764705, 0.6470588, 0.756862);
+    //Vec3 Ienv(0.5764705, 0.6470588, 0.756862);
+    Vec3 Ienv(0.9, 0.6470588, 0.756862);
     float defaultColor[] = {Ienv[0], Ienv[1], Ienv[2]};
 
     for (int i = 0; i < canvasH; i++) {
@@ -304,12 +304,12 @@ void loadPixels() {
 
                         if (s > 0 && t > 0 && (1 - s - t) > 0) {
                             Vec3 I1, I2, Ip;
-
+                            
                             I1 = ((*intensities[0]) * ((face_pixels[2]->y - y) / (face_pixels[2]->y - face_pixels[0]->y))) + ((*intensities[2]) * ((face_pixels[1]->y - face_pixels[0]->y) / (face_pixels[2]->y - face_pixels[0]->y)));
                             I2 = ((*intensities[1]) * ((face_pixels[2]->y - y) / (face_pixels[2]->y - face_pixels[1]->y))) + ((*intensities[2]) * ((y - face_pixels[1]->y) / (face_pixels[2]->y - face_pixels[1]->y)));
                             Ip = (I1 * ((face_pixels[1]->x - x) / (face_pixels[1]->x - face_pixels[0]->x))) + (I2 * ((x - face_pixels[0]->x) / (face_pixels[2]->x - face_pixels[0]->x)));
 
-                            pixels[y * canvasW * 3 + x * 3] = Ip[0];
+                            pixels[y * canvasW * 3 + x * 3] = Ip[1];
                             pixels[y * canvasW * 3 + x * 3 + 1] = Ip[1];
                             pixels[y * canvasW * 3 + x * 3 + 2] = Ip[2];
                         }

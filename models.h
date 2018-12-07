@@ -9,10 +9,26 @@ Vec3 monitor_spe_material(0.9, 0.9, 0.9); // Material's specular component facto
 //Material triangle_material(triangle_env_material, triangle_dif_material, triangle_spe_material);
 Material monitor_material(monitor_env_material, monitor_dif_material, monitor_spe_material);
 
+const Point translatePoint(const Mat4& mat, const Point& point) {
+	float j = 0;
+	float k = 0;
+	float l = 0;
+	float m = 0;
+
+	j += point.x * mat(0,0) + point.y * mat(0,1) + point.z * mat(0,2) + point.w * mat(0,3);
+	k += point.x * mat(1,0) + point.y * mat(1,1) + point.z * mat(1,2) + point.w * mat(1,3);
+	l += point.x * mat(2,0) + point.y * mat(2,1) + point.z * mat(2,2) + point.w * mat(2,3);
+	m += point.x * mat(3,0) + point.y * mat(3,1) + point.z * mat(3,2) + point.w * mat(3,3);
+
+	Point newPoint(j, k, l, m);
+	return newPoint;
+}
+
 // Triangle definition
 const int num_faces = 92;
 const int num_vertices = 48;
-const int objects_len = 4;
+const int objects_len = 2;
+
 
 Point vertices[] = {
 	Point(222.186, 222.62, 1087.35),
@@ -63,6 +79,65 @@ Point vertices[] = {
 	Point(257.768, 204.631, 1036.9),
 	Point(248.607, 204.631, 1090.43),
 	Point(275.421, 204.537, 1048.08)};
+
+	Vec3 t(300,350,750);
+    Mat4 trans = Mat4::translate(t);
+    //Point test(222.186, 222.62, 1087.35, 1);
+    //Point new_vertice (translatePoint(trans, test));
+
+    Point new_vertices[] = {
+    	Point(translatePoint(trans, vertices[0])),
+		Point(translatePoint(trans, vertices[1])),
+		Point(translatePoint(trans, vertices[2])),
+		Point(translatePoint(trans, vertices[3])),
+		Point(translatePoint(trans, vertices[4])),
+		Point(translatePoint(trans, vertices[5])),
+		Point(translatePoint(trans, vertices[6])),
+		Point(translatePoint(trans, vertices[7])),
+		Point(translatePoint(trans, vertices[8])),
+		Point(translatePoint(trans, vertices[9])),
+		Point(translatePoint(trans, vertices[10])),
+		Point(translatePoint(trans, vertices[11])),
+		Point(translatePoint(trans, vertices[12])),
+		Point(translatePoint(trans, vertices[13])),
+		Point(translatePoint(trans, vertices[14])),
+		Point(translatePoint(trans, vertices[15])),
+		Point(translatePoint(trans, vertices[16])),
+		Point(translatePoint(trans, vertices[17])),
+		Point(translatePoint(trans, vertices[18])),
+		Point(translatePoint(trans, vertices[19])),
+		Point(translatePoint(trans, vertices[20])),
+		Point(translatePoint(trans, vertices[21])),
+		Point(translatePoint(trans, vertices[22])),
+		Point(translatePoint(trans, vertices[23])),
+		Point(translatePoint(trans, vertices[24])),
+		Point(translatePoint(trans, vertices[25])),
+		Point(translatePoint(trans, vertices[26])),
+		Point(translatePoint(trans, vertices[27])),
+		Point(translatePoint(trans, vertices[28])),
+		Point(translatePoint(trans, vertices[29])),
+		Point(translatePoint(trans, vertices[30])),
+		Point(translatePoint(trans, vertices[31])),
+		Point(translatePoint(trans, vertices[32])),
+		Point(translatePoint(trans, vertices[33])),
+		Point(translatePoint(trans, vertices[34])),
+		Point(translatePoint(trans, vertices[35])),
+		Point(translatePoint(trans, vertices[36])),
+		Point(translatePoint(trans, vertices[37])),
+		Point(translatePoint(trans, vertices[38])),
+		Point(translatePoint(trans, vertices[39])),
+		Point(translatePoint(trans, vertices[40])),
+		Point(translatePoint(trans, vertices[41])),
+		Point(translatePoint(trans, vertices[42])),
+		Point(translatePoint(trans, vertices[43])),
+		Point(translatePoint(trans, vertices[44])),
+		Point(translatePoint(trans, vertices[45])),
+		Point(translatePoint(trans, vertices[46])),
+		Point(translatePoint(trans, vertices[47]))
+    };
+    
+    
+
 
 Triangle faces[] = {
 	Triangle(vertices[2], vertices[15], vertices[3]),
@@ -157,6 +232,100 @@ Triangle faces[] = {
 	Triangle(vertices[38], vertices[46], vertices[44]),
 	Triangle(vertices[33], vertices[41], vertices[40]),
 	Triangle(vertices[39], vertices[47], vertices[46])};
+
+Triangle new_faces[] = {
+	Triangle(new_vertices[2], new_vertices[15], new_vertices[3]),
+	Triangle(new_vertices[11], new_vertices[17], new_vertices[8]),
+	Triangle(new_vertices[5], new_vertices[24], new_vertices[7]),
+	Triangle(new_vertices[19], new_vertices[9], new_vertices[18]),
+	Triangle(new_vertices[17], new_vertices[9], new_vertices[8]),
+	Triangle(new_vertices[11], new_vertices[19], new_vertices[16]),
+	Triangle(new_vertices[2], new_vertices[9], new_vertices[0]),
+	Triangle(new_vertices[0], new_vertices[10], new_vertices[1]),
+	Triangle(new_vertices[1], new_vertices[11], new_vertices[3]),
+	Triangle(new_vertices[3], new_vertices[8], new_vertices[2]),
+	Triangle(new_vertices[14], new_vertices[12], new_vertices[13]),
+	Triangle(new_vertices[1], new_vertices[13], new_vertices[0]),
+	Triangle(new_vertices[3], new_vertices[14], new_vertices[1]),
+	Triangle(new_vertices[0], new_vertices[12], new_vertices[2]),
+	Triangle(new_vertices[6], new_vertices[16], new_vertices[7]),
+	Triangle(new_vertices[4], new_vertices[17], new_vertices[6]),
+	Triangle(new_vertices[7], new_vertices[19], new_vertices[5]),
+	Triangle(new_vertices[5], new_vertices[18], new_vertices[4]),
+	Triangle(new_vertices[23], new_vertices[28], new_vertices[20]),
+	Triangle(new_vertices[7], new_vertices[25], new_vertices[6]),
+	Triangle(new_vertices[4], new_vertices[27], new_vertices[5]),
+	Triangle(new_vertices[6], new_vertices[26], new_vertices[4]),
+	Triangle(new_vertices[21], new_vertices[24], new_vertices[20]),
+	Triangle(new_vertices[22], new_vertices[25], new_vertices[21]),
+	Triangle(new_vertices[20], new_vertices[27], new_vertices[23]),
+	Triangle(new_vertices[23], new_vertices[26], new_vertices[22]),
+	Triangle(new_vertices[28], new_vertices[30], new_vertices[29]),
+	Triangle(new_vertices[20], new_vertices[29], new_vertices[21]),
+	Triangle(new_vertices[22], new_vertices[31], new_vertices[23]),
+	Triangle(new_vertices[30], new_vertices[32], new_vertices[34]),
+	Triangle(new_vertices[37], new_vertices[44], new_vertices[45]),
+	Triangle(new_vertices[29], new_vertices[34], new_vertices[35]),
+	Triangle(new_vertices[29], new_vertices[33], new_vertices[21]),
+	Triangle(new_vertices[21], new_vertices[32], new_vertices[22]),
+	Triangle(new_vertices[37], new_vertices[38], new_vertices[36]),
+	Triangle(new_vertices[39], new_vertices[45], new_vertices[47]),
+	Triangle(new_vertices[35], new_vertices[42], new_vertices[43]),
+	Triangle(new_vertices[34], new_vertices[40], new_vertices[42]),
+	Triangle(new_vertices[42], new_vertices[44], new_vertices[46]),
+	Triangle(new_vertices[43], new_vertices[46], new_vertices[47]),
+	Triangle(new_vertices[43], new_vertices[45], new_vertices[41]),
+	Triangle(new_vertices[40], new_vertices[45], new_vertices[44]),
+	Triangle(new_vertices[35], new_vertices[41], new_vertices[33]),
+	Triangle(new_vertices[38], new_vertices[44], new_vertices[36]),
+	Triangle(new_vertices[33], new_vertices[40], new_vertices[32]),
+	Triangle(new_vertices[39], new_vertices[46], new_vertices[38]),
+	Triangle(new_vertices[2], new_vertices[12], new_vertices[15]),
+	Triangle(new_vertices[11], new_vertices[16], new_vertices[17]),
+	Triangle(new_vertices[5], new_vertices[27], new_vertices[24]),
+	Triangle(new_vertices[19], new_vertices[10], new_vertices[9]),
+	Triangle(new_vertices[17], new_vertices[18], new_vertices[9]),
+	Triangle(new_vertices[11], new_vertices[10], new_vertices[19]),
+	Triangle(new_vertices[2], new_vertices[8], new_vertices[9]),
+	Triangle(new_vertices[0], new_vertices[9], new_vertices[10]),
+	Triangle(new_vertices[1], new_vertices[10], new_vertices[11]),
+	Triangle(new_vertices[3], new_vertices[11], new_vertices[8]),
+	Triangle(new_vertices[14], new_vertices[15], new_vertices[12]),
+	Triangle(new_vertices[1], new_vertices[14], new_vertices[13]),
+	Triangle(new_vertices[3], new_vertices[15], new_vertices[14]),
+	Triangle(new_vertices[0], new_vertices[13], new_vertices[12]),
+	Triangle(new_vertices[6], new_vertices[17], new_vertices[16]),
+	Triangle(new_vertices[4], new_vertices[18], new_vertices[17]),
+	Triangle(new_vertices[7], new_vertices[16], new_vertices[19]),
+	Triangle(new_vertices[5], new_vertices[19], new_vertices[18]),
+	Triangle(new_vertices[23], new_vertices[31], new_vertices[28]),
+	Triangle(new_vertices[7], new_vertices[24], new_vertices[25]),
+	Triangle(new_vertices[4], new_vertices[26], new_vertices[27]),
+	Triangle(new_vertices[6], new_vertices[25], new_vertices[26]),
+	Triangle(new_vertices[21], new_vertices[25], new_vertices[24]),
+	Triangle(new_vertices[22], new_vertices[26], new_vertices[25]),
+	Triangle(new_vertices[20], new_vertices[24], new_vertices[27]),
+	Triangle(new_vertices[23], new_vertices[27], new_vertices[26]),
+	Triangle(new_vertices[28], new_vertices[31], new_vertices[30]),
+	Triangle(new_vertices[20], new_vertices[28], new_vertices[29]),
+	Triangle(new_vertices[22], new_vertices[30], new_vertices[31]),
+	Triangle(new_vertices[30], new_vertices[22], new_vertices[32]),
+	Triangle(new_vertices[37], new_vertices[36], new_vertices[44]),
+	Triangle(new_vertices[29], new_vertices[30], new_vertices[34]),
+	Triangle(new_vertices[29], new_vertices[35], new_vertices[33]),
+	Triangle(new_vertices[21], new_vertices[33], new_vertices[32]),
+	Triangle(new_vertices[37], new_vertices[39], new_vertices[38]),
+	Triangle(new_vertices[39], new_vertices[37], new_vertices[45]),
+	Triangle(new_vertices[35], new_vertices[34], new_vertices[42]),
+	Triangle(new_vertices[34], new_vertices[32], new_vertices[40]),
+	Triangle(new_vertices[42], new_vertices[40], new_vertices[44]),
+	Triangle(new_vertices[43], new_vertices[42], new_vertices[46]),
+	Triangle(new_vertices[43], new_vertices[47], new_vertices[45]),
+	Triangle(new_vertices[40], new_vertices[41], new_vertices[45]),
+	Triangle(new_vertices[35], new_vertices[43], new_vertices[41]),
+	Triangle(new_vertices[38], new_vertices[46], new_vertices[44]),
+	Triangle(new_vertices[33], new_vertices[41], new_vertices[40]),
+	Triangle(new_vertices[39], new_vertices[47], new_vertices[46])};
 
 Point vertices2[] = {
 	Point(100 + 222.186, 222.62, 1087.35),
@@ -591,9 +760,11 @@ Triangle faces4[] = {
 	Triangle(vertices4[39], vertices4[47], vertices4[46])
 };
 
-Model monitor(num_faces, num_vertices, vertices, faces, monitor_material);
+Model monitor(num_faces, num_vertices, new_vertices, new_faces, monitor_material);
+Model monitor1(num_faces, num_vertices, vertices, faces, monitor_material);
 Model monitor2(num_faces, num_vertices, vertices2, faces2, monitor_material);
 Model monitor3(num_faces, num_vertices, vertices3, faces3, monitor_material);
 Model monitor4(num_faces, num_vertices, vertices4, faces4, monitor_material);
 
-Model objects[objects_len] = { monitor, monitor2, monitor3, monitor4 };
+//Model objects[objects_len] = { monitor, monitor2, monitor3, monitor4 };
+Model objects[objects_len] = { monitor, monitor1 };

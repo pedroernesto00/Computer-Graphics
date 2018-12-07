@@ -4,54 +4,33 @@
 #include <cstring>
 #include <sstream>
 #include <vector>
+#include <experimental/filesystem>
 
 
 
 using namespace std;
+namespace fs = experimental::filesystem;
+
+
+enum Render
+{
+	RAYCAST,
+	OPENGL
+};
 
 
 /*
-	ATENÇÃO: Compilar usando -std=c++11
+	ATENÇÃO: Compilar usando -lstdc++fs -std=c++17
 	Ao exportar OBJ, marque apenas as alternativas: write normals e triangulate faces
 */
 
-/* TO-DO 
-
-
-	OBS.: Escrever cada uma das informações acima num .h
-
-
-	DONE
-	
-	1) Ler a posição de cada vértice 
-	2) Para cada posição lida, gerar um objeto da classe Ponto
-	3) Guardar ponto num vector de Pontos
-
-
-	4) Ler informação de cada vetor normal
-	5) Para cada informação lida, gerar um objeto da classe Vetor
-	6) Guarda vetor num vector de Vetor
-
-	7) Ler as informações de cada face
-	8) Para cada face ler: índice dos vértices no vector de vértices, índice da normal no vector de Vetor
-	9) Gerar um objeto da classe face com as informações acima.
-
-
-	10) Quando todas as faces forem criadas, gerar o objeto da classe Cubo.
-
-
-
-*/
-
-
-// Declarar os containers que serão utilizados para o processamento do arquivo. 
 
 
 vector<string> pontos;
 vector<string> normais;
 vector<string> faces;
 
-void lerObj(string path, string objName)
+void lerObj(string path, string objName, Render typeRender)
 {
 	ifstream obj;
 	obj.open(path);
@@ -82,8 +61,10 @@ void lerObj(string path, string objName)
 			}
 
 			stringstream objPonto;
-		 	objPonto << "Point( " << vertices[0] << ", " << vertices[1] << ", " << vertices[2] << " )";
-
+		 	
+		 	if(typeRender == RAYCAST) objPonto << "Point( " << vertices[0] << ", " << vertices[1] << ", " << vertices[2] << " )";
+		 	else if(typeRender == OPENGL) objPonto << vertices[0] << ", " << vertices[1] << ", " << vertices[2];
+		 	
 		 	//cout << vertices[0] << ", " << vertices[1] << ", " << vertices[2] << endl;
 			
 			pontos.push_back(objPonto.str());
@@ -91,6 +72,7 @@ void lerObj(string path, string objName)
 			//cout << objPonto.str() << endl;
 
 			delete[] l;
+			delete[] vertices;
 
 			objPonto.str("");
 
@@ -119,6 +101,7 @@ void lerObj(string path, string objName)
 			normais.push_back(objNormal.str());
 
 			delete[] l;
+			delete[] coord;
 
 			objNormal.str("");
 		}
@@ -143,8 +126,9 @@ void lerObj(string path, string objName)
 
 
 			//objFace << "Face( " << pontos[coord[0] - 1] << ", " << pontos[coord[3] - 1] << ", " << pontos[coord[6] - 1] << ", " << normais[coord[2] - 1] << " )";
-			objFace << "Triangle( " << objName << "_vertices" << "[" << coord[0] - 1 << "]" << ", " << objName << "_vertices" << "[" << coord[2] - 1 << "]" << ", " << objName << "_vertices" << "[" << coord[4] - 1 << "]" << ")";
-
+			if(typeRender == RAYCAST)objFace << "Triangle( " << objName << "_vertices" << "[" << coord[0] - 1 << "]" << ", " << objName << "_vertices" << "[" << coord[2] - 1 << "]" << ", " << objName << "_vertices" << "[" << coord[4] - 1 << "]" << ")";
+			else if(typeRender == OPENGL) objFace << coord[0] - 1 << ", " << coord[2] - 1 << ", " << coord[4] - 1;
+			
 			faces.push_back(objFace.str());
 
 			delete[] l;
@@ -161,29 +145,35 @@ void lerObj(string path, string objName)
 }
 
 
-void writeObject(string path, string objName)
+void writeObject(string path, string objName, Render typeRender)
 {
 	ofstream outObj;
 
 	outObj.open(path, ios::app);
-
 	
+	//Escrita em caso de raycasting
+
 	if(!outObj.good())
 	{
 		cout << "Erro ao criar o header!" << endl;
 		exit(1); 
 	}
 
-	outObj << "//Setting " << objName << "'s " << "material" << endl; 
-	outObj << "Vec3 " << objName << "_env_material" << "(0.9, 0.9, 0.9); // Material's enviroment component factors" << endl;
-	outObj << "Vec3 " << objName << "_dif_material" << "(0.9, 0.9, 0.9);   // Material's difuse component factors" << endl;
-	outObj << "Vec3 " << objName << "_spe_material" <<  "(0.9, 0.9, 0.9);   // Material's specular component factors " << endl;
-	outObj << "Material " << objName << "_material" << "(" << objName << "_env_material" << ", " << objName << "_dif_material" << ", " << objName << "_spe_material"<< ");" << endl;
-
+	if (typeRender == RAYCAST)
+	{
+		outObj << "//Setting " << objName << "'s " << "material" << endl; 
+		outObj << "Vec3 " << objName << "_env_material" << "(0.9, 0.9, 0.9); // Material's enviroment component factors" << endl;
+		outObj << "Vec3 " << objName << "_dif_material" << "(0.9, 0.9, 0.9);   // Material's difuse component factors" << endl;
+		outObj << "Vec3 " << objName << "_spe_material" <<  "(0.9, 0.9, 0.9);   // Material's specular component factors " << endl;
+		outObj << "Material " << objName << "_material" << "(" << objName << "_env_material" << ", " << objName << "_dif_material" << ", " << objName << "_spe_material"<< ");" << endl;
+	}	
+	
 	outObj << "const int " << objName << "_num_faces = " << faces.size() << ";" << endl;
 	outObj << "const int " << objName << "_num_vertices = " << pontos.size() << ";" << endl;
 	
-	outObj << "Point " << objName << "_vertices[]" << " = { " << endl;
+	if (typeRender == RAYCAST) outObj << "Point " << objName << "_vertices[]" << " = { " << endl;
+	else if (typeRender == OPENGL) outObj << "float " << objName << "_vertices[]" << " = {" << endl;
+	
 	for (auto p : pontos)
 	{
 		outObj << "\t" <<  p << ", " << endl;
@@ -200,10 +190,9 @@ void writeObject(string path, string objName)
 
 	*/
 
-	
-	
 
-	outObj << "Triangle " << objName << "_faces[]" << " = { " << endl;;
+	if (typeRender == RAYCAST) outObj << "Triangle " << objName << "_faces[]" << " = { " << endl;
+	else if(typeRender == OPENGL) outObj << "int " << objName << "_faces[]" << " = {" << endl;
 	
 	for (auto f : faces)
 	{
@@ -212,11 +201,44 @@ void writeObject(string path, string objName)
 
 	outObj << "}; " << endl;
 
+	if (typeRender == RAYCAST) outObj << "Model " << objName << "(" << objName << "_num_faces, " << objName << "_num_vertices, " << objName << "_vertices, " << objName << "_faces, " << objName << "_material);" << endl; 
 
-	outObj << "Model " << objName << "(" << objName << "_num_faces, " << objName << "_num_vertices, " << objName << "_vertices, " << objName << "_faces, " << objName << "_material);" << endl; 
+
+	//Escrita em caso de OpenGL
+
+	
 
 
 	outObj.close();
+
+
+}
+
+
+void prepararArquivo(Render typeRender)
+{
+	/*
+		#include <cmath>
+		#include <iostream>
+		#include "scenario_new.h"
+
+
+
+	 */
+
+	ofstream arq;
+	string pathOpen = (typeRender == OPENGL ? "product/modelsGL.h" : "product/models.h"); 
+	arq.open(pathOpen);
+
+	if (!arq.good())
+	{
+		cout << "Não foi possivel criar arquivo models.h!" << endl;
+		exit(1);
+	}
+
+	if(typeRender == RAYCAST) arq << "#include <cmath>" << endl << "#include <iostream>" << endl << "#include \"scenario_new.h\"" << endl;
+
+	arq.close();
 
 
 }
@@ -227,6 +249,37 @@ void writeObject(string path, string objName)
 int main(int argc, char const *argv[])
 {
 	
+	Render typeRender = RAYCAST;
+	
+	if(argc > 1)
+	{
+		string tipoEntrada = argv[1];
+		if(tipoEntrada == "-o") typeRender = OPENGL;
+	}
+	
+
+	
+	prepararArquivo(typeRender);
+
+	string pathRead = "./source";
+
+	string pathWrite = (typeRender == OPENGL ? "product/modelsGL.h" : "product/models.h");
+
+	for (auto p : fs::directory_iterator(pathRead))
+	{
+		if(p.path().extension() == ".obj") 
+		{
+			lerObj(p.path(), p.path().stem(), typeRender);
+			writeObject(pathWrite, p.path().stem(), typeRender);
+			pontos.clear();
+			normais.clear();
+			faces.clear();
+		} 
+	}
+
+	
+
+	/*
 	if(argc > 1)
 	{
 		string objName = argv[1];
@@ -235,7 +288,7 @@ int main(int argc, char const *argv[])
 		lerObj(pathRead, objName);
 		writeObject(pathWrite, objName);
 
-	}
+	} */
 
 	return 0;
 }

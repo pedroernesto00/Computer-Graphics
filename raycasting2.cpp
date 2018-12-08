@@ -173,6 +173,7 @@ void drawScene(void) {
         for (int i = 0; i < canvasH; i += 1) {
             for (int j = 0; j < canvasW; j += 1) {
                 Point Pix(j * dx + dx / 2 - windowW / 2, i * dy + dy / 2 - windowH / 2, d); // Pixel point in window
+                Vec3 V(Pix.x - O.x, Pix.y - O.y, Pix.z - O.z); // Vector from camera to Pixel
 
                 float t_norm = 1000000000;
 
@@ -180,72 +181,74 @@ void drawScene(void) {
                 Vec3 Ienv(0.5764705, 0.6470588, 0.756862);
                 glColor3ub(imageData[3 * (i * canvasW + j)], imageData[3 * (i * canvasW + j) + 1], imageData[3 * (i * canvasW + j) + 2]);
 
+                int object = -1;
                 for (int k = 0; k < objects_len; k++) {
-                    Vec3 V(Pix.x - O.x, Pix.y - O.y, Pix.z - O.z); // Vector from camera to Pixel
                     bool intercepted = false;
                     float t_int = objects[k].checkInterception(intercepted, V, O);
 
                     if (intercepted && t_int < t_norm) {
-                        V *= t_int;
-
-                        // Find the intercepted point
-                        Point P(V[0], V[1], V[2]);
-
-                        Vec3 N(P.x - objects[k].center.x, P.y - objects[k].center.y, P.z - objects[k].center.z);
-                        Vec3 n = Vec3::normalize(N); // Normal vector to point in sphere surface
-
-                        Vec3 L(light.center.x - P.x, light.center.y - P.y, light.center.z - P.z);
-                        Vec3 l = Vec3::normalize(L); // Nomalized vector from point to light
-
-                        Vec3 Kenv(objects[k].material.env_material[0], objects[k].material.env_material[1], objects[k].material.env_material[2]); // Components factors to enviroment light
-
-                        // Generating the final color for current pixel
-                        Vec3 Color(Ienv[0], Ienv[1], Ienv[2]);
-                        Color = Vec3::at(Color, Kenv);
-
-                        Vec3 Kdif(objects[k].material.dif_material[0], objects[k].material.dif_material[1], objects[k].material.dif_material[2]); // Components factors to difuse light
-                        Vec3 Kspe(objects[k].material.spe_material[0], objects[k].material.spe_material[1], objects[k].material.spe_material[2]); // Components factors to specular light
-
-                        Vec3 If(light.color[0], light.color[1], light.color[2]); // Light rate
-
-                        // Calculating the difusing rate
-                        Vec3 Idif(If[0] * Kdif[0], If[1] * Kdif[1], If[2] * Kdif[2]);
-                        Idif *= Vec3::dot(l, n);
-
-                        // Calculating the specular rate
-                        Vec3 Ispe(If[0] * Kspe[0], If[1] * Kspe[1], If[2] * Kspe[2]);
-                        Vec3 r = (n * (2 * Vec3::dot(l, n))) - l;
-                        Vec3 PO(O.x-P.x, O.y-P.y, O.z-P.z);
-                        Vec3 v = Vec3::normalize(PO);
-                        Ispe *= pow(Vec3::dot(r, v), 3);
-
-                        Color = Vec3::at(Color, Kenv);
-                        Color += Idif;
-                        Color += Ispe;
-
-                        Vec3 defaultColor (Color[0], Color[1], Color[2]);
-
-                        float t_shadow_min = -10000000000;
-                        for (int q = 0; q < objects_len; q++) {
-                            if (q != k) {
-                                // Checking if the ball is intercepted by light ray
-                                bool shadow_intercepted = false;
-                                float t_shadow_int = objects[q].checkInterception(shadow_intercepted, l, P, true);
-                                if (t_shadow_int && t_shadow_int <= 0 && t_shadow_int > t_shadow_min) {
-                                    Color = defaultColor;
-                                    Vec3 shadow_fact(0.3, 0.3, 0.3);
-                                    Color = Vec3::at(Color, shadow_fact);
-                                    t_shadow_min = t_shadow_int;
-                                }
-                            }
-                        }
-
-                        glColor3f(Color[0], Color[1], Color[2]);
-
+                        object = k;
                         t_norm = t_int;
                     }
                 }
 
+                if (object >= 0) {
+                    V *= t_norm;
+                    int k = object;
+
+                    // Find the intercepted point
+                    Point P(V[0], V[1], V[2]);
+
+                    Vec3 N(P.x - objects[k].center.x, P.y - objects[k].center.y, P.z - objects[k].center.z);
+                    Vec3 n = Vec3::normalize(N); // Normal vector to point in sphere surface
+
+                    Vec3 L(light.center.x - P.x, light.center.y - P.y, light.center.z - P.z);
+                    Vec3 l = Vec3::normalize(L); // Nomalized vector from point to light
+
+                    Vec3 Kenv(objects[k].material.env_material[0], objects[k].material.env_material[1], objects[k].material.env_material[2]); // Components factors to enviroment light
+
+                    // Generating the final color for current pixel
+                    Vec3 Color(Ienv[0], Ienv[1], Ienv[2]);
+                    Color = Vec3::at(Color, Kenv);
+
+                    Vec3 Kdif(objects[k].material.dif_material[0], objects[k].material.dif_material[1], objects[k].material.dif_material[2]); // Components factors to difuse light
+                    Vec3 Kspe(objects[k].material.spe_material[0], objects[k].material.spe_material[1], objects[k].material.spe_material[2]); // Components factors to specular light
+
+                    Vec3 If(light.color[0], light.color[1], light.color[2]); // Light rate
+
+                    // Calculating the difusing rate
+                    Vec3 Idif(If[0] * Kdif[0], If[1] * Kdif[1], If[2] * Kdif[2]);
+                    Idif *= Vec3::dot(l, n);
+
+                    // Calculating the specular rate
+                    Vec3 Ispe(If[0] * Kspe[0], If[1] * Kspe[1], If[2] * Kspe[2]);
+                    Vec3 r = (n * (2 * Vec3::dot(l, n))) - l;
+                    Vec3 PO(O.x-P.x, O.y-P.y, O.z-P.z);
+                    Vec3 v = Vec3::normalize(PO);
+                    Ispe *= pow(Vec3::dot(r, v), 3);
+
+                    Color = Vec3::at(Color, Kenv);
+                    Color += Idif;
+                    Color += Ispe;
+
+                    Vec3 defaultColor (Color[0], Color[1], Color[2]);
+
+                    for (int q = 0; q < objects_len; q++) {
+                        if (q != k) {
+                            // Checking if the ball is intercepted by light ray
+                            bool shadow_intercepted = false;
+                            float t_shadow_int = objects[q].checkInterception(shadow_intercepted, l, P, true);
+                            if (t_shadow_int && t_shadow_int <= 0) {
+                                Color = defaultColor;
+                                Vec3 shadow_fact(0.3, 0.3, 0.3);
+                                Color = Vec3::at(Color, shadow_fact);
+                                q = objects_len;
+                            }
+                        }
+                    }
+
+                    glColor3f(Color[0], Color[1], Color[2]);
+                }
                 glVertex2f(j, i);
             }
         }

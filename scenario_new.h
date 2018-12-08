@@ -275,7 +275,8 @@ class Triangle {
 
             //Checar se ponto encontrado está dentro do triângulo.
 
-            Vec3 sourceToPoint = v * tIntersection;
+            Vec3 v_aux = v * tIntersection;
+            Vec3 sourceToPoint(O.x + v_aux[0], O.y + v_aux[1], O.z + v_aux[2]);
             Point pointIntersection(sourceToPoint[0], sourceToPoint[1], sourceToPoint[2]); //Esta linha foi necessária para transformar o vetor posição do ponto de interseção em um ponto.
 
             Vec3 edge1 = this->vertex2 - this->vertex1; //Vetor do vertex1 para o vertex2

@@ -1,0 +1,91 @@
+
+    backfaceElimination();
+    Vec3 Ienv(0.5764705, 0.6470588, 0.756862);
+    float defaultColor[] = {Ienv[0], Ienv[1], Ienv[2]};
+
+    for (int i = 0; i < canvasH; i++) {
+        for (int j = 0; j < canvasW; j++) {
+            // calculatePixelColor(i, j);
+            pixels[i * canvasW * 3 + j * 3] = defaultColor[0];
+            pixels[i * canvasW * 3 + j * 3 + 1] = defaultColor[1];
+            pixels[i * canvasW * 3 + j * 3 + 2] = defaultColor[2];
+        }
+    }
+
+    Vec3 O_LookAt(LookAt.x - O.x, LookAt.y - O.y, LookAt.z - O.z);
+    Vec3 O_LookAt_uni = Vec3::normalize(O_LookAt);
+    Vec3 B = O_LookAt_uni * abs(d);
+
+    for (int m = 0; m < objects_len; m++) {
+        for (int k = 0; k < objects[m].num_faces; k++) {
+            if (objects[m].faces[k].visible == true) {
+                Point face_vertices[] = {
+                    objects[m].faces[k].vertex1,
+                    objects[m].faces[k].vertex2,
+                    objects[m].faces[k].vertex3
+                };
+
+                Point* face_pixels[3];
+
+                int maxY = 0, minY = canvasH, maxX = 0, minX = canvasW;
+                Vec3* intensities[3];
+
+                for (int q = 0; q < 3; q++) {
+                    int i = 0, j = 0;
+
+                    Vec3 A(face_vertices[q].x - O.x, face_vertices[q].y - O.y, face_vertices[q].z - O.z);
+                    float dot_AB = Vec3::dot(A, B);
+                    float A_square = Vec3::dot(A, A);
+                    float aux = dot_AB / A_square;
+                    Vec3 project = A * aux;
+
+                    j = (project[0] + windowW / 2 - dx / 2) / dx;
+                    i = (project[1] - dy / 2 + windowH / 2) / dy;
+
+                    if (j < minX) {
+                        minX = j;
+                    } else if (j > maxX) {
+                        maxX = j;
+                    }
+
+                    if (i < minY) {
+                        minY = i;
+                    } else if (i > maxY) {
+                        maxY = i;
+                    }
+
+                    calculatePixelColor(i, j);
+
+                    face_pixels[q] = new Point(j, i, 0);
+                    intensities[q] = new Vec3(
+                        pixels[i * canvasW * 3 + j * 3], // r
+                        pixels[i * canvasW * 3 + j * 3 + 1], // g
+                        pixels[i * canvasW * 3 + j * 3 + 2] // b
+                    );
+                }
+
+                // cout << maxX << ", " << minX << endl;
+
+                for (int x = minX; x <= maxX; x++) {
+                    for (int y = minY; y <= maxY; y++) {
+                        float s, t, area;
+                        area = 0.5 * (-face_pixels[1]->y * face_pixels[2]->x + face_pixels[0]->y * (-face_pixels[1]->x + face_pixels[2]->x) + face_pixels[0]->x * (face_pixels[1]->y - face_pixels[2]->y) + face_pixels[1]->x * face_pixels[2]->y);
+                        s = 1 / (2 * area) * (face_pixels[0]->y * face_pixels[2]->x - face_pixels[0]->x * face_pixels[2]->y + (face_pixels[2]->y - face_pixels[0]->y) * x + (face_pixels[0]->x - face_pixels[2]->x) * y);
+                        t = 1 / (2 * area) * (face_pixels[0]->x * face_pixels[1]->y - face_pixels[0]->y * face_pixels[1]->x + (face_pixels[0]->y - face_pixels[1]->y) * x + (face_pixels[1]->x - face_pixels[0]->x) * y);
+
+                        if (s > 0 && t > 0 && (1 - s - t) > 0) {
+                            Vec3 I1, I2, Ip;
+
+                            I1 = ((*intensities[0]) * ((face_pixels[2]->y - y) / (face_pixels[2]->y - face_pixels[0]->y))) + ((*intensities[2]) * ((face_pixels[1]->y - face_pixels[0]->y) / (face_pixels[2]->y - face_pixels[0]->y)));
+                            I2 = ((*intensities[1]) * ((face_pixels[2]->y - y) / (face_pixels[2]->y - face_pixels[1]->y))) + ((*intensities[2]) * ((y - face_pixels[1]->y) / (face_pixels[2]->y - face_pixels[1]->y)));
+                            Ip = (I1 * ((face_pixels[1]->x - x) / (face_pixels[1]->x - face_pixels[0]->x))) + (I2 * ((x - face_pixels[0]->x) / (face_pixels[2]->x - face_pixels[0]->x)));
+
+                            pixels[y * canvasW * 3 + x * 3] = Ip[0];
+                            pixels[y * canvasW * 3 + x * 3 + 1] = Ip[1];
+                            pixels[y * canvasW * 3 + x * 3 + 2] = Ip[2];
+                        }
+                    }
+                }
+            }
+        }
+    }

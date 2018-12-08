@@ -236,7 +236,7 @@ void prepararArquivo(Render typeRender)
 		exit(1);
 	}
 
-	if(typeRender == RAYCAST) arq << "#include <cmath>" << endl << "#include <iostream>" << endl << "#include \"scenario_new.h\"" << endl;
+	if(typeRender == RAYCAST) arq << "#include <cmath>" << endl << "#include <iostream>" << endl << "#include \"..\\scenario_new.h\"" << endl;
 
 	arq.close();
 

@@ -21,6 +21,7 @@ class Point {
     Point(float, float, float);
     Point(float, float, float, float);
     void plus(const Vec3&);
+    const Point translatePoint(const Mat4&, const Point&);
 
     Point() {
         x = 0.0;
@@ -90,6 +91,21 @@ void Point::plus (const Vec3& v) {
     x += v[0];
     y += v[1];
     z += v[2];
+};
+
+const Point translatePoint(const Mat4& mat, const Point& point) {
+    float j = 0;
+    float k = 0;
+    float l = 0;
+    float m = 0;
+
+    j += point.x * mat(0,0) + point.y * mat(0,1) + point.z * mat(0,2) + point.w * mat(0,3);
+    k += point.x * mat(1,0) + point.y * mat(1,1) + point.z * mat(1,2) + point.w * mat(1,3);
+    l += point.x * mat(2,0) + point.y * mat(2,1) + point.z * mat(2,2) + point.w * mat(2,3);
+    m += point.x * mat(3,0) + point.y * mat(3,1) + point.z * mat(3,2) + point.w * mat(3,3);
+
+    Point newPoint(j, k, l, m);
+    return newPoint;
 };
 
 

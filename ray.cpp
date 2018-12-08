@@ -6,7 +6,6 @@
 #include "product/models.h"
 // #include "models.h"
 #include "writeBMP.h"
-#include "Mat4.h"
 
 #ifdef __APPLE__
 // #include <GL/glew.h>

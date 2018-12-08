@@ -1,6 +1,7 @@
 #include <cmath>
 #include <iostream>
 #include "Vec3.h"
+#include "Mat4.h"
 
 using namespace std;
 
@@ -14,21 +15,25 @@ class Point {
     float x;
     float y;
     float z;
+    float w;
 
     Point(const Point&);
     Point(float, float, float);
+    Point(float, float, float, float);
     void plus(const Vec3&);
 
     Point() {
         x = 0.0;
         y = 0.0;
         z = 0.0;
+        w = 1.0;
     }
 
     const Point& operator = (const Point& p) {
         x = p[0];
         y = p[1];
         z = p[2];
+        w = 1.0;
 
         return *this;
     }
@@ -64,12 +69,21 @@ Point::Point (const Point& p) {
     x = p.x;
     y = p.y;
     z = p.z;
+    w = p.w;
 };
 
 Point::Point (float cx, float cy, float cz) {
     x = cx;
     y = cy;
     z = cz;
+    w = 1;
+};
+
+Point::Point (float cx, float cy, float cz, float cw) {
+    x = cx;
+    y = cy;
+    z = cz;
+    w = cw;
 };
 
 void Point::plus (const Vec3& v) {

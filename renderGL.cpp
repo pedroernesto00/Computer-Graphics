@@ -428,12 +428,12 @@ void drawScene(void)
 	glLoadIdentity();
 	
 	
-	
+	glEnable(GL_LIGHT0);
    	
 
 	/* ------------------------------------ TRANSFORMAÇÕES -------------------------------------- */
-	glTranslatef(0.0, -50.0, 0.0); //  0.0 -10.0 0.0: EM CASO DE PROJEÇÃO PARALELA
-	glTranslatef(0.0 + transX, 0.0, -10.0 + transZ);
+	glTranslatef(0.0, 0.0, -10.0); //  0.0 0.0 0.0
+	glTranslatef(0.0 + transX , -50.0, 0.0 + transZ ); //transx + 8, 0.0, 0.0, 0.0+transZ-100
 	glScalef(20.0, 20.0, 1.0);
 	//glRotatef(-rot, 0, 1, 0);	
 	/* ------------------------------------------------------------------------------------------- */
@@ -453,6 +453,11 @@ void drawScene(void)
  	/* --------------------------------------    OBJETOS:  ------------------------------------------ */
 
 	
+	
+	/* ------------------------------------------------------------
+						Desenho das paredes			
+	--------------------------------------------------------------*/
+
 	glPushMatrix();
 	glTranslatef(0.0, -1.0, 0.0);
 
@@ -465,6 +470,8 @@ void drawScene(void)
 	glDrawElements(GL_TRIANGLES, paredes_num_faces * 3, GL_UNSIGNED_INT, paredes_faces);	
 
 	glPopMatrix();
+	
+	
 
 
 	/* 
@@ -570,6 +577,7 @@ void drawScene(void)
 
 	*/
 	
+	
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, monitor_matAmbAndDif);
    	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, monitor_matSpec);
    	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, monitor_matShine);
@@ -578,6 +586,7 @@ void drawScene(void)
 	glVertexPointer(3, GL_FLOAT, 0, monitor_vertices);
 	glNormalPointer(GL_FLOAT, 0, monitor_normais);
 	glDrawElements(GL_TRIANGLES, monitor_num_faces * 3, GL_UNSIGNED_INT, monitor_faces);
+
 
 	/* ------------------------------------------------------------------------ */
 
@@ -687,6 +696,7 @@ void drawScene(void)
 		----------------------------------- DESENHO DO PISO ---------------------------------
 	*/
 
+	
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, piso_matAmbAndDif);
    	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, piso_matSpec);
    	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, piso_matShine);
@@ -695,12 +705,14 @@ void drawScene(void)
 	glVertexPointer(3, GL_FLOAT, 0,  piso_vertices);
 	glDrawElements(GL_TRIANGLES, piso_num_faces * 3, GL_UNSIGNED_INT, piso_faces);
 
+	
 	/* ------------------------------------------------------------------------------ */
 	
 	/*
 		---------------------------------------- DESENHO DA MESA --------------------------
 	*/
 
+	
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, mesa_matAmbAndDif);
    	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mesa_matSpec);
    	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mesa_matShine);
@@ -712,6 +724,14 @@ void drawScene(void)
 
 	/* -------------------------------------------------------------------------------- */
 
+	/* 
+	-------------------------------Teste de Sombra-----------------------------------------------------
+	*/
+	
+
+	/*------------------------------------------------------------------------------------------------------*/
+
+	
 
 	glFlush();
 }
@@ -742,9 +762,9 @@ void setup(void)
    	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDifAndSpec);
    	glLightfv(GL_LIGHT0, GL_SPECULAR, lightDifAndSpec);
 
-   	float lightPos[] = {0.0, 100.0, 400.0 , 1.0};
+   	float lightPos[] = {40.0, 100.0, 400.0 , 1.0};
 
-   	//float lightPos[] = {-50.0, 20.0, -50.0 , 1.0};
+   	//float lightPos[] = {0.0, 20.0, 0.0 , 1.0};
 
    	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
 	glEnable(GL_LIGHT0);
@@ -775,11 +795,15 @@ void resize(int w, int h)
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	
+	//float cabinet[16] = {1, 0, 0, 0, 0, 1, 0, 0, 5 * cos(0.523599), 5 * sin(0.523599), 1, 0, 0, 0, 0, 1};
+	//float cavalier[16] = {1, 0, 0, 0, 0, 1, 0, 0, 3 , 3 , 1, 0, 0, 0, 0, 1};
+	//glLoadMatrixf(cavalier);
+
 	glFrustum(-30.0, 30.0, -30.0, 30.0, 2.0, 200.0);
-	//glOrtho(-30.0, 30.0, -30.0, 30.0, -2.0, 200.0); //em caso de projeção paralela : isométrica
+	//glOrtho(-10.0, 10.0, -10.0, 10.0, -2.0, 200.0); //em caso de projeção paralela : isométrica
 	
 	glMatrixMode(GL_MODELVIEW);
+	
 	glLoadIdentity();
 
 }
@@ -841,7 +865,7 @@ void printInteraction(void)
 {
 	cout << "Interaction: " << endl;
 	cout << "Press ESC to exit" << endl;
-	
+
 }
 
 int main(int argc, char **argv)

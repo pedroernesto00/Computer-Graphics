@@ -1,6 +1,6 @@
 #include <cmath>
 #include <iostream>
-#include "Vec3.h"
+#include "Mat3.h"
 #include "Mat4.h"
 
 using namespace std;
@@ -21,7 +21,6 @@ class Point {
     Point(float, float, float);
     Point(float, float, float, float);
     void plus(const Vec3&);
-    const Point translatePoint(const Mat4&, const Point&);
 
     Point() {
         x = 0.0;
@@ -47,6 +46,31 @@ class Point {
         v = Vec3(x, y, z);
 
         return v;
+    }
+
+    const Point operator + (const Vec4& v) const {
+        Point p;
+        float x = this->x + v[0];
+        float y = this->y + v[1];
+        float z = this->z + v[2];
+        p = Point(x, y, z, 1);
+
+        return p;
+    }
+
+    const Point operator * (const Mat4& mat) {
+        float j = 0;
+        float k = 0;
+        float l = 0;
+        float m = 0;
+
+        j += this->x * mat(0,0) + this->y * mat(0,1) + this->z * mat(0,2) + this->w * mat(0,3);
+        k += this->x * mat(1,0) + this->y * mat(1,1) + this->z * mat(1,2) + this->w * mat(1,3);
+        l += this->x * mat(2,0) + this->y * mat(2,1) + this->z * mat(2,2) + this->w * mat(2,3);
+        m += this->x * mat(3,0) + this->y * mat(3,1) + this->z * mat(3,2) + this->w * mat(3,3);
+
+        Point newPoint(j, k, l, m);
+        return newPoint;
     }
 
     float operator [] (short unsigned int index) const {
@@ -91,21 +115,6 @@ void Point::plus (const Vec3& v) {
     x += v[0];
     y += v[1];
     z += v[2];
-};
-
-const Point translatePoint(const Mat4& mat, const Point& point) {
-    float j = 0;
-    float k = 0;
-    float l = 0;
-    float m = 0;
-
-    j += point.x * mat(0,0) + point.y * mat(0,1) + point.z * mat(0,2) + point.w * mat(0,3);
-    k += point.x * mat(1,0) + point.y * mat(1,1) + point.z * mat(1,2) + point.w * mat(1,3);
-    l += point.x * mat(2,0) + point.y * mat(2,1) + point.z * mat(2,2) + point.w * mat(2,3);
-    m += point.x * mat(3,0) + point.y * mat(3,1) + point.z * mat(3,2) + point.w * mat(3,3);
-
-    Point newPoint(j, k, l, m);
-    return newPoint;
 };
 
 
@@ -256,6 +265,26 @@ class Triangle {
        if (index == 1) return this->vertex1;
        if (index == 2) return this->vertex2;
        if (index == 3) return this->vertex3;
+    }
+
+    const Triangle operator * (const Mat4& mat) const {
+        Point pontoMedio = Point((this->vertex1.x + this->vertex2.x + this->vertex3.x)/3,
+                                (this->vertex1.y + this->vertex2.y + this->vertex3.y)/3,
+                                (this->vertex1.z + this->vertex2.z + this->vertex3.z)/3);
+
+        Vec3 v1(this->vertex1-pontoMedio);
+        Vec3 v2(this->vertex2-pontoMedio);
+        Vec3 v3(this->vertex3-pontoMedio);
+
+        Vec4 newV1( mat * Vec4(v1[0], v1[1], v1[2], 0) );
+        Vec4 newV2( mat * Vec4(v2[0], v2[1], v2[2], 0) );
+        Vec4 newV3( mat * Vec4(v3[0], v3[1], v3[2], 0) );
+        
+        Point newP1(pontoMedio + newV1);
+        Point newP2(pontoMedio + newV2);
+        Point newP3(pontoMedio + newV3);
+
+       return Triangle(newP1, newP2, newP3);
     }
 
     void setVertex(unsigned short int t, Point& p) {

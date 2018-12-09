@@ -61,47 +61,6 @@ public:
 							<< mat.c1[3] << ", " << mat.c2[3] << ", " << mat.c3[3] << ", " << mat.c4[3] << "]" << endl;
 	}
 
-	/*
-	const Vec4& operador [] (int index) const {
-		switch(index % 4) {
-			case 0:
-				return c1;
-				break;
-			case 1:
-				return c2;
-				break;
-			case 2:
-				return c3;
-				break;
-			case 3:
-				return c4;
-				break;
-			default:
-				break;
-		}
-	}
-
-	Vec4& operador [] (int index) {
-		switch(index % 4) {
-			case 0:
-				return c1;
-				break;
-			case 1:
-				return c2;
-				break;
-			case 2:
-				return c3;
-				break;
-			case 3:
-				return c4;
-				break;
-			default:
-				break;
-
-		}
-	}
-	*/
-
 	float operator () (int row, int col) const {
 		switch (col % 4) {
 			case 0:
@@ -383,6 +342,7 @@ public:
 
 	
 	// Escalona a matriz ao longo do vetor
+	/*
 	const Mat4 scale(const Vec4& vector) const {
 		float vectorLength = Vec4::length(vector);
 
@@ -417,6 +377,15 @@ public:
 		Mat4 mat_copy(c1_2, c2_2, c3_2, c4_2);
 
 		return mat_copy;
+	}*/
+
+	static const Mat4 scale(const Vec3& s) {
+		return Mat4(
+			Vec4( s[0],     0,    0,    0),
+			Vec4( 0,     s[1],    0,    0),
+			Vec4( 0,     0,		s[2],   0),
+			Vec4( 0,	 0,		0,		1)
+			);
 	}
 
 
@@ -431,58 +400,22 @@ public:
 	}
 
 	
-
-	// Rotaciona a matriz ao longo do vetor
-	// AINDA NAO FOI EDITADA PARA MAT4
-	/*
-	const Mat4 rotate(const Vec4& vector, float angle) const {
-		Vec4 v2 = Vec4::cross(vector, vector);
-
+	static const Mat4 rotate(const Vec3& vector, float angle) {
 		float angle_cos = cos(angle);
 		float angle_sin = sin(angle);
 
-		float R[3][3] = {
-			{
-				angle_cos + v2[0] * (1 - angle_cos),
-				vector[0] * vector[1] * (1 - angle_cos) - vector[2] * angle_sin,
-				vector[0] * vector[2] * (1 - angle_cos) + vector[1] * angle_sin
-			}, {
-				vector[0] * vector[1] * (1 - angle_cos) + vector[2] * angle_sin,
-				angle_cos + v2[1] * (1 - angle_cos),
-				vector[1] * vector[2] * (1 - angle_cos) - vector[0] * angle_sin
-			}, {
-				vector[2] * vector[0] * (1 - angle_cos) - vector[1] * angle_sin,
-				vector[2] * vector[1] * (1 - angle_cos) + vector[0] * angle_sin,
-				angle_cos + v2[2] * (1 - angle_cos)
-			}
-		};
+		float qx = angle_sin * vector[0];
+		float qy = angle_sin * vector[1];
+		float qz = angle_sin * vector[2];
+		float qw = angle_cos;
 
-		Mat4 R_Mat(R[0][0], R[0][1], R[0][2],
-				   R[1][0], R[1][1], R[1][2],
-				   R[2][0], R[2][1], R[2][2]);
-
-		Vec4 c1_2, c2_2, c3_2;
-
-		c1_2 = R_Mat * c1;
-		c2_2 = R_Mat * c2;
-		c3_2 = R_Mat * c3;
-
-		Mat4 mat_copy(c1_2, c2_2, c3_2);
-
-		return mat_copy;
-	}
-	*/
+		Vec4 c1(pow(qw,2) + pow(qx,2) - pow(qy,2) - pow(qz,2), 2*(qx*qy + qw*qz), 2*(qx*qz - qw*qy), 0);
+		Vec4 c2(2*(qx*qy - qw*qz), pow(qw,2) - pow(qx,2) + pow(qy,2) - pow(qz,2), 2*(qy*qz + qw*qx), 0);
+		Vec4 c3(2*(qx*qz + qw*qy), 2*(qy*qz - qw*qx), pow(qw,2) - pow(qx,2) - pow(qy,2) + pow(qz,2), 0);
+		Vec4 c4(0, 0, 0, pow(qw,2) + pow(qx,2) + pow(qy,2) + pow(qz,2));
 	
-	// Reflete a matriz tomando como eixo de simetria o eixo decrito pelo vetor
-	// AINDA NAO FOI EDITADA PARA MAT4
-
-	const Mat4 reflect(const Vec4& vector) const {
-		// P' = P - n 2 (P n)
-		// Vec4 n1 = Vec4::cross(, vector);
-
-		// Mat4 R(
-		// 	1 - (2 * n1)
-		// );
+		Mat4 quaternio(c1, c2, c3, c4);
+		return quaternio;
 	}
 
 

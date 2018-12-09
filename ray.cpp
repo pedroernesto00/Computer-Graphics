@@ -222,7 +222,8 @@ void calculatePixelColor(int i, int j) {
                             Color[2] = defaultColor[2];
                             Vec3 shadow_fact(0.3, 0.3, 0.3);
                             Color = Vec3::at(Color, shadow_fact);
-                            // obj = objects_len;
+                            obj = objects_len;
+                            break;
                         }
                     }
                 }

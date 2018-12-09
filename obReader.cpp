@@ -18,6 +18,15 @@ enum Render
 	OPENGL
 };
 
+//Struct: para cada vértice guarda normal correspondente. 
+
+typedef struct Nvertex 
+{
+	unsigned short int indexVertex;
+	unsigned short int indexNormal;
+
+} Nvertex;
+
 
 /*
 	ATENÇÃO: Compilar usando -lstdc++fs -std=c++17
@@ -29,6 +38,8 @@ enum Render
 vector<string> pontos;
 vector<string> normais;
 vector<string> faces;
+vector <Nvertex> normalsPerVertex;
+
 
 void lerObj(string path, string objName, Render typeRender)
 {
@@ -96,7 +107,9 @@ void lerObj(string path, string objName, Render typeRender)
 			}
 
 			stringstream objNormal;
-			objNormal << "Vetor( " << coord[0] << ", " << coord[1] << ", " << coord[2] << " )";
+			if(typeRender == RAYCAST) objNormal << "Vetor( " << coord[0] << ", " << coord[1] << ", " << coord[2] << " )";
+			else if (typeRender == OPENGL) objNormal  << coord[0] << ", " << coord[1] << ", " << coord[2];
+			
 
 			normais.push_back(objNormal.str());
 
@@ -127,7 +140,24 @@ void lerObj(string path, string objName, Render typeRender)
 
 			//objFace << "Face( " << pontos[coord[0] - 1] << ", " << pontos[coord[3] - 1] << ", " << pontos[coord[6] - 1] << ", " << normais[coord[2] - 1] << " )";
 			if(typeRender == RAYCAST)objFace << "Triangle( " << objName << "_vertices" << "[" << coord[0] - 1 << "]" << ", " << objName << "_vertices" << "[" << coord[2] - 1 << "]" << ", " << objName << "_vertices" << "[" << coord[4] - 1 << "]" << ")";
-			else if(typeRender == OPENGL) objFace << coord[0] - 1 << ", " << coord[2] - 1 << ", " << coord[4] - 1;
+			else if(typeRender == OPENGL)  objFace << coord[0] - 1 << ", " << coord[2] - 1 << ", " << coord[4] - 1; 
+				
+			Nvertex nv = {0, 0};
+			nv.indexVertex = coord[0] - 1;
+			nv.indexNormal = coord[1] - 1;
+
+
+			Nvertex nv2 = {0, 0};
+			nv2.indexVertex = coord[2] - 1;
+			nv2.indexNormal = coord[3] - 1;
+
+			Nvertex nv3 = {0, 0};
+			nv3.indexVertex = coord[4] - 1;
+			nv3.indexNormal = coord[5] - 1;
+
+			normalsPerVertex.push_back(nv);
+			normalsPerVertex.push_back(nv2);
+			normalsPerVertex.push_back(nv3);
 			
 			faces.push_back(objFace.str());
 
@@ -206,7 +236,29 @@ void writeObject(string path, string objName, Render typeRender)
 
 	//Escrita em caso de OpenGL
 
+	if (typeRender == OPENGL)
+	{
+		string coordNormals[pontos.size()];
+
+		for (auto npv : normalsPerVertex)
+		{
+			coordNormals[npv.indexVertex] = normais[npv.indexNormal];
+
+			cout << npv.indexVertex << endl;
+
+
+		}
+
+		
+		outObj << "float " << objName << "_normais[]" << " = {" << endl;
 	
+		for (int i = 0; i < pontos.size() ; i++) {
+			outObj << "\t" << coordNormals[i] << ", " << endl;
+			
+		}
+		outObj << "}; " << endl;
+
+	}
 
 
 	outObj.close();
@@ -236,7 +288,7 @@ void prepararArquivo(Render typeRender)
 		exit(1);
 	}
 
-	if(typeRender == RAYCAST) arq << "#include <cmath>" << endl << "#include <iostream>" << endl << "#include \"..\\scenario_new.h\"" << endl;
+	if(typeRender == RAYCAST) arq << "#include <cmath>" << endl << "#include <iostream>" << endl << "#include \"scenario_new.h\"" << endl;
 
 	arq.close();
 
@@ -274,6 +326,7 @@ int main(int argc, char const *argv[])
 			pontos.clear();
 			normais.clear();
 			faces.clear();
+			normalsPerVertex.clear();
 		} 
 	}
 

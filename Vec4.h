@@ -204,7 +204,18 @@ public:
 
 	//const Vec4
 
+	static const Vec3 cross(const Vec3& vetorA, const Vec3& vetorB)
+	{
+		return Vec3(
 
+			vetorA[1] * vetorB[2] - vetorB[1] * vetorA[2], 
+			
+			vetorA[2] * vetorB[0] - vetorB[2] * vetorA[0], 
+
+			vetorA[0] * vetorB[1] - vetorB[0] * vetorA[1]
+
+			);
+	}
 
 };
 

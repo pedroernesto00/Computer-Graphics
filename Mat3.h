@@ -461,15 +461,6 @@ public:
 		return mat_copy;
 	}
 
-	// Reflete a matriz tomando como eixo de simetria o eixo decrito pelo vetor
-	const Mat3 reflect(const Vec3& vector) const {
-		// P' = P - n 2 (P n)
-		// Vec3 n1 = Vec3::cross(, vector);
-
-		// Mat3 R(
-		// 	1 - (2 * n1)
-		// );
-	}
 };
 
 #endif

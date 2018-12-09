@@ -88,6 +88,14 @@ class Point {
                 break;
         }
     }
+
+    static const Point pointScale(const Point& oldPoint, const Point& centerPoint, const Mat4& scala) {
+        Vec3 v(oldPoint-centerPoint);
+
+        Vec4 newV( scala * Vec4(v[0], v[1], v[2], 0) );
+        
+        return Point(centerPoint + newV);
+    }
 };
 
 Point::Point (const Point& p) {
@@ -265,26 +273,6 @@ class Triangle {
        if (index == 1) return this->vertex1;
        if (index == 2) return this->vertex2;
        if (index == 3) return this->vertex3;
-    }
-
-    const Triangle operator * (const Mat4& mat) const {
-        Point pontoMedio = Point((this->vertex1.x + this->vertex2.x + this->vertex3.x)/3,
-                                (this->vertex1.y + this->vertex2.y + this->vertex3.y)/3,
-                                (this->vertex1.z + this->vertex2.z + this->vertex3.z)/3);
-
-        Vec3 v1(this->vertex1-pontoMedio);
-        Vec3 v2(this->vertex2-pontoMedio);
-        Vec3 v3(this->vertex3-pontoMedio);
-
-        Vec4 newV1( mat * Vec4(v1[0], v1[1], v1[2], 0) );
-        Vec4 newV2( mat * Vec4(v2[0], v2[1], v2[2], 0) );
-        Vec4 newV3( mat * Vec4(v3[0], v3[1], v3[2], 0) );
-        
-        Point newP1(pontoMedio + newV1);
-        Point newP2(pontoMedio + newV2);
-        Point newP3(pontoMedio + newV3);
-
-       return Triangle(newP1, newP2, newP3);
     }
 
     void setVertex(unsigned short int t, Point& p) {

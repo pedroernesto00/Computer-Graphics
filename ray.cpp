@@ -21,14 +21,14 @@
 
 using namespace std;
 
-const int canvasH = 96;
-const int canvasW = 136;
+const int canvasH = 70;
+const int canvasW = 110;
 
 float camera_rot = 0;
 
-float d = -50;                     // Position of window
+float d = -70;                     // Position of window
 const int windowW = 680;           // Width of window
-const int windowH = 380; // Height of window
+const int windowH = 433; // Height of window
 float dy = (float)canvasH/windowH;                  // Size of y delta
 float dx = (float)canvasW/windowW;                   // Size of x delta
 
@@ -39,9 +39,9 @@ void setup(void) {
 }
 
 // Origin's point of camera
-Point O(7, 4, 5); // Front
+Point O(7.49878, 5.5, 7.30468); // Front
 
-Point LookAt(0.065415, 1.32731, 3.27816);
+Point LookAt(2.00653, 2.01717, 0.98869);
 Point ViewUp(LookAt.x, LookAt.y + 10, LookAt.z);
 Vec3 K_camera(O.x - LookAt.x, O.y - LookAt.y, O.z - LookAt.z);
 Vec3 k_camera = Vec3::normalize(K_camera);
@@ -51,26 +51,20 @@ Vec3 i_camera = Vec3::normalize(I_camera);
 Vec3 J_camera = Vec3::cross(k_camera, i_camera);
 Vec3 j_camera = Vec3::normalize(J_camera);
 
-Point light1_center(0.065415, 4, 3.27816);
-Vec3 light1_color(1, 1, 1);
+Point light1_center(3.55819, 5.41288, 0.890104);
+Vec3 light1_color(0.7, 0.7, 0.7);
 Light light1(light1_center, light1_color);
 
-Point light2_center(100, 1500, 600);
-Vec3 light2_color(0.1, 0.1, 0.1);
+Point light2_center(light1_center[0] + 0.1, light1_center[1], light1_center[2]);
+Vec3 light2_color(0.8, 0.5, 0.7);
 Light light2(light2_center, light2_color);
 
-int num_lights = 1;
-Light lights[] = {light1};
+Light lights[] = {light1, light2 };
+int num_lights = sizeof(lights) / sizeof(Light);
 
 // Model objects[] = {cadeira, copo, gavetas, janela, livro1, livro2, livro3, lixeira, mesa, monitor, piso, porta };
-Model objects[] = {mesa, monitor, cadeira, paredes, piso, copo};
+Model objects[] = {cadeira, copo, gavetas, janela, livro1, livro2, livro3, lixeira, mesa, monitor, piso, porta, parede1, parede2, parede3};
 int objects_len = sizeof(objects) / sizeof(Model);
-
-// Setting snow material
-Vec3 snow_env_material(0.8, 0.8, 0.8);   // Material's enviroment component factors
-Vec3 snow_dif_material(0.7, 0.7, 0.8);   // Material's difuse component factors
-Vec3 snow_spe_material(0.1, 0.4, 0.4);   // Material's specular component factors
-Material snow_material(snow_env_material, snow_dif_material, snow_spe_material);
 
 Point worldToCamera(Point Po) {
     Vec3 OO(O.x, O.y, O.z);
@@ -166,73 +160,70 @@ void calculatePixelColor(int i, int j) {
             objects[m].material.env_material[2]
         );
 
+        // Generating the final color for current pixel
+        Vec3 Color(Ienv[0], Ienv[1], Ienv[2]);
+        Color = Vec3::at(Color, Kenv);
+
+        Vec3 Kdif(
+            objects[m].material.dif_material[0],
+            objects[m].material.dif_material[1],
+            objects[m].material.dif_material[2]); // Components factors to difuse light
+
+        Vec3 Kspe(
+            objects[m].material.spe_material[0],
+            objects[m].material.spe_material[1],
+            objects[m].material.spe_material[2]); // Components factors to specular light
+
         for (int q = 0; q < num_lights; q++) {
             Vec3 L(lights[q].center.x - P.x, lights[q].center.y - P.y, lights[q].center.z - P.z);
             Vec3 l = Vec3::normalize(L); // Nomalized vector from point to light
-
-            // Generating the final color for current pixel
-            Vec3 Color(Ienv[0], Ienv[1], Ienv[2]);
-            Color = Vec3::at(Color, Kenv);
-
-            Vec3 Kdif(
-                objects[m].material.dif_material[0],
-                objects[m].material.dif_material[1],
-                objects[m].material.dif_material[2]); // Components factors to difuse light
-
-            Vec3 Kspe(
-                objects[m].material.spe_material[0],
-                objects[m].material.spe_material[1],
-                objects[m].material.spe_material[2]); // Components factors to specular light
-
+            
             Vec3 If(
                 lights[q].color[0],
                 lights[q].color[1],
                 lights[q].color[2]); // Light rate
 
             // Calculating the difusing rate
-            Vec3 Idif(If[0] * Kdif[0], If[1] * Kdif[1], If[2] * Kdif[2]);
+            Vec3 Idif = Kdif;
             Idif *= Vec3::dot(l, n);
 
             // Calculating the specular rate
-            Vec3 Ispe(If[0] * Kspe[0], If[1] * Kspe[1], If[2] * Kspe[2]);
+            Vec3 Ispe = Kspe;
             Vec3 r = (n * (2 * Vec3::dot(l, n))) - l;
             Vec3 PO(O.x - P.x, O.y - P.y, O.z - P.z);
             Vec3 v = Vec3::normalize(PO);
-            Ispe *= pow(Vec3::dot(r, v), 3);
+            Ispe *= pow(Vec3::dot(r, v), 2);
 
-            Color = Vec3::at(Color, Kenv);
-            Color += Idif;
-            Color += Ispe;
+            Idif = Idif + Ispe;
 
-            defaultColor[0] = Color[0];
-            defaultColor[1] = Color[1];
-            defaultColor[2] = Color[2];
+            int shadow = 0;
 
-            // float t_shadow_min = -1e10;
-            for (int obj = 0; obj < objects_len; obj++) {
-                // Checking if the ball is intercepted by light ray
+            for (int obj = 0; obj < objects_len && shadow == 0; obj++) {
+                // // Checking if the ball is intercepted by light ray
                 bool shadow_intercepted = false;
-                float t_shadow_int = objects[obj].cluster->checkInterception(shadow_intercepted, l, P, true);
-                if (shadow_intercepted && t_shadow_int <= 0) {
-                    for (int z = 0; z < objects[obj].num_faces; z++) {
+                float t_cluster = objects[obj].cluster->checkInterception(shadow_intercepted, l, P, true);
+                if (shadow_intercepted) {
+                    for (int z = 0; z < objects[obj].num_faces && shadow == 0; z++) {
                         resultado result = objects[obj].faces[z].intersectionTriangle(l, P);
-                        if (result.interceptou) {
-                            Color[0] = defaultColor[0];
-                            Color[1] = defaultColor[1];
-                            Color[2] = defaultColor[2];
-                            Vec3 shadow_fact(0.3, 0.3, 0.3);
-                            Color = Vec3::at(Color, shadow_fact);
-                            obj = objects_len;
-                            break;
+                        if (result.intersecao >= 0 && result.interceptou) {
+                            shadow = 1;
+                            if (obj == m && z == k) {
+                                shadow = 0;
+                            }
                         }
                     }
                 }
             }
 
-            defaultColor[0] = Color[0];
-            defaultColor[1] = Color[1];
-            defaultColor[2] = Color[2];
+            Idif = Idif * (1 - shadow);
+            Idif = Vec3::at(Idif, If);
+
+            Color = Color + Idif;
         }
+
+        defaultColor[0] = Color[0];
+        defaultColor[1] = Color[1];
+        defaultColor[2] = Color[2];
     }
 
     pixels[i * windowW * 3 + j * 3] = defaultColor[0];
@@ -288,15 +279,9 @@ int main(int argc, char **argv){
         objects[i].cluster->center = worldToCamera(objects[i].cluster->center);
     }
 
-    // for (int i = 0; i < num_vertices2; i++) {
-    //     cout << "Point(200 + 20 * " << vertices2[i][0] << ", 200 + 20 * " << vertices2[i][1] << ", 600 + 20 * " << vertices2[i][2] << ")," << endl;
-    // }
-
-    // for (int i = 0; i < num_faces2; i++) {
-    //     cout << "Trianglue(vertices2[" << faces2[i][0] - 1 << "], " << "vertices2[" << faces2[i][1] - 1 << "], " << "vertices2[" << faces2[i][2]- 1 << "]), " << endl;
-    // }
-
-    light2.center = worldToCamera(light2.center);
+    for (int i = 0; i < num_lights; i++) {
+        lights[i].center = worldToCamera(lights[i].center);
+    }
     O = worldToCamera(O);
 
     loadPixels();

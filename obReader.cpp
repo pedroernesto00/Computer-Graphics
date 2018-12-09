@@ -192,9 +192,9 @@ void writeObject(string path, string objName, Render typeRender)
 	if (typeRender == RAYCAST)
 	{
 		outObj << "//Setting " << objName << "'s " << "material" << endl; 
-		outObj << "Vec3 " << objName << "_env_material" << "(0.9, 0.9, 0.9); // Material's enviroment component factors" << endl;
-		outObj << "Vec3 " << objName << "_dif_material" << "(0.9, 0.9, 0.9);   // Material's difuse component factors" << endl;
-		outObj << "Vec3 " << objName << "_spe_material" <<  "(0.9, 0.9, 0.9);   // Material's specular component factors " << endl;
+		outObj << "Vec3 " << objName << "_env_material" << "(0.5, 0.4, 0.3); // Material's enviroment component factors" << endl;
+		outObj << "Vec3 " << objName << "_dif_material" << "(0.6, 0.8, 0.7);   // Material's difuse component factors" << endl;
+		outObj << "Vec3 " << objName << "_spe_material" <<  "(0.3, 0.4, 0.5);   // Material's specular component factors " << endl;
 		outObj << "Material " << objName << "_material" << "(" << objName << "_env_material" << ", " << objName << "_dif_material" << ", " << objName << "_spe_material"<< ");" << endl;
 	}	
 	
@@ -288,7 +288,7 @@ void prepararArquivo(Render typeRender)
 		exit(1);
 	}
 
-	if(typeRender == RAYCAST) arq << "#include <cmath>" << endl << "#include <iostream>" << endl << "#include \"scenario_new.h\"" << endl;
+	if(typeRender == RAYCAST) arq << "#include <cmath>" << endl << "#include <iostream>" << endl << "#include \"..\\scenario_new.h\"" << endl;
 
 	arq.close();
 

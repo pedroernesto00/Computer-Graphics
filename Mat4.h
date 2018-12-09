@@ -388,8 +388,6 @@ public:
 			);
 	}
 
-
-
 	static const Mat4 translate(const Vec3& t) {
 		return Mat4(
 			Vec4( 1,     0,    0,    0),
@@ -398,7 +396,6 @@ public:
 			Vec4(t[0], t[1], t[2],   1)
 			);
 	}
-
 	
 	static const Mat4 rotate(const Vec3& vector, float angle) {
 		float angle_cos = cos(angle);

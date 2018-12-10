@@ -237,44 +237,44 @@ float Sphere::checkInterception(bool& intercept, Vec3 V, Point O, const bool& is
 
 class Triangle {
   public:
-    Point vertex1;
-    Point vertex2;
-    Point vertex3;
+    Point *vertex1;
+    Point *vertex2;
+    Point *vertex3;
     bool visible;
     Material material;
 
     Triangle() {}
 
     Triangle(Point& v1, Point& v2, Point& v3) {
-        vertex1 = v1;
-        vertex2 = v2;
-        vertex3 = v3;
+        vertex1 = &v1;
+        vertex2 = &v2;
+        vertex3 = &v3;
         visible = true;
         material = Material();
     }
 
     Triangle(Point& v1, Point& v2, Point& v3, Material m) {
-        vertex1 = v1;
-        vertex2 = v2;
-        vertex3 = v3;
+        vertex1 = &v1;
+        vertex2 = &v2;
+        vertex3 = &v3;
         material = m;
         visible = true;
     }
 
     Point operator [] (short unsigned int index) const {
-       if (index == 1) return this->vertex1;
-       if (index == 2) return this->vertex2;
-       if (index == 3) return this->vertex3;
+       if (index == 1) return (*this->vertex1);
+       if (index == 2) return (*this->vertex2);
+       if (index == 3) return (*this->vertex3);
     }
 
     const Triangle operator * (const Mat4& mat) const {
-        Point pontoMedio = Point((this->vertex1.x + this->vertex2.x + this->vertex3.x)/3,
-                                (this->vertex1.y + this->vertex2.y + this->vertex3.y)/3,
-                                (this->vertex1.z + this->vertex2.z + this->vertex3.z)/3);
+        Point pontoMedio = Point((this->vertex1->x + this->vertex2->x + this->vertex3->x)/3,
+                                (this->vertex1->y + this->vertex2->y + this->vertex3->y)/3,
+                                (this->vertex1->z + this->vertex2->z + this->vertex3->z)/3);
 
-        Vec3 v1(this->vertex1-pontoMedio);
-        Vec3 v2(this->vertex2-pontoMedio);
-        Vec3 v3(this->vertex3-pontoMedio);
+        Vec3 v1((*this->vertex1)-pontoMedio);
+        Vec3 v2((*this->vertex2)-pontoMedio);
+        Vec3 v3((*this->vertex3)-pontoMedio);
 
         Vec4 newV1( mat * Vec4(v1[0], v1[1], v1[2], 0) );
         Vec4 newV2( mat * Vec4(v2[0], v2[1], v2[2], 0) );
@@ -289,21 +289,21 @@ class Triangle {
 
     void setVertex(unsigned short int t, Point& p) {
         if(t == 1) {
-            this->vertex1 = p;
+            this->vertex1 = &p;
         }
 
         if(t == 2) {
-            this->vertex2 = p;
+            this->vertex2 = &p;
         }
 
         if (t==3) {
-            this->vertex3 = p;
+            this->vertex3 = &p;
         }
     }
 
     Vec3 findNormal(void) {
-        Vec3 edge1 = (this->vertex2 - this->vertex1);
-        Vec3 edge2 = (this->vertex3 - this->vertex1);
+        Vec3 edge1 = ((*this->vertex2) - (*this->vertex1));
+        Vec3 edge2 = ((*this->vertex3) - (*this->vertex1));
 
         return Vec3::cross(edge1, edge2);
     }
@@ -323,7 +323,7 @@ class Triangle {
             r.intersecao = 0;
             return r;
         } else {
-            Vec3 sourceVertex = this->vertex1 - O; //Vetor da origem da câmera para um dos vértices do triângulo (neste caso, o primeiro)
+            Vec3 sourceVertex = (*this->vertex1) - O; //Vetor da origem da câmera para um dos vértices do triângulo (neste caso, o primeiro)
             float tIntersection = Vec3::dot(sourceVertex, normalTriangleUni) / productNormalRadius; 
 
             if (tIntersection < 0) { //O objeto está atrás do observador
@@ -338,13 +338,13 @@ class Triangle {
             Vec3 sourceToPoint(O.x + v_aux[0], O.y + v_aux[1], O.z + v_aux[2]);
             Point pointIntersection(sourceToPoint[0], sourceToPoint[1], sourceToPoint[2]); //Esta linha foi necessária para transformar o vetor posição do ponto de interseção em um ponto.
 
-            Vec3 edge1 = this->vertex2 - this->vertex1; //Vetor do vertex1 para o vertex2
-            Vec3 edge2 = this->vertex3 - this->vertex2; //Vetor do vertice 2 para o vertice 3
-            Vec3 edge3 = this->vertex1 - this->vertex3; //Vetor do vertice 3 para o vertice 1
+            Vec3 edge1 = (*this->vertex2) - (*this->vertex1); //Vetor do vertex1 para o vertex2
+            Vec3 edge2 = (*this->vertex3) - (*this->vertex2); //Vetor do vertice 2 para o vertice 3
+            Vec3 edge3 = (*this->vertex1) - (*this->vertex3); //Vetor do vertice 3 para o vertice 1
 
-            Vec3 vertex1Point = pointIntersection - this->vertex1; //Vetor do vértice 1 para o ponto de interseção
-            Vec3 vertex2Point = pointIntersection - this->vertex2; //Vetor do vértice 2 para o ponto de interseção
-            Vec3 vertex3Point = pointIntersection - this->vertex3; //Vetor do vértice 3 para o ponto de interseção
+            Vec3 vertex1Point = pointIntersection - (*this->vertex1); //Vetor do vértice 1 para o ponto de interseção
+            Vec3 vertex2Point = pointIntersection - (*this->vertex2); //Vetor do vértice 2 para o ponto de interseção
+            Vec3 vertex3Point = pointIntersection - (*this->vertex3); //Vetor do vértice 3 para o ponto de interseção
 
             Vec3 edgeVertex1 = Vec3::cross(edge1, vertex1Point);
             Vec3 edgeVertex2 = Vec3::cross(edge2, vertex2Point);
@@ -368,17 +368,83 @@ class Triangle {
     }
 };
 
+class BoundingBox {
+  public:
+    Point *vertices;
+    Triangle *faces;
+
+    BoundingBox(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
+        Point _vertices[] = {
+            Point(minX, minY, maxZ), // p1
+            Point(maxX, minY, maxZ), // p2
+            Point(minX, maxY, maxZ), // p3
+            Point(maxX, maxY, maxZ), // p4
+
+            Point(minX, minY, minZ), // p5
+            Point(maxX, minY, minZ), // p6
+            Point(minX, maxY, minZ), // p7
+            Point(maxX, maxY, minZ) // p8
+        };
+
+        Triangle _faces[] = {
+            Triangle(vertices[0], vertices[1], vertices[2]), // f1
+            Triangle(vertices[1], vertices[3], vertices[2]), // f2
+            Triangle(vertices[1], vertices[5], vertices[3]), // f3
+            Triangle(vertices[5], vertices[4], vertices[3]), // f4
+
+            Triangle(vertices[5], vertices[6], vertices[4]), // f5
+            Triangle(vertices[5], vertices[4], vertices[6]), // f6
+            Triangle(vertices[4], vertices[2], vertices[6]), // f7
+            Triangle(vertices[2], vertices[4], vertices[0]), // f8
+
+            Triangle(vertices[3], vertices[4], vertices[6]), // f9
+            Triangle(vertices[3], vertices[6], vertices[2]), // f10
+            Triangle(vertices[1], vertices[5], vertices[5]), // f11
+            Triangle(vertices[0], vertices[4], vertices[1]), // f12
+        };
+
+        vertices = _vertices;
+        faces = _faces;
+    }
+
+    bool intercept(Vec3 V, Point O) {
+        for (int k = 0; k < 12; k++) {
+            if (faces[k].visible == true) {
+                // Draw Triangle
+                resultado result = faces[k].intersectionTriangle(V, O);
+                if (result.interceptou) {
+                    return true;
+                }
+            }   
+        }
+
+        return false;
+    }
+};
 
 class Model {
   private:
-
     void setCluster() {
         Point middle_point(0, 0, 0);
 
+        float minX = 1e10;
+        float minY = 1e10;
+        float minZ = 1e10;
+        float maxX = -1e10;
+        float maxY = -1e10;
+        float maxZ = -1e10;
+    
         for (int i = 0; i < num_vertices; ++i) {
             middle_point.x += vertices[i].x;
             middle_point.y += vertices[i].y;
             middle_point.z += vertices[i].z;
+
+            if (vertices[i].z < minZ) minZ = vertices[i].z;
+            if (vertices[i].y < minY) minY = vertices[i].y;
+            if (vertices[i].x < minX) minX = vertices[i].x;
+            if (vertices[i].z > maxZ) maxZ = vertices[i].z;
+            if (vertices[i].y > maxY) maxY = vertices[i].y;
+            if (vertices[i].x > maxX) maxX = vertices[i].x;
         }
 
         middle_point.x /= num_vertices;
@@ -399,12 +465,14 @@ class Model {
         }
 
         cluster = new Sphere(middle_point, max_distance);
+        box = new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
     };
 
   public:
     int num_faces;
     int num_vertices;
     Sphere *cluster;
+    BoundingBox *box;
     Point *vertices;
     Triangle *faces;
     Material material;

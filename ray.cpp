@@ -278,7 +278,7 @@ int main(int argc, char **argv){
     Mat4 scl = Mat4::scale(Vec3(2,2,2));
     Mat4 rot = Mat4::rotate(r,M_PI/2);
 
-    //objects[0].rotate(rot);
+    objects[0].move(scl);
 
     backfaceElimination();
 

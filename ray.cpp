@@ -99,6 +99,17 @@ void backfaceElimination() {
                 objects[m].faces[k].visible = true;
             }
         }
+
+        for (int k = 0; k < 12; k++) {
+            Vec3 face_normal = Vec3::normalize(objects[m].box->faces[k].findNormal());
+            float cos_angle = Vec3::dot(face_normal, k_camera * -1);
+
+            if (cos_angle > 0) {
+                objects[m].box->faces[k].visible = false;
+            } else {
+                objects[m].box->faces[k].visible = true;
+            }
+        }
     }
 }
 
@@ -203,7 +214,7 @@ void calculatePixelColor(int i, int j) {
 
             for (int obj = 0; obj < objects_len && shadow == 0; obj++) {
                 // Checking if the ball is intercepted by light ray
-                bool shadow_intercepted = objects[obj].box->intercept(l, P);
+                bool shadow_intercepted = objects[obj].box->interceptShadow(l, P);
                 if (shadow_intercepted) {
                     for (int z = 0; z < objects[obj].num_faces && shadow == 0; z++) {
                         resultado result = objects[obj].faces[z].intersectionTriangle(l, P);

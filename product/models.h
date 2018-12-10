@@ -1,6 +1,6 @@
 #include <cmath>
 #include <iostream>
-#include "..\scenario_new.h"
+#include "../scenario_new.h"
 
 Vec3 cadeira_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
 Vec3 cadeira_dif_material(0.6, 0.8, 0.7); // Material's difuse component factors

@@ -10,13 +10,13 @@ Vec3 copo_env_material(0.5, 0.4, 0.3);	// Material's enviroment component factor
 Vec3 copo_dif_material(0.6, 0.8, 0.7);	// Material's difuse component factors
 Vec3 copo_spe_material(0.3, 0.4, 0.5);	// Material's specular component factors
 
-Vec3 gavetas_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 gavetas_dif_material(0.6, 0.8, 0.7); // Material's difuse component factors
-Vec3 gavetas_spe_material(0.3, 0.4, 0.5); // Material's specular component factors
+Vec3 gavetas_env_material(0.2125f, 0.1275f, 0.054f); // Material's enviroment component factors
+Vec3 gavetas_dif_material(0.714f, 0.4284f, 0.18144f); // Material's difuse component factors
+Vec3 gavetas_spe_material(0.393548f, 0.271906f, 0.166721f); // Material's specular component factors
 
-Vec3 janela_env_material(0.5, 0.4, 0.3);  // Material's enviroment component factors
-Vec3 janela_dif_material(0.6, 0.8, 0.7);  // Material's difuse component factors
-Vec3 janela_spe_material(0.3, 0.4, 0.5);  // Material's specular component factors
+Vec3 janela_env_material(0.25f, 0.148f, 0.06475f);  // Material's enviroment component factors
+Vec3 janela_dif_material(0.4f, 0.2368f, 0.1036f);  // Material's difuse component factors
+Vec3 janela_spe_material(0.774597f, 0.458561f, 0.200621f);  // Material's specular component factors
 
 Vec3 livro1_env_material(0.5, 0.4, 0.3);  // Material's enviroment component factors
 Vec3 livro1_dif_material(0.6, 0.8, 0.7);  // Material's difuse component factors

@@ -66,7 +66,7 @@ Light lights[] = {light1};
 int num_lights = sizeof(lights) / sizeof(Light);
 
 // Model objects[] = {cadeira, copo, gavetas, janela, livro1, livro2, livro3, lixeira, mesa, monitor, piso, porta };
-Model objects[] = {piso, cadeira};
+Model objects[] = {cadeira, copo, gavetas, janela, livro1, livro2, livro3, lixeira, mesa, monitor, piso, porta, teto, parede1, parede2, parede3};
 int objects_len = sizeof(objects) / sizeof(Model);
 
 Point worldToCamera(Point Po) {
@@ -99,6 +99,17 @@ void backfaceElimination() {
                 objects[m].faces[k].visible = true;
             }
         }
+
+        // for (int k = 0; k < 12; k++) {
+        //     Vec3 face_normal = Vec3::normalize(objects[m].box->faces[k].findNormal());
+        //     float cos_angle = Vec3::dot(face_normal, k_camera * -1);
+
+        //     if (cos_angle > 0) {
+        //         objects[m].box->faces[k].visible = false;
+        //     } else {
+        //         objects[m].box->faces[k].visible = true;
+        //     }
+        // }
     }
 }
 
@@ -127,8 +138,7 @@ void calculatePixelColor(int i, int j) {
     int selectedFace = -1;
 
     for (int m = 0; m < objects_len; m++) {
-        bool intercepted = false;
-        float t_cluster_int = objects[m].cluster->checkInterception(intercepted, V, O);
+        bool intercepted = objects[m].box->intercept(V, O);
 
         if (intercepted) {
             for (int k = 0; k < objects[m].num_faces; k++) {
@@ -204,8 +214,7 @@ void calculatePixelColor(int i, int j) {
 
             for (int obj = 0; obj < objects_len && shadow == 0; obj++) {
                 // Checking if the ball is intercepted by light ray
-                bool shadow_intercepted = false;
-                float t_cluster = objects[obj].cluster->checkInterception(shadow_intercepted, l, P, true);
+                bool shadow_intercepted = objects[obj].box->intercept(l, P);
                 if (shadow_intercepted) {
                     for (int z = 0; z < objects[obj].num_faces && shadow == 0; z++) {
                         resultado result = objects[obj].faces[z].intersectionTriangle(l, P);
@@ -276,6 +285,10 @@ int main(int argc, char **argv){
     for (int i = 0; i < objects_len; i++) {
         for (int k = 0; k < objects[i].num_vertices; k++) {
             objects[i].vertices[k] = worldToCamera(objects[i].vertices[k]);
+        }
+
+        for (int k = 0; k < 8; k++) {
+            objects[i].box->vertices[k] = worldToCamera(objects[i].box->vertices[k]);
         }
 
         objects[i].cluster->center = worldToCamera(objects[i].cluster->center);

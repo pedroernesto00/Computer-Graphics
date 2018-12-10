@@ -88,14 +88,6 @@ class Point {
                 break;
         }
     }
-
-    static const Point pointScale(const Point& oldPoint, const Point& centerPoint, const Mat4& scala) {
-        Vec3 v(oldPoint-centerPoint);
-
-        Vec4 newV( scala * Vec4(v[0], v[1], v[2], 0) );
-        
-        return Point(centerPoint + newV);
-    }
 };
 
 Point::Point (const Point& p) {
@@ -378,57 +370,76 @@ class Triangle {
 
 class BoundingBox {
   public:
-    Point *vertices;
-    Triangle *faces;
+    Point vertices[8] = {
+        Point(0, 0, 0), // p1
+        Point(0, 0, 0), // p2
+        Point(0, 0, 0), // p3
+        Point(0, 0, 0), // p4
 
-    BoundingBox(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
-        Point _vertices[] = {
-            Point(minX, minY, maxZ), // p1
-            Point(maxX, minY, maxZ), // p2
-            Point(minX, maxY, maxZ), // p3
-            Point(maxX, maxY, maxZ), // p4
+        Point(0, 0, 0), // p5
+        Point(0, 0, 0), // p6
+        Point(0, 0, 0), // p7
+        Point(0, 0, 0)  // p8
+    };
 
-            Point(minX, minY, minZ), // p5
-            Point(maxX, minY, minZ), // p6
-            Point(minX, maxY, minZ), // p7
-            Point(maxX, maxY, minZ) // p8
-        };
+    Triangle faces[12] = {
+        Triangle(vertices[0], vertices[1], vertices[2]), // f1
+        Triangle(vertices[1], vertices[3], vertices[2]), // f2
+        Triangle(vertices[1], vertices[5], vertices[3]), // f3
+        Triangle(vertices[5], vertices[4], vertices[3]), // f4
 
-        Triangle _faces[] = {
-            Triangle(vertices[0], vertices[1], vertices[2]), // f1
-            Triangle(vertices[1], vertices[3], vertices[2]), // f2
-            Triangle(vertices[1], vertices[5], vertices[3]), // f3
-            Triangle(vertices[5], vertices[4], vertices[3]), // f4
+        Triangle(vertices[5], vertices[6], vertices[4]), // f5
+        Triangle(vertices[5], vertices[7], vertices[6]), // f6
+        Triangle(vertices[7], vertices[2], vertices[6]), // f7
+        Triangle(vertices[7], vertices[0], vertices[2]), // f8
 
-            Triangle(vertices[5], vertices[6], vertices[4]), // f5
-            Triangle(vertices[5], vertices[4], vertices[6]), // f6
-            Triangle(vertices[4], vertices[2], vertices[6]), // f7
-            Triangle(vertices[2], vertices[4], vertices[0]), // f8
+        Triangle(vertices[7], vertices[1], vertices[0]), // f9
+        Triangle(vertices[7], vertices[5], vertices[1]), // f10
+        Triangle(vertices[3], vertices[4], vertices[6]), // f11
+        Triangle(vertices[6], vertices[2], vertices[3])  // f12
+    };
 
-            Triangle(vertices[3], vertices[4], vertices[6]), // f9
-            Triangle(vertices[3], vertices[6], vertices[2]), // f10
-            Triangle(vertices[1], vertices[5], vertices[5]), // f11
-            Triangle(vertices[0], vertices[4], vertices[1]), // f12
-        };
+    BoundingBox(float& minX, float& minY, float& minZ, float& maxX, float& maxY, float& maxZ) {
+        vertices[0] = Point(minX, minY, maxZ);                // p1
+        vertices[1] = Point(maxX, minY, maxZ);                // p2
+        vertices[2] = Point(minX, maxY, maxZ);                // p3
+        vertices[3] = Point(maxX, maxY, maxZ);                // p4
 
-        vertices = _vertices;
-        faces = _faces;
-    }
+        vertices[4] = Point(minX, minY, minZ); // p5
+        vertices[5] = Point(maxX, minY, minZ); // p6
+        vertices[6] = Point(minX, maxY, minZ); // p7
+        vertices[7] = Point(maxX, maxY, minZ); // p8
 
-    bool intercept(Vec3 V, Point O) {
-        for (int k = 0; k < 12; k++) {
-            if (faces[k].visible == true) {
-                // Draw Triangle
-                resultado result = faces[k].intersectionTriangle(V, O);
-                if (result.interceptou) {
+        faces[0] = Triangle(vertices[0], vertices[1], vertices[2]); // f1
+        faces[1] = Triangle(vertices[1], vertices[3], vertices[2]); // f2
+        faces[2] = Triangle(vertices[1], vertices[5], vertices[3]); // f3
+        faces[3] = Triangle(vertices[5], vertices[4], vertices[3]); // f4
+
+        faces[4] = Triangle(vertices[5], vertices[6], vertices[4]); // f5
+        faces[5] = Triangle(vertices[5], vertices[7], vertices[6]); // f6
+        faces[6] = Triangle(vertices[7], vertices[2], vertices[6]); // f7
+        faces[7] = Triangle(vertices[7], vertices[0], vertices[2]); // f8
+
+        faces[8] = Triangle(vertices[7], vertices[1], vertices[0]); // f9
+        faces[9] = Triangle(vertices[7], vertices[5], vertices[1]);// f10
+        faces[10] = Triangle(vertices[3], vertices[4], vertices[6]);// f11
+        faces[11] = Triangle(vertices[6], vertices[2], vertices[3]);// f12
+    };
+
+    bool intercept(const Vec3& V, const Point& O) {
+        for (int i = 0; i < 12; i++) {
+            if (faces[i].visible == true) {
+                resultado intersection = faces[i].intersectionTriangle(V, O);
+                if (intersection.interceptou) {
                     return true;
                 }
-            }   
+            }
         }
 
         return false;
-    }
+    };
 };
+
 
 class Model {
   private:
@@ -472,8 +483,8 @@ class Model {
             }
         }
 
-        cluster = new Sphere(middle_point, max_distance);
         box = new BoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+        cluster = new Sphere(middle_point, max_distance);
     };
 
   public:

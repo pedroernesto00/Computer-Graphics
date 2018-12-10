@@ -88,6 +88,14 @@ class Point {
                 break;
         }
     }
+
+    static const Point pointScale(const Point& oldPoint, const Point& centerPoint, const Mat4& scala) {
+        Vec3 v(oldPoint-centerPoint);
+
+        Vec4 newV( scala * Vec4(v[0], v[1], v[2], 0) );
+        
+        return Point(centerPoint + newV);
+    }
 };
 
 Point::Point (const Point& p) {

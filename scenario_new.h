@@ -505,16 +505,21 @@ void Model::move(const Mat4& trans) {
         for (int vertex = 0; vertex < this->num_vertices; vertex++) {
             this->vertices[vertex] = this->vertices[vertex] * trans;
         }
+
+	this->setCluster();
     }
 
 void Model::rotate(const Mat4& rot) {
     for (int vertex = 0; vertex < this->num_vertices; vertex++) {
         this->vertices[vertex] = this->vertices[vertex] * rot;
     }
+
+	this->setCluster();
 }
 
 void Model::scale(const Mat4& scl) {
     for (int vertex = 0; vertex < this->num_vertices; vertex++) {
         this->vertices[vertex] = Point::pointScale(this->vertices[vertex], this->cluster->center, scl);
     }
+	this->setCluster();
 }

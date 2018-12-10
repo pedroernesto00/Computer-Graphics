@@ -1,10 +1,75 @@
 #include <cmath>
 #include <iostream>
 #include "..\scenario_new.h"
-//Setting cadeira's material
+
 Vec3 cadeira_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 cadeira_dif_material(0.6, 0.8, 0.7);   // Material's difuse component factors
-Vec3 cadeira_spe_material(0.23, 0.1, 0.2);   // Material's specular component factors 
+Vec3 cadeira_dif_material(0.6, 0.8, 0.7); // Material's difuse component factors
+Vec3 cadeira_spe_material(0.3, 0.4, 0.5); // Material's specular component factors
+
+Vec3 copo_env_material(0.5, 0.4, 0.3);	// Material's enviroment component factors
+Vec3 copo_dif_material(0.6, 0.8, 0.7);	// Material's difuse component factors
+Vec3 copo_spe_material(0.3, 0.4, 0.5);	// Material's specular component factors
+
+Vec3 gavetas_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
+Vec3 gavetas_dif_material(0.6, 0.8, 0.7); // Material's difuse component factors
+Vec3 gavetas_spe_material(0.3, 0.4, 0.5); // Material's specular component factors
+
+Vec3 janela_env_material(0.5, 0.4, 0.3);  // Material's enviroment component factors
+Vec3 janela_dif_material(0.6, 0.8, 0.7);  // Material's difuse component factors
+Vec3 janela_spe_material(0.3, 0.4, 0.5);  // Material's specular component factors
+
+Vec3 livro1_env_material(0.5, 0.4, 0.3);  // Material's enviroment component factors
+Vec3 livro1_dif_material(0.6, 0.8, 0.7);  // Material's difuse component factors
+Vec3 livro1_spe_material(0.3, 0.4, 0.5);  // Material's specular component factors
+
+Vec3 livro2_env_material(0.5, 0.4, 0.3);  // Material's enviroment component factors
+Vec3 livro2_dif_material(0.6, 0.8, 0.7);  // Material's difuse component factors
+Vec3 livro2_spe_material(0.3, 0.4, 0.5);  // Material's specular component factors
+
+Vec3 livro3_env_material(0.5, 0.4, 0.3);  // Material's enviroment component factors
+Vec3 livro3_dif_material(0.6, 0.8, 0.7);  // Material's difuse component factors
+Vec3 livro3_spe_material(0.3, 0.4, 0.5);  // Material's specular component factors
+
+Vec3 lixeira_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
+Vec3 lixeira_dif_material(0.6, 0.8, 0.7); // Material's difuse component factors
+Vec3 lixeira_spe_material(0.3, 0.4, 0.5); // Material's specular component factors
+Vec3 mesa_env_material(0.5, 0.4, 0.3);	// Material's enviroment component factors
+
+Vec3 mesa_dif_material(0.6, 0.8, 0.7);	// Material's difuse component factors
+Vec3 mesa_spe_material(0.3, 0.4, 0.5);	// Material's specular component factors
+Vec3 monitor_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
+
+Vec3 monitor_dif_material(0.6, 0.8, 0.7); // Material's difuse component factors
+Vec3 monitor_spe_material(0.3, 0.4, 0.5); // Material's specular component factors
+Vec3 parede1_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
+
+Vec3 parede1_dif_material(0.6, 0.8, 0.7); // Material's difuse component factors
+Vec3 parede1_spe_material(0.3, 0.4, 0.5); // Material's specular component factors
+Vec3 parede2_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
+Vec3 parede2_dif_material(0.6, 0.8, 0.7); // Material's difuse component factors
+
+Vec3 parede2_spe_material(0.3, 0.4, 0.5); // Material's specular component factors
+Vec3 parede3_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
+Vec3 parede3_dif_material(0.6, 0.8, 0.7); // Material's difuse component factors
+
+Vec3 parede3_spe_material(0.3, 0.4, 0.5); // Material's specular component factors
+Vec3 paredes_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
+Vec3 paredes_dif_material(0.6, 0.8, 0.7); // Material's difuse component factors
+
+Vec3 paredes_spe_material(0.3, 0.4, 0.5); // Material's specular component factors
+Vec3 piso_env_material(0.5, 0.4, 0.3);	// Material's enviroment component factors
+Vec3 piso_dif_material(0.6, 0.8, 0.7);	// Material's difuse component factors
+Vec3 piso_spe_material(0.3, 0.4, 0.5);	// Material's specular component factors
+
+Vec3 porta_env_material(0.5, 0.4, 0.3);   // Material's enviroment component factors
+Vec3 porta_dif_material(0.6, 0.8, 0.7);   // Material's difuse component factors
+Vec3 porta_spe_material(0.3, 0.4, 0.5);   // Material's specular component factors
+
+Vec3 teto_env_material(0.5, 0.4, 0.3);	// Material's enviroment component factors
+Vec3 teto_dif_material(0.6, 0.8, 0.7);	// Material's difuse component factors
+Vec3 teto_spe_material(0.3, 0.4, 0.5);	// Material's specular component factors
+
+//Setting cadeira's material
 Material cadeira_material(cadeira_env_material, cadeira_dif_material, cadeira_spe_material);
 const int cadeira_num_faces = 508;
 const int cadeira_num_vertices = 264;
@@ -786,9 +851,6 @@ Triangle cadeira_faces[] = {
 }; 
 Model cadeira(cadeira_num_faces, cadeira_num_vertices, cadeira_vertices, cadeira_faces, cadeira_material);
 //Setting copo's material
-Vec3 copo_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 copo_dif_material(0.6, 0.8, 0.7);   // Material's difuse component factors
-Vec3 copo_spe_material(0.23, 0.1, 0.2);   // Material's specular component factors 
 Material copo_material(copo_env_material, copo_dif_material, copo_spe_material);
 const int copo_num_faces = 124;
 const int copo_num_vertices = 64;
@@ -986,9 +1048,6 @@ Triangle copo_faces[] = {
 }; 
 Model copo(copo_num_faces, copo_num_vertices, copo_vertices, copo_faces, copo_material);
 //Setting gavetas's material
-Vec3 gavetas_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 gavetas_dif_material(0.6, 0.8, 0.7);   // Material's difuse component factors
-Vec3 gavetas_spe_material(0.23, 0.1, 0.2);   // Material's specular component factors 
 Material gavetas_material(gavetas_env_material, gavetas_dif_material, gavetas_spe_material);
 const int gavetas_num_faces = 468;
 const int gavetas_num_vertices = 248;
@@ -1714,9 +1773,6 @@ Triangle gavetas_faces[] = {
 }; 
 Model gavetas(gavetas_num_faces, gavetas_num_vertices, gavetas_vertices, gavetas_faces, gavetas_material);
 //Setting janela's material
-Vec3 janela_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 janela_dif_material(0.6, 0.8, 0.7);   // Material's difuse component factors
-Vec3 janela_spe_material(0.23, 0.1, 0.2);   // Material's specular component factors 
 Material janela_material(janela_env_material, janela_dif_material, janela_spe_material);
 const int janela_num_faces = 156;
 const int janela_num_vertices = 104;
@@ -1986,9 +2042,6 @@ Triangle janela_faces[] = {
 }; 
 Model janela(janela_num_faces, janela_num_vertices, janela_vertices, janela_faces, janela_material);
 //Setting livro1's material
-Vec3 livro1_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 livro1_dif_material(0.6, 0.8, 0.7);   // Material's difuse component factors
-Vec3 livro1_spe_material(0.23, 0.1, 0.2);   // Material's specular component factors 
 Material livro1_material(livro1_env_material, livro1_dif_material, livro1_spe_material);
 const int livro1_num_faces = 220;
 const int livro1_num_vertices = 112;
@@ -2330,9 +2383,6 @@ Triangle livro1_faces[] = {
 }; 
 Model livro1(livro1_num_faces, livro1_num_vertices, livro1_vertices, livro1_faces, livro1_material);
 //Setting livro2's material
-Vec3 livro2_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 livro2_dif_material(0.6, 0.8, 0.7);   // Material's difuse component factors
-Vec3 livro2_spe_material(0.23, 0.1, 0.2);   // Material's specular component factors 
 Material livro2_material(livro2_env_material, livro2_dif_material, livro2_spe_material);
 const int livro2_num_faces = 220;
 const int livro2_num_vertices = 112;
@@ -2674,9 +2724,6 @@ Triangle livro2_faces[] = {
 }; 
 Model livro2(livro2_num_faces, livro2_num_vertices, livro2_vertices, livro2_faces, livro2_material);
 //Setting livro3's material
-Vec3 livro3_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 livro3_dif_material(0.6, 0.8, 0.7);   // Material's difuse component factors
-Vec3 livro3_spe_material(0.23, 0.1, 0.2);   // Material's specular component factors 
 Material livro3_material(livro3_env_material, livro3_dif_material, livro3_spe_material);
 const int livro3_num_faces = 220;
 const int livro3_num_vertices = 112;
@@ -3018,9 +3065,6 @@ Triangle livro3_faces[] = {
 }; 
 Model livro3(livro3_num_faces, livro3_num_vertices, livro3_vertices, livro3_faces, livro3_material);
 //Setting lixeira's material
-Vec3 lixeira_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 lixeira_dif_material(0.6, 0.8, 0.7);   // Material's difuse component factors
-Vec3 lixeira_spe_material(0.23, 0.1, 0.2);   // Material's specular component factors 
 Material lixeira_material(lixeira_env_material, lixeira_dif_material, lixeira_spe_material);
 const int lixeira_num_faces = 124;
 const int lixeira_num_vertices = 64;
@@ -3218,9 +3262,6 @@ Triangle lixeira_faces[] = {
 }; 
 Model lixeira(lixeira_num_faces, lixeira_num_vertices, lixeira_vertices, lixeira_faces, lixeira_material);
 //Setting mesa's material
-Vec3 mesa_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 mesa_dif_material(0.6, 0.8, 0.7);   // Material's difuse component factors
-Vec3 mesa_spe_material(0.23, 0.1, 0.2);   // Material's specular component factors 
 Material mesa_material(mesa_env_material, mesa_dif_material, mesa_spe_material);
 const int mesa_num_faces = 1284;
 const int mesa_num_vertices = 648;
@@ -5162,9 +5203,6 @@ Triangle mesa_faces[] = {
 }; 
 Model mesa(mesa_num_faces, mesa_num_vertices, mesa_vertices, mesa_faces, mesa_material);
 //Setting monitor's material
-Vec3 monitor_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 monitor_dif_material(0.6, 0.8, 0.7);   // Material's difuse component factors
-Vec3 monitor_spe_material(0.23, 0.1, 0.2);   // Material's specular component factors 
 Material monitor_material(monitor_env_material, monitor_dif_material, monitor_spe_material);
 const int monitor_num_faces = 92;
 const int monitor_num_vertices = 48;
@@ -5314,9 +5352,6 @@ Triangle monitor_faces[] = {
 }; 
 Model monitor(monitor_num_faces, monitor_num_vertices, monitor_vertices, monitor_faces, monitor_material);
 //Setting parede1's material
-Vec3 parede1_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 parede1_dif_material(0.6, 0.8, 0.7);   // Material's difuse component factors
-Vec3 parede1_spe_material(0.23, 0.1, 0.2);   // Material's specular component factors 
 Material parede1_material(parede1_env_material, parede1_dif_material, parede1_spe_material);
 const int parede1_num_faces = 12;
 const int parede1_num_vertices = 8;
@@ -5346,9 +5381,6 @@ Triangle parede1_faces[] = {
 }; 
 Model parede1(parede1_num_faces, parede1_num_vertices, parede1_vertices, parede1_faces, parede1_material);
 //Setting parede2's material
-Vec3 parede2_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 parede2_dif_material(0.6, 0.8, 0.7);   // Material's difuse component factors
-Vec3 parede2_spe_material(0.23, 0.1, 0.2);   // Material's specular component factors 
 Material parede2_material(parede2_env_material, parede2_dif_material, parede2_spe_material);
 const int parede2_num_faces = 12;
 const int parede2_num_vertices = 8;
@@ -5378,9 +5410,6 @@ Triangle parede2_faces[] = {
 }; 
 Model parede2(parede2_num_faces, parede2_num_vertices, parede2_vertices, parede2_faces, parede2_material);
 //Setting parede3's material
-Vec3 parede3_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 parede3_dif_material(0.6, 0.8, 0.7);   // Material's difuse component factors
-Vec3 parede3_spe_material(0.23, 0.1, 0.2);   // Material's specular component factors 
 Material parede3_material(parede3_env_material, parede3_dif_material, parede3_spe_material);
 const int parede3_num_faces = 12;
 const int parede3_num_vertices = 8;
@@ -5410,9 +5439,6 @@ Triangle parede3_faces[] = {
 }; 
 Model parede3(parede3_num_faces, parede3_num_vertices, parede3_vertices, parede3_faces, parede3_material);
 //Setting paredes's material
-Vec3 paredes_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 paredes_dif_material(0.6, 0.8, 0.7);   // Material's difuse component factors
-Vec3 paredes_spe_material(0.23, 0.1, 0.2);   // Material's specular component factors 
 Material paredes_material(paredes_env_material, paredes_dif_material, paredes_spe_material);
 const int paredes_num_faces = 12;
 const int paredes_num_vertices = 8;
@@ -5442,9 +5468,6 @@ Triangle paredes_faces[] = {
 }; 
 Model paredes(paredes_num_faces, paredes_num_vertices, paredes_vertices, paredes_faces, paredes_material);
 //Setting piso's material
-Vec3 piso_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 piso_dif_material(0.6, 0.8, 0.7);   // Material's difuse component factors
-Vec3 piso_spe_material(0.23, 0.1, 0.2);   // Material's specular component factors 
 Material piso_material(piso_env_material, piso_dif_material, piso_spe_material);
 const int piso_num_faces = 12;
 const int piso_num_vertices = 8;
@@ -5474,9 +5497,6 @@ Triangle piso_faces[] = {
 }; 
 Model piso(piso_num_faces, piso_num_vertices, piso_vertices, piso_faces, piso_material);
 //Setting porta's material
-Vec3 porta_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 porta_dif_material(0.6, 0.8, 0.7);   // Material's difuse component factors
-Vec3 porta_spe_material(0.23, 0.1, 0.2);   // Material's specular component factors 
 Material porta_material(porta_env_material, porta_dif_material, porta_spe_material);
 const int porta_num_faces = 308;
 const int porta_num_vertices = 168;
@@ -5961,3 +5981,32 @@ Triangle porta_faces[] = {
 	Triangle( porta_vertices[162], porta_vertices[161], porta_vertices[163]), 
 }; 
 Model porta(porta_num_faces, porta_num_vertices, porta_vertices, porta_faces, porta_material);
+//Setting teto's material
+Material teto_material(teto_env_material, teto_dif_material, teto_spe_material);
+const int teto_num_faces = 12;
+const int teto_num_vertices = 8;
+Point teto_vertices[] = { 
+	Point( -1.17103, 6.15015, 7.10323 ), 
+	Point( 8.41003, 6.15015, 7.10323 ), 
+	Point( -1.17103, 6.15015, -5.22905 ), 
+	Point( 8.41003, 6.15015, -5.22905 ), 
+	Point( -1.17103, 6.07, 7.10323 ), 
+	Point( 8.41003, 6.07001, 7.10323 ), 
+	Point( -1.17103, 6.07, -5.22905 ), 
+	Point( 8.41003, 6.07001, -5.22905 ), 
+}; 
+Triangle teto_faces[] = { 
+	Triangle( teto_vertices[1], teto_vertices[2], teto_vertices[0]), 
+	Triangle( teto_vertices[3], teto_vertices[6], teto_vertices[2]), 
+	Triangle( teto_vertices[7], teto_vertices[4], teto_vertices[6]), 
+	Triangle( teto_vertices[5], teto_vertices[0], teto_vertices[4]), 
+	Triangle( teto_vertices[6], teto_vertices[0], teto_vertices[2]), 
+	Triangle( teto_vertices[3], teto_vertices[5], teto_vertices[7]), 
+	Triangle( teto_vertices[1], teto_vertices[3], teto_vertices[2]), 
+	Triangle( teto_vertices[3], teto_vertices[7], teto_vertices[6]), 
+	Triangle( teto_vertices[7], teto_vertices[5], teto_vertices[4]), 
+	Triangle( teto_vertices[5], teto_vertices[1], teto_vertices[0]), 
+	Triangle( teto_vertices[6], teto_vertices[4], teto_vertices[0]), 
+	Triangle( teto_vertices[3], teto_vertices[1], teto_vertices[5]), 
+}; 
+Model teto(teto_num_faces, teto_num_vertices, teto_vertices, teto_faces, teto_material);

@@ -5,7 +5,7 @@
 #include <algorithm>
 #include "product/models.h"
 // #include "models.h"
-#include "writeBMP.h"
+// #include "writeBMP.h"
 
 #ifdef __APPLE__
 // #include <GL/glew.h>
@@ -40,6 +40,9 @@ void setup(void) {
 
 // Origin's point of camera
 Point O(7.49878, 5.5, 7.30468); // Front
+// Point O(1.49878, 5.5, 7.30468); // Front
+// Point O(7.49878, 1.5, 7.30468); // Front
+// Point LookAt(2.00653, 5.51717, 0.98869);
 
 Point LookAt(2.00653, 2.01717, 0.98869);
 Point ViewUp(LookAt.x, LookAt.y + 10, LookAt.z);
@@ -59,11 +62,11 @@ Point light2_center(light1_center[0] + 0.1, light1_center[1], light1_center[2]);
 Vec3 light2_color(0.8, 0.5, 0.7);
 Light light2(light2_center, light2_color);
 
-Light lights[] = {light1, light2 };
+Light lights[] = {light1};
 int num_lights = sizeof(lights) / sizeof(Light);
 
 // Model objects[] = {cadeira, copo, gavetas, janela, livro1, livro2, livro3, lixeira, mesa, monitor, piso, porta };
-Model objects[] = {cadeira, copo, gavetas, janela, livro1, livro2, livro3, lixeira, mesa, monitor, piso, porta, parede1, parede2, parede3};
+Model objects[] = {piso, cadeira};
 int objects_len = sizeof(objects) / sizeof(Model);
 
 Point worldToCamera(Point Po) {
@@ -176,6 +179,7 @@ void calculatePixelColor(int i, int j) {
 
         for (int q = 0; q < num_lights; q++) {
             Vec3 L(lights[q].center.x - P.x, lights[q].center.y - P.y, lights[q].center.z - P.z);
+            float L_len = Vec3::length(L);
             Vec3 l = Vec3::normalize(L); // Nomalized vector from point to light
             
             Vec3 If(
@@ -199,13 +203,13 @@ void calculatePixelColor(int i, int j) {
             int shadow = 0;
 
             for (int obj = 0; obj < objects_len && shadow == 0; obj++) {
-                // // Checking if the ball is intercepted by light ray
+                // Checking if the ball is intercepted by light ray
                 bool shadow_intercepted = false;
                 float t_cluster = objects[obj].cluster->checkInterception(shadow_intercepted, l, P, true);
                 if (shadow_intercepted) {
                     for (int z = 0; z < objects[obj].num_faces && shadow == 0; z++) {
                         resultado result = objects[obj].faces[z].intersectionTriangle(l, P);
-                        if (result.intersecao >= 0 && result.interceptou) {
+                        if (result.intersecao > 0 && result.intersecao <= L_len && result.interceptou) {
                             shadow = 1;
                             if (obj == m && z == k) {
                                 shadow = 0;
@@ -270,10 +274,8 @@ int main(int argc, char **argv){
     backfaceElimination();
 
     for (int i = 0; i < objects_len; i++) {
-        for (int k = 0; k < objects[i].num_faces; k++) {
-            objects[i].faces[k].vertex1 = worldToCamera(objects[i].faces[k].vertex1);
-            objects[i].faces[k].vertex2 = worldToCamera(objects[i].faces[k].vertex2);
-            objects[i].faces[k].vertex3 = worldToCamera(objects[i].faces[k].vertex3);
+        for (int k = 0; k < objects[i].num_vertices; k++) {
+            objects[i].vertices[k] = worldToCamera(objects[i].vertices[k]);
         }
 
         objects[i].cluster->center = worldToCamera(objects[i].cluster->center);

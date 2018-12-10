@@ -88,6 +88,13 @@ class Point {
                 break;
         }
     }
+    
+    static const Point pointScale(const Point& oldPoint, const Point& centerPoint, const Mat4& scala) {
+        Vec3 v(oldPoint-centerPoint);
+         Vec4 newV( scala * Vec4(v[0], v[1], v[2], 0) );
+        
+        return Point(centerPoint + newV);
+    }
 };
 
 Point::Point (const Point& p) {
@@ -116,7 +123,6 @@ void Point::plus (const Vec3& v) {
     y += v[1];
     z += v[2];
 };
-
 
 class Light {
 public:
@@ -400,15 +406,15 @@ class BoundingBox {
     };
 
     BoundingBox(float& minX, float& minY, float& minZ, float& maxX, float& maxY, float& maxZ) {
-        vertices[0] = Point(minX, minY, maxZ);                // p1
-        vertices[1] = Point(maxX, minY, maxZ);                // p2
-        vertices[2] = Point(minX, maxY, maxZ);                // p3
-        vertices[3] = Point(maxX, maxY, maxZ);                // p4
+        vertices[0] = Point(minX - 0.1, minY - 0.1, maxZ + 0.1);                // p1
+        vertices[1] = Point(maxX + 0.1, minY - 0.1, maxZ + 0.1);                // p2
+        vertices[2] = Point(minX - 0.1, maxY + 0.1, maxZ + 0.1);                // p3
+        vertices[3] = Point(maxX + 0.1, maxY + 0.1, maxZ + 0.1);                // p4
 
-        vertices[4] = Point(minX, minY, minZ); // p5
-        vertices[5] = Point(maxX, minY, minZ); // p6
-        vertices[6] = Point(minX, maxY, minZ); // p7
-        vertices[7] = Point(maxX, maxY, minZ); // p8
+        vertices[4] = Point(minX - 0.1, minY - 0.1, minZ - 0.1); // p5
+        vertices[5] = Point(maxX + 0.1, minY - 0.1, minZ - 0.1); // p6
+        vertices[6] = Point(minX - 0.1, maxY + 0.1, minZ - 0.1); // p7
+        vertices[7] = Point(maxX + 0.1, maxY + 0.1, minZ - 0.1); // p8
 
         faces[0] = Triangle(vertices[0], vertices[1], vertices[2]); // f1
         faces[1] = Triangle(vertices[1], vertices[3], vertices[2]); // f2
@@ -426,7 +432,7 @@ class BoundingBox {
         faces[11] = Triangle(vertices[6], vertices[2], vertices[3]);// f12
     };
 
-    bool intercept(const Vec3& V, const Point& O) {
+    bool intercept(const Vec3& V, const Point& O, bool shadow=false) {
         for (int i = 0; i < 12; i++) {
             if (faces[i].visible == true) {
                 resultado intersection = faces[i].intersectionTriangle(V, O);
@@ -438,6 +444,12 @@ class BoundingBox {
 
         return false;
     };
+
+    void setVisible() {
+        for (int i = 0; i < 12; i++) {
+            faces[i].visible = true;
+        }
+    }
 };
 
 

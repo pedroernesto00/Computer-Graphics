@@ -62,7 +62,7 @@ Point light2_center(light1_center[0] + 0.1, light1_center[1], light1_center[2]);
 Vec3 light2_color(0.8, 0.5, 0.7);
 Light light2(light2_center, light2_color);
 
-Light lights[] = {light1};
+Light lights[] = {light1, light2};
 int num_lights = sizeof(lights) / sizeof(Light);
 
 // Model objects[] = {cadeira, copo, gavetas, janela, livro1, livro2, livro3, lixeira, mesa, monitor, piso, porta };
@@ -99,17 +99,6 @@ void backfaceElimination() {
                 objects[m].faces[k].visible = true;
             }
         }
-
-        // for (int k = 0; k < 12; k++) {
-        //     Vec3 face_normal = Vec3::normalize(objects[m].box->faces[k].findNormal());
-        //     float cos_angle = Vec3::dot(face_normal, k_camera * -1);
-
-        //     if (cos_angle > 0) {
-        //         objects[m].box->faces[k].visible = false;
-        //     } else {
-        //         objects[m].box->faces[k].visible = true;
-        //     }
-        // }
     }
 }
 
@@ -284,9 +273,9 @@ int main(int argc, char **argv){
 
     Mat4 trans = Mat4::translate(Vec3(1.3,1.3,1.3));
     Mat4 scl = Mat4::scale(Vec3(2,2,2));
-    Mat4 rot = Mat4::rotate(r,M_PI/2);
+    Mat4 rot = Mat4::rotate(r,PI/2);
 
-    objects[0].move(scl);
+    // objects[0].rotate(rot);
 
     backfaceElimination();
 

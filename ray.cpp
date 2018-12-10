@@ -280,6 +280,14 @@ void mouseCallback(int button, int state, int x, int y) {
 int main(int argc, char **argv){
     glutInit(&argc, argv);
 
+    Vec3 r(Vec3::normalize(Vec3(7.49878, 5.5, 7.30468)));
+
+    Mat4 trans = Mat4::translate(Vec3(1.3,1.3,1.3));
+    Mat4 scl = Mat4::scale(Vec3(2,2,2));
+    Mat4 rot = Mat4::rotate(r,M_PI/2);
+
+    objects[0].move(scl);
+
     backfaceElimination();
 
     for (int i = 0; i < objects_len; i++) {

@@ -496,6 +496,10 @@ class Model {
     Triangle *faces;
     Material material;
 
+    void move(const Mat4&);
+    void rotate(const Mat4&);
+    void scale(const Mat4&);
+    
     Model(const int n_faces, const int n_vertices, Point *vertices_list, Triangle *faces_list, Material mat) {
         num_faces = n_faces;
         num_vertices = n_vertices;
@@ -504,5 +508,29 @@ class Model {
         material = mat;
 
         setCluster();
-    };
+    }
+
 };
+
+void Model::move(const Mat4& trans) {
+        for (int vertex = 0; vertex < this->num_vertices; vertex++) {
+            this->vertices[vertex] = this->vertices[vertex] * trans;
+        }
+
+	this->setCluster();
+    }
+
+void Model::rotate(const Mat4& rot) {
+    for (int vertex = 0; vertex < this->num_vertices; vertex++) {
+        this->vertices[vertex] = this->vertices[vertex] * rot;
+    }
+
+	this->setCluster();
+}
+
+void Model::scale(const Mat4& scl) {
+    for (int vertex = 0; vertex < this->num_vertices; vertex++) {
+        this->vertices[vertex] = Point::pointScale(this->vertices[vertex], this->cluster->center, scl);
+    }
+	this->setCluster();
+}

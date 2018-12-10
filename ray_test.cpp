@@ -347,30 +347,38 @@ void mouseCallback(int button, int state, int x, int y) {
 // Main routine.
 int main(int argc, char **argv){
     glutInit(&argc, argv);
+
+    cout << "Original" << endl;
+    cout << objects[0].vertices[0].x << endl;
+    cout << objects[0].faces[0].vertex1.x << " " 
+        << objects[0].faces[0].vertex1.y << " "
+        << objects[0].faces[0].vertex1.z << " "
+        << endl;
+
+    cout << "Transformado" << endl;
+    objects[0].scale(scl);
+    cout << objects[0].vertices[0].x << endl;
+    cout << objects[0].faces[0].vertex1.x << " " 
+        << objects[0].faces[0].vertex1.y << " "
+        << objects[0].faces[0].vertex1.z << " "
+        << endl;
     
+    backfaceElimination();
+
     for (int i = 0; i < objects_len; i++) {
-        for (int k = 0; k < objects[i].num_faces; k++) {
-            objects[i].faces[k].vertex1 = worldToCamera(objects[i].faces[k].vertex1);
-            objects[i].faces[k].vertex2 = worldToCamera(objects[i].faces[k].vertex2);
-            objects[i].faces[k].vertex3 = worldToCamera(objects[i].faces[k].vertex3);
+        for (int k = 0; k < objects[i].num_vertices; k++) {
+            objects[i].vertices[k] = worldToCamera(objects[i].vertices[k]);
         }
 
         objects[i].cluster->center = worldToCamera(objects[i].cluster->center);
     }
 
-    // for (int i = 0; i < num_vertices2; i++) {
-    //     cout << "Point(200 + 20 * " << vertices2[i][0] << ", 200 + 20 * " << vertices2[i][1] << ", 600 + 20 * " << vertices2[i][2] << ")," << endl;
-    // }
-
-    // for (int i = 0; i < num_faces2; i++) {
-    //     cout << "Trianglue(vertices2[" << faces2[i][0] - 1 << "], " << "vertices2[" << faces2[i][1] - 1 << "], " << "vertices2[" << faces2[i][2]- 1 << "]), " << endl;
-    // }
-
-    light2.center = worldToCamera(light2.center);
+    for (int i = 0; i < num_lights; i++) {
+        lights[i].center = worldToCamera(lights[i].center);
+    }
     O = worldToCamera(O);
 
     loadPixels();
-
 
     writeBMP(pixels, canvasW, canvasH);
 

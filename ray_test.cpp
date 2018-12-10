@@ -363,17 +363,19 @@ int main(int argc, char **argv){
         << objects[0].faces[0].vertex1.z << " "
         << endl;
     
+    backfaceElimination();
+
     for (int i = 0; i < objects_len; i++) {
-        for (int k = 0; k < objects[i].num_faces; k++) {
-            objects[i].faces[k].vertex1 = worldToCamera(objects[i].faces[k].vertex1);
-            objects[i].faces[k].vertex2 = worldToCamera(objects[i].faces[k].vertex2);
-            objects[i].faces[k].vertex3 = worldToCamera(objects[i].faces[k].vertex3);
+        for (int k = 0; k < objects[i].num_vertices; k++) {
+            objects[i].vertices[k] = worldToCamera(objects[i].vertices[k]);
         }
 
         objects[i].cluster->center = worldToCamera(objects[i].cluster->center);
     }
 
-    light2.center = worldToCamera(light2.center);
+    for (int i = 0; i < num_lights; i++) {
+        lights[i].center = worldToCamera(lights[i].center);
+    }
     O = worldToCamera(O);
 
     loadPixels();

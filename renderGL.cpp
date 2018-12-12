@@ -38,8 +38,8 @@ float pi = 3.14159265359;
 
 /* -------------------------- PARÂMETROS DOS MATERIAIS ----------------------------------- */
 
-
 	float matAmbAndDif1[] = {1.0, 0.5, 1.0, 1.0};
+	float matAmbAndDifT[] = {0.7, 0.3, 0.7, 0.7};
    	float matAmbAndDif2[] = {0.5, 0.31, 1.0, 1.0};
    	float matAmbAndDif3[] = {0.0, 0.0, 0.9, 1.0};
    	float matSpec[] = {0.1, 0.1, 0.1, 1.0};
@@ -468,6 +468,20 @@ void drawScene(void)
    	glVertexPointer(3, GL_FLOAT, 0, paredes_vertices);
 	glNormalPointer(GL_FLOAT, 0, paredes_normais);
 	glDrawElements(GL_TRIANGLES, paredes_num_faces * 3, GL_UNSIGNED_INT, paredes_faces);	
+
+	glPopMatrix();
+
+
+	glPushMatrix();
+	glTranslatef(0.0, -1.0, 0.0);
+
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, matAmbAndDifT);
+   	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, matSpec);
+   	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, matShine);
+
+   	glVertexPointer(3, GL_FLOAT, 0, paredes_vertices);
+	glNormalPointer(GL_FLOAT, 0, paredes_normais);
+	glDrawElements(GL_TRIANGLES, teto_num_faces * 3, GL_UNSIGNED_INT, teto_faces);	
 
 	glPopMatrix();
 	

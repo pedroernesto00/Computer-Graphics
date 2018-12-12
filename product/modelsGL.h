@@ -4922,8 +4922,9 @@ float gavetas_normais[] = {
 	-0.4751, 0.757, -0.4487, 
 	-0.4735, 0.5199, -0.711, 
 }; 
-const int paredes_num_faces = 28;
+const int paredes_num_faces = 26;
 const int paredes_num_vertices = 16;
+const int teto_num_faces = 2;
 float paredes_vertices[] = {
 	-1.07095, 0.057241, 7.43008, 
 	-1.15569, 6.54412, 7.54108, 
@@ -4942,6 +4943,12 @@ float paredes_vertices[] = {
 	8.57096, 6.45849, -5.19848, 
 	8.57096, 6.45849, 7.43008, 
 }; 
+
+int teto_faces[] = {
+	14, 13, 12, 
+	14, 15, 13, 
+};
+
 int paredes_faces[] = {
 	1, 8, 9, 
 	3, 10, 8, 
@@ -4953,7 +4960,7 @@ int paredes_faces[] = {
 	2, 10, 6, 
 	6, 11, 4, 
 	4, 9, 0, 
-	14, 13, 12, 
+
 	6, 12, 2, 
 	4, 14, 6, 
 	2, 13, 0, 
@@ -4967,7 +4974,7 @@ int paredes_faces[] = {
 	2, 8, 10, 
 	6, 10, 11, 
 	4, 11, 9, 
-	14, 15, 13, 
+	
 	6, 14, 12, 
 	4, 15, 14, 
 	2, 12, 13, 

@@ -2,9 +2,9 @@
 #include <iostream>
 #include "../scenario_new.h"
 
-Vec3 cadeira_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 cadeira_dif_material(0.6, 0.8, 0.7); // Material's difuse component factors
-Vec3 cadeira_spe_material(0.3, 0.4, 0.5); // Material's specular component factors
+Vec3 cadeira_env_material(0.1, 0.1, 0.1); // Material's enviroment component factors
+Vec3 cadeira_dif_material(0.3, 0.3, 0.3); // Material's difuse component factors
+Vec3 cadeira_spe_material(0.3, 0.3, 0.3); // Material's specular component factors
 
 Vec3 copo_env_material(0.5, 0.4, 0.3);	// Material's enviroment component factors
 Vec3 copo_dif_material(0.6, 0.8, 0.7);	// Material's difuse component factors
@@ -14,56 +14,57 @@ Vec3 gavetas_env_material(0.2125f, 0.1275f, 0.054f); // Material's enviroment co
 Vec3 gavetas_dif_material(0.714f, 0.4284f, 0.18144f); // Material's difuse component factors
 Vec3 gavetas_spe_material(0.393548f, 0.271906f, 0.166721f); // Material's specular component factors
 
-Vec3 janela_env_material(0.25f, 0.148f, 0.06475f);  // Material's enviroment component factors
-Vec3 janela_dif_material(0.4f, 0.2368f, 0.1036f);  // Material's difuse component factors
-Vec3 janela_spe_material(0.774597f, 0.458561f, 0.200621f);  // Material's specular component factors
+Vec3 janela_env_material(0.1, 0.1, 0.5);  // Material's enviroment component factors
+Vec3 janela_dif_material(0.5, 0.5, 0.5);  // Material's difuse component factors
+Vec3 janela_spe_material(0.3, 0.3, 0.3);  // Material's specular component factors
 
-Vec3 livro1_env_material(0.5, 0.4, 0.3);  // Material's enviroment component factors
-Vec3 livro1_dif_material(0.6, 0.8, 0.7);  // Material's difuse component factors
-Vec3 livro1_spe_material(0.3, 0.4, 0.5);  // Material's specular component factors
+Vec3 livro1_env_material(0.8, 0.3, 0.3);  // Material's enviroment component factors
+Vec3 livro1_dif_material(0.6, 0.2, 0.3);  // Material's difuse component factors
+Vec3 livro1_spe_material(0.5, 0.1, 0.2);  // Material's specular component factors
 
-Vec3 livro2_env_material(0.5, 0.4, 0.3);  // Material's enviroment component factors
-Vec3 livro2_dif_material(0.6, 0.8, 0.7);  // Material's difuse component factors
-Vec3 livro2_spe_material(0.3, 0.4, 0.5);  // Material's specular component factors
+Vec3 livro2_env_material(0.3, 0.8, 0.3);  // Material's enviroment component factors
+Vec3 livro2_dif_material(0.2, 0.6, 0.2);  // Material's difuse component factors
+Vec3 livro2_spe_material(0.2, 0.6, 0.1);  // Material's specular component factors
 
-Vec3 livro3_env_material(0.5, 0.4, 0.3);  // Material's enviroment component factors
-Vec3 livro3_dif_material(0.6, 0.8, 0.7);  // Material's difuse component factors
-Vec3 livro3_spe_material(0.3, 0.4, 0.5);  // Material's specular component factors
+Vec3 livro3_env_material(0.2, 0.2, 0.8);  // Material's enviroment component factors
+Vec3 livro3_dif_material(0.1, 0.3, 0.6);  // Material's difuse component factors
+Vec3 livro3_spe_material(0.3, 0.2, 0.5);  // Material's specular component factors
 
 Vec3 lixeira_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
 Vec3 lixeira_dif_material(0.6, 0.8, 0.7); // Material's difuse component factors
 Vec3 lixeira_spe_material(0.3, 0.4, 0.5); // Material's specular component factors
-Vec3 mesa_env_material(0.5, 0.4, 0.3);	// Material's enviroment component factors
 
-Vec3 mesa_dif_material(0.6, 0.8, 0.7);	// Material's difuse component factors
-Vec3 mesa_spe_material(0.3, 0.4, 0.5);	// Material's specular component factors
+Vec3 mesa_env_material(0.2125f, 0.1275f, 0.054f); // Material's enviroment component factors
+Vec3 mesa_dif_material(0.714f, 0.4284f, 0.18144f); // Material's difuse component factors
+Vec3 mesa_spe_material(0.393548f, 0.271906f, 0.166721f); // Material's specular component factors
+
 Vec3 monitor_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-
 Vec3 monitor_dif_material(0.6, 0.8, 0.7); // Material's difuse component factors
 Vec3 monitor_spe_material(0.3, 0.4, 0.5); // Material's specular component factors
-Vec3 parede1_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
 
-Vec3 parede1_dif_material(0.6, 0.8, 0.7); // Material's difuse component factors
-Vec3 parede1_spe_material(0.3, 0.4, 0.5); // Material's specular component factors
-Vec3 parede2_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 parede2_dif_material(0.6, 0.8, 0.7); // Material's difuse component factors
+Vec3 parede1_env_material(0.5, 0.5, 0.5); // Material's enviroment component factors
+Vec3 parede1_dif_material(0.8, 0.8, 0.8); // Material's difuse component factors
+Vec3 parede1_spe_material(0.7, 0.7, 0.7); // Material's specular component factors
 
-Vec3 parede2_spe_material(0.3, 0.4, 0.5); // Material's specular component factors
-Vec3 parede3_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 parede3_dif_material(0.6, 0.8, 0.7); // Material's difuse component factors
+Vec3 parede2_env_material(0.5, 0.5, 0.5); // Material's enviroment component factors
+Vec3 parede2_dif_material(0.8, 0.8, 0.8); // Material's difuse component factors
+Vec3 parede2_spe_material(0.7, 0.7, 0.7); // Material's specular component factors
 
-Vec3 parede3_spe_material(0.3, 0.4, 0.5); // Material's specular component factors
-Vec3 paredes_env_material(0.5, 0.4, 0.3); // Material's enviroment component factors
-Vec3 paredes_dif_material(0.6, 0.8, 0.7); // Material's difuse component factors
+Vec3 parede3_env_material(0.5, 0.5, 0.5); // Material's enviroment component factors
+Vec3 parede3_dif_material(0.8, 0.8, 0.8); // Material's difuse component factors
+Vec3 parede3_spe_material(0.7, 0.7, 0.7); // Material's specular component factors
 
-Vec3 paredes_spe_material(0.3, 0.4, 0.5); // Material's specular component factors
-Vec3 piso_env_material(0.5, 0.4, 0.3);	// Material's enviroment component factors
-Vec3 piso_dif_material(0.6, 0.8, 0.7);	// Material's difuse component factors
-Vec3 piso_spe_material(0.3, 0.4, 0.5);	// Material's specular component factors
+Vec3 paredes_env_material(0.5, 0.5, 0.5); // Material's enviroment component factors
+Vec3 paredes_dif_material(0.8, 0.8, 0.8); // Material's difuse component factors
+Vec3 paredes_spe_material(0.7, 0.7, 0.7); // Material's specular component factors
 
-Vec3 porta_env_material(0.5, 0.4, 0.3);   // Material's enviroment component factors
-Vec3 porta_dif_material(0.6, 0.8, 0.7);   // Material's difuse component factors
-Vec3 porta_spe_material(0.3, 0.4, 0.5);   // Material's specular component factors
+Vec3 piso_env_material(0.5, 0.5, 0.5);	// Material's enviroment component factors
+Vec3 piso_dif_material(0.2, 0.2, 0.2);	// Material's difuse component factors
+Vec3 piso_spe_material(0.2, 0.2, 0.2);	// Material's specular component factors
+
+Vec3 porta_env_material(0.1, 0.1, 0.1);   // Material's enviroment component factors
+Vec3 porta_dif_material(0.2, 0.2, 0.2);   // Material's difuse component factors
+Vec3 porta_spe_material(0.2, 0.2, 0.2);   // Material's specular component factors
 
 Vec3 teto_env_material(0.5, 0.4, 0.3);	// Material's enviroment component factors
 Vec3 teto_dif_material(0.6, 0.8, 0.7);	// Material's difuse component factors

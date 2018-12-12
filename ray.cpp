@@ -67,6 +67,7 @@ int num_lights = sizeof(lights) / sizeof(Light);
 
 // Model objects[] = {cadeira, copo, gavetas, janela, livro1, livro2, livro3, lixeira, mesa, monitor, piso, porta };
 Model objects[] = {cadeira, copo, gavetas, janela, livro1, livro2, livro3, lixeira, mesa, monitor, piso, porta, teto, parede1, parede2, parede3};
+
 int objects_len = sizeof(objects) / sizeof(Model);
 
 Point worldToCamera(Point Po) {
@@ -282,11 +283,11 @@ int main(int argc, char **argv){
 
     Vec3 r(Vec3::normalize(Vec3(7.49878, 5.5, 7.30468)));
 
-    Mat4 trans = Mat4::translate(Vec3(1.3,1.3,1.3));
+    Mat4 trans = Mat4::translate(Vec3(2, 0, 0));
     Mat4 scl = Mat4::scale(Vec3(2,2,2));
     Mat4 rot = Mat4::rotate(r,PI/2);
 
-    // objects[0].rotate(rot);
+   // objects[1].move(trans);
 
     backfaceElimination();
 
